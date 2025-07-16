@@ -21,10 +21,12 @@ app.use(cookieParser());
 
 
 import indexRoute from './src/routes/indexRoute.js';
+import userRoute from './src/routes/userRoute.js';
+
 
 
 app.use('/', indexRoute);
-
+app.use('/user', userRoute);
 
 
 
