@@ -14,4 +14,9 @@ router.get('/how-it-works', (req, res) => {
     res.render('how-it-works');
 })
 
+router.get('/about', (req, res) => {
+    res.render('about');
+})
+
+
 export default router;

@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Rotate every 7 seconds
-    setInterval(rotateTestimonial, 7000);
+    setInterval(rotateTestimonial, 5000);
 });
 
 
@@ -65,5 +65,76 @@ document.addEventListener('DOMContentLoaded', function() {
         card.style.transform = "translateY(20px)";
         card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
         observer.observe(card);
+    });
+});
+
+
+// Circuit pattern background animation
+document.addEventListener('DOMContentLoaded', function() {
+    const circuitCanvas = document.getElementById('circuitCanvas');
+    
+    // Create circuit pattern
+    for (let i = 0; i < 30; i++) {
+        const line = document.createElement('div');
+        line.className = 'circuit-line';
+        
+        // Random position and dimensions
+        const top = Math.random() * 100;
+        const left = Math.random() * 100;
+        const width = Math.random() * 100 + 50;
+        const height = 2;
+        const rotation = Math.random() * 360;
+        
+        line.style.top = `${top}%`;
+        line.style.left = `${left}%`;
+        line.style.width = `${width}px`;
+        line.style.height = `${height}px`;
+        line.style.transform = `rotate(${rotation}deg)`;
+        
+        circuitCanvas.appendChild(line);
+    }
+    
+    // Pie chart animation
+    const pie = document.querySelector('.pie-container');
+    let rotation = 0;
+    
+    pie.addEventListener('mouseenter', function() {
+        rotation = 0;
+        animatePie();
+    });
+    
+    function animatePie() {
+        rotation += 1;
+        pie.style.transform = `rotate(${rotation}deg) scale(1.05)`;
+        
+        if (rotation < 360) {
+            requestAnimationFrame(animatePie);
+        } else {
+            rotation = 0;
+            pie.style.transform = 'rotate(0deg) scale(1)';
+        }
+    }
+    
+    // Tech carousel scroll effect
+    const techCarousel = document.querySelector('.tech-carousel');
+    
+    window.addEventListener('scroll', function() {
+        const scrollPosition = window.scrollY;
+        techCarousel.scrollLeft = scrollPosition / 5;
+    });
+    
+    // Skill node hover effect
+    const skillNodes = document.querySelectorAll('.skill-node');
+    
+    skillNodes.forEach(node => {
+        node.addEventListener('mouseenter', function() {
+            const pulse = this.querySelector('.pulse');
+            pulse.style.animation = 'pulse 1.5s infinite';
+        });
+        
+        node.addEventListener('mouseleave', function() {
+            const pulse = this.querySelector('.pulse');
+            pulse.style.animation = 'none';
+        });
     });
 });
