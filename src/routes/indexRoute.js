@@ -18,5 +18,13 @@ router.get('/about', (req, res) => {
     res.render('about');
 })
 
+router.get('/features', (req, res) => {
+    res.render('features');
+})
+
+router.post('/signup', (req, res) => {
+    res.render('signup');
+})
+
 
 export default router;
