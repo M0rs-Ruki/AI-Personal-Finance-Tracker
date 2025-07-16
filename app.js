@@ -3,6 +3,7 @@ import express from "express";
 import dotenv from "dotenv";
 import {log} from 'console';
 import cookieParser from "cookie-parser";
+import db from "./src/db/connect.db.js";
 
 
 
