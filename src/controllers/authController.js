@@ -34,6 +34,8 @@ const registeUser = async ( req, res ) => {
             notificationPreferences
         });
 
+        // log(newUser.budgetGoals);
+
         await newUser.save();
         const token = generateToken(newUser);
         res.cookie('token', token );
@@ -41,6 +43,7 @@ const registeUser = async ( req, res ) => {
 
     } catch (err) {
         res.status(500).json({ message: ' Error operating during register user ' });
+        log(err);
     }
 }
 

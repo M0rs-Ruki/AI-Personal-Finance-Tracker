@@ -89,7 +89,7 @@
                         <div class="form-group">
                             <div class="input-wrapper">
                                 <i class="fas fa-coins input-icon"></i>
-                                <input type="text" class="form-control" id="income" placeholder="0.00">
+                                <input type="text" class="form-control" name="monthlyIncome" id="income" placeholder="0.00">
                                 <i class="fas fa-check-circle validation-icon"></i>
                             </div>
                             <p class="optional-field-note">Helps personalize budget suggestions</p>
@@ -104,7 +104,7 @@
                                     <div class="goal-progress"></div>
                                     <i class="fas fa-utensils" style="font-size: 14px;"></i>
                                 </div>
-                                <input type="text" class="goal-input" placeholder="e.g., 15,000 ₹/month">
+                                <input type="number" class="goal-input" name="budgetGoals[food]" placeholder="Food Budget (₹)" />
                             </div>
                             
                             <div class="budget-goal">
@@ -112,7 +112,7 @@
                                     <div class="goal-progress" style="transform: rotate(180deg);"></div>
                                     <i class="fas fa-home" style="font-size: 14px;"></i>
                                 </div>
-                                <input type="text" class="goal-input" placeholder="e.g., 30,000 ₹/month">
+                                <input type="number" class="goal-input" name="budgetGoals[rent]" placeholder="Rent Budget (₹)" />
                             </div>
                             
                             <div class="budget-goal">
@@ -120,7 +120,7 @@
                                     <div class="goal-progress" style="transform: rotate(270deg);"></div>
                                     <i class="fas fa-suitcase" style="font-size: 14px;"></i>
                                 </div>
-                                <input type="text" class="goal-input" placeholder="e.g., 10,000 ₹/month">
+                                <input type="number" class="goal-input" name="budgetGoals[travel]" placeholder="Travel Budget (₹)" />
                             </div>
                             
                             <p class="optional-field-note">Edit anytime in settings</p>
