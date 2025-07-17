@@ -2,6 +2,7 @@
 import User from "../models/userModels.js";
 import {log} from 'console';
 import generateToken from "../utils/generateTokenUtlis.js";
+import { hashPassword, comparePassword } from "../utils/bcryptPasswordUtlis.js";
 
 
 const registeUser = async ( req, res ) => {
