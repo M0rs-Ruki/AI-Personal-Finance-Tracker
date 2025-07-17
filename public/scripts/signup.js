@@ -70,38 +70,8 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Form submission
-    const form = document.getElementById('registration-form');
-    form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        
-        // Simple validation
-        let isValid = true;
-        
-        if (nameInput.value.length < 3) {
-            isValid = false;
-            nameInput.classList.add('pulse');
-            setTimeout(() => nameInput.classList.remove('pulse'), 500);
-        }
-        
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(emailInput.value)) {
-            isValid = false;
-            emailInput.classList.add('pulse');
-            setTimeout(() => emailInput.classList.remove('pulse'), 500);
-        }
-        
-        if (passwordInput.value.length < 8) {
-            isValid = false;
-            passwordInput.classList.add('pulse');
-            setTimeout(() => passwordInput.classList.remove('pulse'), 500);
-        }
-        
-        if (isValid) {
-            // Success message
-            alert('Account created successfully! Redirecting to your dashboard...');
-            // In a real app, this would redirect to the dashboard
-        }
-    });
+
+
     
     // Checkbox functionality
     const emailCheck = document.getElementById('email-check');
