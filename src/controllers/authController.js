@@ -1,5 +1,7 @@
 
 import User from "../models/userModels.js";
+import {log} from 'console';
+import generateToken from "../utils/generateTokenUtlis.js";
 
 
 const registeUser = async ( req, res ) => {
@@ -38,4 +40,23 @@ const registeUser = async ( req, res ) => {
     }
 }
 
-export { registeUser }
+
+const loginUser = async ( req, res ) => {
+    try {
+        const { email, password, phoneNumber } = req.body;
+
+        const user = await User.findOne({ email: email })
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+            res.redirect('/login');
+        }
+        
+        res.redirect('/');
+
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ message: ' Error operating during login user ' });
+    }
+}
+
+export { registeUser, loginUser }
