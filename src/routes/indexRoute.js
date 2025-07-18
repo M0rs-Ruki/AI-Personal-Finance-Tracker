@@ -2,7 +2,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import {log} from 'console';
-import isLoggedIn from "../middlewares/isLoggedInMiddleware.js";
 
 
 const router = express.Router();
@@ -24,8 +23,6 @@ router.get('/features', (req, res) => {
     res.render('features');
 })
 
-router.get('/dashboard',isLoggedIn, (req, res) => {
-    res.render('dashboard');
-})
+
 
 export default router;

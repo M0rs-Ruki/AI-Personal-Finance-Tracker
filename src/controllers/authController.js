@@ -38,7 +38,7 @@ const registeUser = async ( req, res ) => {
         const token = generateToken(newUser);
         res.cookie('token', token );
         log(token);
-        res.redirect('/dashboard');
+        res.redirect('/user/dashboard');
 
     } catch (err) {
         res.status(500).json({ message: ' Error operating during register user ' });
@@ -66,7 +66,7 @@ const loginUser = async ( req, res ) => {
 
         const token = generateToken(user);
         res.cookie('token', token);
-        res.redirect('/dashboard');
+        res.redirect('/user/dashboard');
 
     } catch (err) {
         console.log(err);
