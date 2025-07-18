@@ -21,12 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
     // Toggle password visibility
     const togglePassword = document.getElementById('toggle-password');
     const passwordInput = document.getElementById('password');
-    
-    togglePassword.addEventListener('click', function() {
+
+    togglePassword.addEventListener('click', function () {
         const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
         passwordInput.setAttribute('type', type);
-        this.querySelector('i').classList.toggle('fa-eye');
-        this.querySelector('i').classList.toggle('fa-eye-slash');
+        this.classList.toggle('active');
+
+        const icon = this.querySelector('i');
+        if (icon) {
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        }
     });
     
     // Password strength meter
@@ -47,14 +52,6 @@ document.addEventListener('DOMContentLoaded', function() {
         this.classList.toggle('checked');
     });
     
-    // Form submission
-    
-
-    
-    // Guest mode
 
 
-    
-    // Create confetti effect
-
-    
+});

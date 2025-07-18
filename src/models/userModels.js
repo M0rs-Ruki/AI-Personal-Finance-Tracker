@@ -21,7 +21,7 @@ const userSchema = mongoose.Schema({
         default: 'INR'
     },
     monthlyIncome: {
-        type: Number,
+        type: String,
     },
     notificationPreferences:{
         type: String,

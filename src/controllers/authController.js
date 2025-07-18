@@ -8,7 +8,7 @@ import { hashPassword, comparePassword, } from "../utils/bcryptPasswordUtlis.js"
 const registeUser = async ( req, res ) => {
     try {
         const { fullName , email, password, phoneNumber,
-            currency, monthlyIncome, budgetGoals, 
+            currency, monthlyIncome, userType,
             notificationPreferences
         } =  req.body;
 
@@ -30,15 +30,14 @@ const registeUser = async ( req, res ) => {
             phoneNumber,
             currency,
             monthlyIncome,
-            budgetGoals,
+            userType,
             notificationPreferences
         });
-
-        // log(newUser.budgetGoals);
 
         await newUser.save();
         const token = generateToken(newUser);
         res.cookie('token', token );
+        log(token);
         res.redirect('/dashboard');
 
     } catch (err) {

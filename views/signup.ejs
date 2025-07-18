@@ -19,7 +19,7 @@
                 <p>Join our financial community in seconds</p>
             </div>
             
-            <form id="registration-form" action="/register" method="POST">
+            <form id="registration-form" action="/user/signup" method="POST">
                 <!-- Full Name -->
                 <div class="form-group">
                     <label class="label required">Full Name</label>
@@ -73,6 +73,8 @@
                         <div class="currency-option" data-currency="USD">$ USD</div>
                         <div class="currency-option" data-currency="EUR">€ EUR</div>
                     </div>
+                    <!-- Hidden input to actually submit -->
+                    <input type="hidden" name="currency" id="currency-input" value="INR" />
                 </div>
                 
                 <!-- Monthly Income -->
@@ -105,12 +107,13 @@
                             </label>
                         </div>
                     </div>
+                    <input type="hidden" name="notificationPreferences" id="notification-preferences-input" value="email" />
                 </div>
                 
                 <!-- User Type -->
                 <div class="form-group">
                     <label class="label optional">User Type</label>
-                    <select class="form-control" id="user-type">
+                    <select class="form-control" id="user-type" name="userType">
                         <option value="other">Other</option>
                         <option value="student">Student</option>
                         <option value="employed">Employed</option>
@@ -120,7 +123,7 @@
                 </div>
                 
                 <!-- Submit Buttons -->
-                <button type="submit" class="btn btn-primary">
+                <button class="btn btn-primary">
                     <i class="fas fa-rocket"></i> CREATE ACCOUNT
                 </button>
                 <button type="button" class="btn btn-ghost">
