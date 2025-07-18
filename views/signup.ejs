@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Personal Finance Tracker - Registration</title>
+    <title>AI Finance Tracker - Registration</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="/styles/signup.css">
@@ -11,19 +11,19 @@
 <body>
     <div class="container">
         <div class="card">
-            <div class="logo">
-                <div class="logo-icon">
-                    <i class="fas fa-robot"></i>
+            <div class="header">
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
                 </div>
-                <h1>Create Your Financial Guardian</h1>
+                <h1>Create Your Account</h1>
+                <p>Join our financial community in seconds</p>
             </div>
-            <p class="subtitle">Secure account setup in 60 seconds</p>
             
-            <form id="registration-form" action="/user/signup" method="POST">
+            <form id="registration-form" action="/register" method="POST">
                 <!-- Full Name -->
                 <div class="form-group">
+                    <label class="label required">Full Name</label>
                     <div class="input-wrapper">
-                        <i class="fas fa-user input-icon"></i>
                         <input type="text" class="form-control" id="full-name" name="fullName" placeholder="First and Last Name" required>
                         <i class="fas fa-check-circle validation-icon"></i>
                     </div>
@@ -31,17 +31,18 @@
                 
                 <!-- Email -->
                 <div class="form-group">
+                    <label class="label required">Email</label>
                     <div class="input-wrapper">
-                        <i class="fas fa-envelope input-icon"></i>
                         <input type="email" class="form-control" id="email" name="email" placeholder="you@domain.com" required>
                         <i class="fas fa-check-circle validation-icon"></i>
                     </div>
+                    <div class="hint" id="email-hint"></div>
                 </div>
                 
                 <!-- Password -->
                 <div class="form-group">
+                    <label class="label required">Password</label>
                     <div class="input-wrapper">
-                        <i class="fas fa-key input-icon"></i>
                         <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
                         <button type="button" class="password-toggle" id="toggle-password">
                             <i class="far fa-eye"></i>
@@ -51,120 +52,90 @@
                     <div class="strength-meter">
                         <div class="strength-progress" id="password-strength"></div>
                     </div>
+                    <div class="hint">8+ characters, 1 number, 1 symbol</div>
                 </div>
                 
-                <!-- Optional Fields Toggle -->
-                <button type="button" class="toggle-btn" id="toggle-optional">
-                    <i class="fas fa-cog"></i> More Options
-                </button>
+                <!-- Phone Number -->
+                <div class="form-group">
+                    <label class="label optional">Phone Number <span class="optional">(optional)</span></label>
+                    <div class="input-wrapper">
+                        <input type="tel" class="form-control" id="phone" name="phoneNumber" placeholder="9123456789">
+                        <i class="fas fa-check-circle validation-icon"></i>
+                    </div>
+                    <div class="hint">Auto-formats to international format</div>
+                </div>
                 
-                <!-- Optional Fields Section -->
-                <div class="optional-section" id="optional-section">
-                    <div class="optional-content">
-                        <!-- Phone Number -->
-                        <div class="form-group">
-                            <div class="input-wrapper">
-                                <i class="fas fa-mobile-alt input-icon"></i>
-                                <input type="tel" class="form-control" id="phone" name="phoneNumber" placeholder="+91 98765 43210" pattern="^\+?\d{1,3}[-.\s]?\d{1,4}[-.\s]?\d{4,10}$">
-                                <i class="fas fa-check-circle validation-icon"></i>
-                            </div>
-                            <p class="optional-field-note">For SMS alerts only</p>
+                <!-- Currency -->
+                <div class="form-group">
+                    <label class="label optional">Currency</label>
+                    <div class="currency-selector">
+                        <div class="currency-option active" data-currency="INR">₹ INR</div>
+                        <div class="currency-option" data-currency="USD">$ USD</div>
+                        <div class="currency-option" data-currency="EUR">€ EUR</div>
+                    </div>
+                </div>
+                
+                <!-- Monthly Income -->
+                <div class="form-group">
+                    <label class="label optional">Monthly Income</label>
+                    <div class="input-wrapper income-wrapper">
+                        <span class="currency-prefix">₹</span>
+                        <input type="text" class="form-control income-input" id="income" name="monthlyIncome" placeholder="0.00">
+                        <i class="fas fa-check-circle validation-icon"></i>
+                    </div>
+                    <div class="hint">Auto-formats numbers with commas</div>
+                </div>
+                
+                <!-- Notification Preferences -->
+                <div class="form-group">
+                    <label class="label optional">Notification Preferences</label>
+                    <div class="notification-toggle">
+                        <div class="toggle-item">
+                            <span>Email</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="email-toggle" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
-                        
-                        <!-- Currency -->
-                        <div class="form-group">
-                            <div class="input-wrapper">
-                                <i class="fas fa-money-bill-wave input-icon"></i>
-                                <select class="form-control" id="currency" name="currency">
-                                    <option value="INR" selected>INR ₹ (Indian Rupee)</option>
-                                    <option value="USD">USD $ (US Dollar)</option>
-                                    <option value="EUR">EUR € (Euro)</option>
-                                    <option value="GBP">GBP £ (British Pound)</option>
-                                    <option value="JPY">JPY ¥ (Japanese Yen)</option>
-                                </select>
-                            </div>
-                        </div>
-                        
-                        <!-- Monthly Income -->
-                        <div class="form-group">
-                            <div class="input-wrapper">
-                                <i class="fas fa-coins input-icon"></i>
-                                <input type="text" class="form-control" name="monthlyIncome" id="income" placeholder="0.00">
-                                <i class="fas fa-check-circle validation-icon"></i>
-                            </div>
-                            <p class="optional-field-note">Helps personalize budget suggestions</p>
-                        </div>
-                        
-                        <!-- Budget Goals -->
-                        <div class="form-group">
-                            <h3 class="optional-title"><i class="fas fa-bullseye"></i> Budget Goals</h3>
-                            
-                            <div class="budget-goal">
-                                <div class="goal-visual">
-                                    <div class="goal-progress"></div>
-                                    <i class="fas fa-utensils" style="font-size: 14px;"></i>
-                                </div>
-                                <input type="number" class="goal-input" name="budgetGoals[food]" placeholder="Food Budget (₹)" />
-                            </div>
-                            
-                            <div class="budget-goal">
-                                <div class="goal-visual">
-                                    <div class="goal-progress" style="transform: rotate(180deg);"></div>
-                                    <i class="fas fa-home" style="font-size: 14px;"></i>
-                                </div>
-                                <input type="number" class="goal-input" name="budgetGoals[rent]" placeholder="Rent Budget (₹)" />
-                            </div>
-                            
-                            <div class="budget-goal">
-                                <div class="goal-visual">
-                                    <div class="goal-progress" style="transform: rotate(270deg);"></div>
-                                    <i class="fas fa-suitcase" style="font-size: 14px;"></i>
-                                </div>
-                                <input type="number" class="goal-input" name="budgetGoals[travel]" placeholder="Travel Budget (₹)" />
-                            </div>
-                            
-                            <p class="optional-field-note">Edit anytime in settings</p>
-                        </div>
-                        
-                        <!-- Notification Preferences -->
-                        <div class="form-group">
-                            <h3 class="optional-title"><i class="fas fa-bell"></i> Notification Preferences</h3>
-                            
-                            <div class="checkbox-group">
-                                <div class="checkbox-custom checked" id="email-check">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <span class="checkbox-label">Email</span>
-                            </div>
-                            
-                            <div class="checkbox-group checkbox-disabled">
-                                <div class="checkbox-custom" id="sms-check">
-                                    <i class="fas fa-check"></i>
-                                </div>
-                                <span class="checkbox-label">SMS (requires phone verification)</span>
-                            </div>
+                        <div class="toggle-item">
+                            <span>SMS</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" id="sms-toggle">
+                                <span class="toggle-slider"></span>
+                            </label>
                         </div>
                     </div>
                 </div>
                 
-                <!-- Security Badge -->
-                <div class="security-badge">
-                    <i class="fas fa-shield-alt"></i>
-                    <span>256-bit encrypted financial data protection</span>
+                <!-- User Type -->
+                <div class="form-group">
+                    <label class="label optional">User Type</label>
+                    <select class="form-control" id="user-type">
+                        <option value="other">Other</option>
+                        <option value="student">Student</option>
+                        <option value="employed">Employed</option>
+                        <option value="unemployed">Unemployed</option>
+                        <option value="retired">Retired</option>
+                    </select>
                 </div>
                 
                 <!-- Submit Buttons -->
-                <button class="btn btn-primary">
-                    <i class="fas fa-lock"></i> Create Account
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-rocket"></i> CREATE ACCOUNT
                 </button>
                 <button type="button" class="btn btn-ghost">
                     Continue as Guest
                 </button>
                 
+                <!-- Security Note -->
+                <div class="security-note">
+                    <i class="fas fa-lock"></i>
+                    <span>256-bit encrypted financial data protection</span>
+                </div>
+                
                 <!-- Terms Notice -->
                 <p class="terms">
-                    By registering, you agree to our <a href="#">Privacy Policy</a> and <a href="#">Terms</a>.<br>
-                    We never sell your financial data.
+                    By registering, you agree to our <a href="/privacy-policy">Privacy Policy</a>
                 </p>
             </form>
         </div>
