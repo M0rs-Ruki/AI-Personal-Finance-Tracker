@@ -23,18 +23,17 @@ const userSchema = mongoose.Schema({
     monthlyIncome: {
         type: Number,
     },
-    budgetGoals: {
-    food: { type: Number, default: 0 },
-    rent: { type: Number, default: 0 },
-    travel: { type: Number, default: 0 }
-    },
     notificationPreferences:{
         type: String,
         enum: ['email', 'sms', 'both'],
         default: 'email'
     },
+    userType: {
+        type: String,
+        enum: ['student', 'employed', 'unemployed', 'retired', 'other'],
+        default: 'other'
+    },
     createdAt: {type: Date, default: Date.now,},
-    updatedAt: {type: Date, default: Date.now,}
     
 })
 
