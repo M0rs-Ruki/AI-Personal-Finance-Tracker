@@ -2,8 +2,9 @@
 import express from "express";
 import dotenv from "dotenv";
 import {log} from 'console';
-import { registeUser, loginUser, logoutUser } from "../controllers/authController.js";
+import { registerUser, loginUser, logoutUser } from "../controllers/authController.js";
 import isLoggedIn from "../middlewares/isLoggedInMiddleware.js";
+import User from "../models/userModels.js";
 
 const router = express.Router();
 dotenv.config({path: './.env'});
@@ -16,14 +17,11 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
-router.get('/dashboard',isLoggedIn, (req, res) => {
-    res.render('dashboard');
-})
 
-
-router.post('/signup', registeUser);
+router.post('/signup', registerUser);
 router.post('/login', loginUser);
-router.get('/logout', logoutUser);
+router.post('/logout', logoutUser);
+
 
 
 

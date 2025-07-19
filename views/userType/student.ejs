@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile Setup - Multi-Step Form</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #121212;
+            --card-bg: #1a1a1a;
+            --card-border: rgba(255, 255, 255, 0.1);
+            --gold-primary: #FFD700;
+            --gold-secondary: #ffd900c7;
+            --text-light: #FFFFFF;
+            --text-secondary: #AAAAAA;
+            --input-bg: #1E1E1E;
+            --success: #4ade80;
+            --error: #f87171;
+            --progress-track: #2d2d2d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 10% 20%, rgba(255, 215, 0, 0.05) 0%, rgba(18, 18, 18, 0) 20%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold-primary);
+            display: inline-block;
+        }
+
+        .logo-icon {
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--gold-primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .progress-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--card-border);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+            color: var(--gold-primary);
+        }
+
+        .progress-bar {
+            height: 8px;
+            background-color: var(--progress-track);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold-primary), #ffaa00);
+            width: 16.66%;
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .step-indicators {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 0.5rem;
+        }
+
+        .step-indicator {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--progress-track);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .step-indicator.active {
+            background-color: var(--gold-primary);
+            color: #000;
+            transform: scale(1.1);
+        }
+
+        .step-indicator.completed {
+            background-color: var(--gold-primary);
+            color: #000;
+        }
+
+        .step-indicator.completed::after {
+            content: "✓";
+        }
+
+        .step-name {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            white-space: nowrap;
+            margin-top: 5px;
+            color: var(--text-secondary);
+        }
+
+        .step-indicator.active .step-name,
+        .step-indicator.completed .step-name {
+            color: var(--gold-primary);
+            font-weight: 500;
+        }
+
+        .form-container {
+            background-color: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            min-height: 500px;
+        }
+
+        .form-section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        .section-header {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--gold-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-header i {
+            background: linear-gradient(135deg, var(--gold-primary), #ffc400);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .section-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            background-color: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+            animation: pulseBorder 1.5s infinite;
+        }
+
+        .input-field::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .radio-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+
+        .radio-pill {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .radio-pill input {
+            display: none;
+        }
+
+        .radio-pill label {
+            display: block;
+            padding: 0.9rem 1.2rem;
+            background-color: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 50px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .radio-pill input:checked + label {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), transparent);
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+            position: relative;
+        }
+
+        .radio-pill input:checked + label::after {
+            content: "";
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border: 2px solid var(--gold-primary);
+            border-radius: 50px;
+            animation: neuralPulse 2s infinite;
+        }
+
+        .radio-pill label:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .accommodation-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1rem;
+        }
+
+        .accommodation-card {
+            background-color: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .accommodation-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .accommodation-card i {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .accommodation-card input:checked + .card-content {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        .accommodation-card input:checked + .card-content i {
+            color: var(--gold-primary);
+        }
+
+        .accommodation-card input:checked + .card-content::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid var(--gold-primary);
+            border-radius: 12px;
+            z-index: -1;
+        }
+
+        .currency-input {
+            position: relative;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gold-primary);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .currency-input input {
+            padding-left: 32px;
+        }
+
+        .coins-animation {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            gap: 2px;
+        }
+
+        .coin {
+            width: 8px;
+            height: 8px;
+            background-color: var(--gold-primary);
+            border-radius: 50%;
+            animation: coinJump 1s infinite ease-in-out;
+        }
+
+        .coin:nth-child(1) { animation-delay: 0s; }
+        .coin:nth-child(2) { animation-delay: 0.2s; }
+        .coin:nth-child(3) { animation-delay: 0.4s; }
+
+        .segmented-control {
+            display: flex;
+            background-color: var(--input-bg);
+            border-radius: 50px;
+            padding: 4px;
+        }
+
+        .segmented-control input {
+            display: none;
+        }
+
+        .segmented-control label {
+            flex: 1;
+            text-align: center;
+            padding: 0.7rem 0.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            margin: 0;
+        }
+
+        .segmented-control input:checked + label {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.2), transparent);
+            color: var(--gold-primary);
+        }
+
+        .segmented-control .partial::after {
+            content: "50%";
+            position: absolute;
+            top: -8px;
+            right: 8px;
+            background-color: var(--gold-primary);
+            color: #000;
+            font-size: 0.7rem;
+            padding: 2px 6px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 1rem;
+        }
+
+        .budget-card {
+            background-color: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            margin-bottom: 1rem;
+            position: relative;
+            overflow: hidden;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        .budget-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 4px;
+            background: linear-gradient(to bottom, var(--gold-primary), transparent);
+        }
+
+        .progress-ring {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+
+        .progress-ring circle {
+            fill: none;
+            stroke: var(--input-bg);
+            stroke-width: 8;
+        }
+
+        .progress-ring .progress {
+            fill: none;
+            stroke: var(--gold-primary);
+            stroke-width: 8;
+            stroke-linecap: round;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+            transition: stroke-dashoffset 0.5s ease;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .progress-text .months {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--gold-primary);
+        }
+
+        .progress-text .label {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.9rem 2rem;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            outline: none;
+        }
+
+        .btn-primary {
+            background-color: var(--gold-primary);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        .btn-outline:hover {
+            background-color: rgba(255, 215, 0, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .btn i {
+            margin-right: 0.5rem;
+        }
+
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+
+        .notification-card {
+            display: flex;
+            align-items: center;
+            background-color: var(--input-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .notification-card i {
+            font-size: 1.5rem;
+            margin-right: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .notification-card input:checked + .card-content {
+            border-color: var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        .notification-card input:checked + .card-content i {
+            color: var(--gold-primary);
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes neuralPulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 0.3; }
+            100% { opacity: 0.8; }
+        }
+
+        @keyframes pulseBorder {
+            0% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 215, 0, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+        }
+
+        @keyframes coinJump {
+            0% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+            100% { transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: var(--gold-primary);
+            animation: confettiFall 5s ease-out;
+            z-index: 100;
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(-100px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .progress-container {
+                padding: 1rem;
+            }
+            
+            .step-indicator .step-name {
+                display: none;
+            }
+            
+            .step-indicator {
+                width: 25px;
+                height: 25px;
+                font-size: 0.7rem;
+            }
+            
+            .form-container {
+                padding: 1.5rem;
+            }
+            
+            .accommodation-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .radio-group {
+                flex-direction: column;
+            }
+            
+            .progress-ring {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .btn {
+                padding: 0.8rem 1.5rem;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="logo-icon fas fa-graduation-cap"></i> ScholarSync
+            </div>
+            <h1>Student Profile Setup</h1>
+            <p class="subtitle">Configure your academic and financial profile in simple steps</p>
+            
+            <div class="progress-container">
+                <div class="progress-header">
+                    <span>Profile Progress</span>
+                    <span><span id="current-step">1</span>/6</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress-fill"></div>
+                </div>
+                <div class="step-indicators">
+                    <div class="step-indicator active" data-step="1">
+                        <span>1</span>
+                        <div class="step-name">Education</div>
+                    </div>
+                    <div class="step-indicator" data-step="2">
+                        <span>2</span>
+                        <div class="step-name">Living</div>
+                    </div>
+                    <div class="step-indicator" data-step="3">
+                        <span>3</span>
+                        <div class="step-name">Financial</div>
+                    </div>
+                    <div class="step-indicator" data-step="4">
+                        <span>4</span>
+                        <div class="step-name">Budget</div>
+                    </div>
+                    <div class="step-indicator" data-step="5">
+                        <span>5</span>
+                        <div class="step-name">Goals</div>
+                    </div>
+                    <div class="step-indicator" data-step="6">
+                        <span>6</span>
+                        <div class="step-name">Preferences</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="form-container">
+            <form id="studentForm">
+                <!-- Step 1: Education -->
+                <div class="form-section active" id="step-1">
+                    <h2 class="section-header"><i class="fas fa-book-open"></i> Education Details</h2>
+                    <p class="section-description">Tell us about your current education level and institution to help us tailor your experience.</p>
+                    
+                    <div class="form-group">
+                        <label>Education Level</label>
+                        <div class="radio-group">
+                            <div class="radio-pill">
+                                <input type="radio" id="school" name="education" value="school">
+                                <label for="school">School</label>
+                            </div>
+                            <div class="radio-pill">
+                                <input type="radio" id="college" name="education" value="college">
+                                <label for="college">College</label>
+                            </div>
+                            <div class="radio-pill">
+                                <input type="radio" id="university" name="education" value="university">
+                                <label for="university">University</label>
+                            </div>
+                            <div class="radio-pill">
+                                <input type="radio" id="other-edu" name="education" value="other">
+                                <label for="other-edu">Other</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="institution">Institution Name</label>
+                        <input type="text" id="institution" class="input-field" placeholder="Enter institution name" maxlength="100">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <div></div>
+                        <button type="button" class="btn btn-primary next-step" data-next="2">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 2: Living Situation -->
+                <div class="form-section" id="step-2">
+                    <h2 class="section-header"><i class="fas fa-home"></i> Living Situation</h2>
+                    <p class="section-description">Your accommodation type helps us understand your living expenses better.</p>
+                    
+                    <div class="form-group">
+                        <label>Accommodation Type</label>
+                        <div class="accommodation-grid">
+                            <div class="accommodation-card">
+                                <input type="radio" id="hostel" name="accommodation" value="hostel">
+                                <div class="card-content">
+                                    <i class="fas fa-building"></i>
+                                    <div>Hostel</div>
+                                </div>
+                            </div>
+                            <div class="accommodation-card">
+                                <input type="radio" id="family" name="accommodation" value="family">
+                                <div class="card-content">
+                                    <i class="fas fa-users"></i>
+                                    <div>Family</div>
+                                </div>
+                            </div>
+                            <div class="accommodation-card">
+                                <input type="radio" id="rental" name="accommodation" value="rental">
+                                <div class="card-content">
+                                    <i class="fas fa-house-user"></i>
+                                    <div>Rental</div>
+                                </div>
+                            </div>
+                            <div class="accommodation-card">
+                                <input type="radio" id="pg" name="accommodation" value="pg">
+                                <div class="card-content">
+                                    <i class="fas fa-bed"></i>
+                                    <div>PG</div>
+                                </div>
+                            </div>
+                            <div class="accommodation-card">
+                                <input type="radio" id="other-acc" name="accommodation" value="other">
+                                <div class="card-content">
+                                    <i class="fas fa-question-circle"></i>
+                                    <div>Other</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="1">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary next-step" data-next="3">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 3: Financial Support -->
+                <div class="form-section" id="step-3">
+                    <h2 class="section-header"><i class="fas fa-wallet"></i> Financial Support</h2>
+                    <p class="section-description">Understanding your financial resources helps us create a personalized budget plan.</p>
+                    
+                    <div class="form-group">
+                        <label for="allowance">Monthly Allowance (₹)</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">₹</span>
+                            <input type="number" id="allowance" class="input-field" placeholder="0.00" step="0.01" min="0">
+                            <div class="coins-animation">
+                                <div class="coin"></div>
+                                <div class="coin"></div>
+                                <div class="coin"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Parent Funding</label>
+                        <div class="segmented-control">
+                            <input type="radio" id="funding-yes" name="funding" value="yes">
+                            <label for="funding-yes">Yes</label>
+                            
+                            <input type="radio" id="funding-no" name="funding" value="no">
+                            <label for="funding-no">No</label>
+                            
+                            <input type="radio" id="funding-partial" name="funding" value="partial">
+                            <label for="funding-partial" class="partial">Partially</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="2">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary next-step" data-next="4">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 4: Custom Budget Categories -->
+                <div class="form-section" id="step-4">
+                    <h2 class="section-header"><i class="fas fa-chart-pie"></i> Custom Budget Categories</h2>
+                    <p class="section-description">Create personalized spending categories to track expenses that matter to you.</p>
+                    
+                    <div class="budget-card">
+                        <div class="category-grid">
+                            <div>
+                                <label for="category1">Category Name</label>
+                                <input type="text" id="category1" class="input-field" placeholder="e.g. Books, Transport" maxlength="30">
+                            </div>
+                            <div>
+                                <label for="amount1">Budget Limit (₹)</label>
+                                <div class="currency-input">
+                                    <span class="currency-symbol">₹</span>
+                                    <input type="number" id="amount1" class="input-field" placeholder="0.00" step="0.01" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="budget-card">
+                        <div class="category-grid">
+                            <div>
+                                <label for="category2">Category Name</label>
+                                <input type="text" id="category2" class="input-field" placeholder="e.g. Entertainment, Food" maxlength="30">
+                            </div>
+                            <div>
+                                <label for="amount2">Budget Limit (₹)</label>
+                                <div class="currency-input">
+                                    <span class="currency-symbol">₹</span>
+                                    <input type="number" id="amount2" class="input-field" placeholder="0.00" step="0.01" min="0">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-outline" id="add-category">
+                        <i class="fas fa-plus"></i> Add Category
+                    </button>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="3">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary next-step" data-next="5">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 5: Financial Goals -->
+                <div class="form-section" id="step-5">
+                    <h2 class="section-header"><i class="fas fa-bullseye"></i> Financial Goals</h2>
+                    <p class="section-description">Set targets to achieve your financial objectives with our guidance.</p>
+                    
+                    <div class="form-group">
+                        <label for="goal">Goal Name</label>
+                        <input type="text" id="goal" class="input-field" placeholder="e.g. Save for laptop" maxlength="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="target">Target Amount (₹)</label>
+                        <div class="currency-input">
+                            <span class="currency-symbol">₹</span>
+                            <input type="number" id="target" class="input-field" placeholder="0.00" step="0.01" min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Target Date</label>
+                        <input type="date" id="date" class="input-field">
+                    </div>
+                    
+                    <div class="form-group" style="display: flex; align-items: center; gap: 1.5rem;">
+                        <div class="progress-ring">
+                            <svg viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" />
+                                <circle class="progress" cx="50" cy="50" r="40" 
+                                        stroke-dasharray="251.2" 
+                                        stroke-dashoffset="100" />
+                            </svg>
+                            <div class="progress-text">
+                                <div class="months">8</div>
+                                <div class="label">Months</div>
+                            </div>
+                        </div>
+                        <div>
+                            <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">You have <strong>8 months</strong> to reach your goal</p>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary);">₹12,500/month needed</p>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="4">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="button" class="btn btn-primary next-step" data-next="6">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Step 6: Preferences -->
+                <div class="form-section" id="step-6">
+                    <h2 class="section-header"><i class="fas fa-cog"></i> Preferences</h2>
+                    <p class="section-description">Customize how often you'd like to receive financial updates and summaries.</p>
+                    
+                    <div class="form-group">
+                        <label>Summary Frequency</label>
+                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+                            <div class="notification-card">
+                                <input type="radio" id="daily" name="frequency" value="daily">
+                                <div class="card-content">
+                                    <i class="fas fa-sun"></i>
+                                    <div>
+                                        <div style="font-weight: 500;">Daily</div>
+                                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Get updates every morning</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-card">
+                                <input type="radio" id="weekly" name="frequency" value="weekly">
+                                <div class="card-content">
+                                    <i class="fas fa-calendar-week"></i>
+                                    <div>
+                                        <div style="font-weight: 500;">Weekly</div>
+                                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Summary every Monday</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="notification-card">
+                                <input type="radio" id="monthly" name="frequency" value="monthly">
+                                <div class="card-content">
+                                    <i class="fas fa-calendar-alt"></i>
+                                    <div>
+                                        <div style="font-weight: 500;">Monthly</div>
+                                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Report at month end</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-outline prev-step" data-prev="5">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-rocket"></i> Complete Setup
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Current step tracking
+        let currentStep = 1;
+        const totalSteps = 6;
+        
+        // Update progress bar and indicators
+        function updateProgress() {
+            // Update progress fill width
+            const progressPercent = (currentStep / totalSteps) * 100;
+            document.getElementById('progress-fill').style.width = `${progressPercent}%`;
+            
+            // Update current step indicator
+            document.getElementById('current-step').textContent = currentStep;
+            
+            // Update step indicators
+            document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                const step = index + 1;
+                indicator.classList.remove('active', 'completed');
+                
+                if (step === currentStep) {
+                    indicator.classList.add('active');
+                } else if (step < currentStep) {
+                    indicator.classList.add('completed');
+                }
+            });
+        }
+        
+        // Navigate to step
+        function goToStep(step) {
+            // Hide current step
+            document.querySelector(`#step-${currentStep}`).classList.remove('active');
+            
+            // Show new step
+            document.querySelector(`#step-${step}`).classList.add('active');
+            
+            // Update current step
+            currentStep = step;
+            
+            // Update progress display
+            updateProgress();
+            
+            // Scroll to top of form
+            document.querySelector('.form-container').scrollTop = 0;
+        }
+        
+        // Next step buttons
+        document.querySelectorAll('.next-step').forEach(button => {
+            button.addEventListener('click', function() {
+                const nextStep = parseInt(this.getAttribute('data-next'));
+                goToStep(nextStep);
+            });
+        });
+        
+        // Previous step buttons
+        document.querySelectorAll('.prev-step').forEach(button => {
+            button.addEventListener('click', function() {
+                const prevStep = parseInt(this.getAttribute('data-prev'));
+                goToStep(prevStep);
+            });
+        });
+        
+        // Step indicator click
+        document.querySelectorAll('.step-indicator').forEach(indicator => {
+            indicator.addEventListener('click', function() {
+                const step = parseInt(this.getAttribute('data-step'));
+                if (step <= currentStep) {
+                    goToStep(step);
+                }
+            });
+        });
+        
+        // Handle form submission
+        document.getElementById('studentForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Show success message
+            alert('Profile setup completed successfully! Your financial dashboard is now ready.');
+        });
+        
+        // Animation for coins on allowance field focus
+        const allowanceField = document.getElementById('allowance');
+        const coinsAnimation = document.querySelector('.coins-animation');
+        
+        allowanceField.addEventListener('focus', () => {
+            coinsAnimation.style.display = 'flex';
+        });
+        
+        allowanceField.addEventListener('blur', () => {
+            coinsAnimation.style.display = 'none';
+        });
+        
+        // Add new category functionality
+        document.getElementById('add-category').addEventListener('click', function() {
+            const budgetSection = document.getElementById('step-4');
+            const newCard = document.querySelector('.budget-card').cloneNode(true);
+            
+            // Clear input values in the new card
+            const inputs = newCard.querySelectorAll('input');
+            inputs.forEach(input => input.value = '');
+            
+            // Add animation class
+            newCard.style.animation = 'slideIn 0.5s ease-out';
+            
+            // Insert before the "Add Category" button
+            budgetSection.insertBefore(newCard, this);
+        });
+        
+        // Initialize progress
+        updateProgress();
+    </script>
+</body>
+</html>

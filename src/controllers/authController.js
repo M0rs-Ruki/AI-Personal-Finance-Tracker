@@ -5,24 +5,36 @@ import generateToken from "../utils/generateTokenUtlis.js";
 import { hashPassword, comparePassword, } from "../utils/bcryptPasswordUtlis.js";
 
 
-const registeUser = async ( req, res ) => {
+const registerUser = async (req, res) => {
     try {
-        const { fullName , email, password, phoneNumber,
-            currency, monthlyIncome, userType,
+        const {
+            fullName,
+            email,
+            password,
+            phoneNumber,
+            currency,
+            monthlyIncome,
+            userType,
             notificationPreferences
-        } =  req.body;
+        } = req.body;
 
+        // Basic validation
+        if (!fullName || !email || !password) {
+            return res.status(400).json({
+                message: 'Full name, email, and password are required.'
+            });
+        }
+
+        // Check if user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
+            return res.status(400).json({ message: 'User already exists.' });
         }
 
-        if (!fullName || !email || !password) {
-            return res.status(400).json({ message: 'User Name and Email and Password  are required fields are missing' });
-        }
-
+        // Hash password
         const passwordHash = await hashPassword(password);
 
+        // Create new user
         const newUser = new User({
             fullName,
             email,
@@ -35,16 +47,27 @@ const registeUser = async ( req, res ) => {
         });
 
         await newUser.save();
+
+        // Generate token
         const token = generateToken(newUser);
-        res.cookie('token', token );
-        log(token);
-        res.redirect('/user/dashboard');
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict'
+        });
+
+        // Redirect/render based on user type
+        const userTypePage = `userType/${userType || 'other'}`;
+        return res.render(userTypePage);
 
     } catch (err) {
-        res.status(500).json({ message: ' Error operating during register user ' });
-        log(err);
+        console.error('Error during registration:', err);
+        return res.status(500).json({
+            message: 'An error occurred while registering the user.'
+        });
     }
-}
+};
+
 
 
 const loginUser = async ( req, res ) => {
@@ -66,7 +89,12 @@ const loginUser = async ( req, res ) => {
 
         const token = generateToken(user);
         res.cookie('token', token);
-        res.redirect('/user/dashboard');
+        // res.redirect('/user/deshboard'); for now 
+
+        // Redirect/render based on user type
+        const userType = user.userType;
+        const userTypePage = `userType/${userType || 'other'}`;
+        return res.render(userTypePage);
 
     } catch (err) {
         console.log(err);
@@ -84,4 +112,4 @@ const logoutUser = async ( req, res ) => {
     }
 }
 
-export { registeUser, loginUser, logoutUser }
+export { registerUser, loginUser, logoutUser }

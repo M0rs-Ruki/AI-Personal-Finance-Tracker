@@ -20,10 +20,9 @@ const userSchema = mongoose.Schema({
         enum: ['email', 'sms', 'both'],
         default: 'email'
     },
-    userType: {
+    userType: { 
         type: String,
         enum: ['student', 'employed', 'unemployed', 'retired', 'other'],
-        default: 'other'
     },
     createdAt: {type: Date, default: Date.now,},
     updatedAt: {type: Date, default: Date.now,},
