@@ -8,6 +8,9 @@ const studentSchema = new mongoose.Schema({
   educationLevel: {
     type: String,
     enum: ['school', 'college', 'university', 'other'],
+    lowercase: true,
+    trim: true,
+    required: true
   },
   institutionName: {
     type: String,
@@ -17,6 +20,9 @@ const studentSchema = new mongoose.Schema({
   livingSituation: {
     type: String,
     enum: ['hostel', 'family', 'rental', 'PG', 'other'],
+    lowercase: true,
+    trim: true,
+    required: true
   },
   monthlyAllowance: {
     type: Number,
@@ -26,6 +32,9 @@ const studentSchema = new mongoose.Schema({
   isParentFunded: {
     type: String,
     enum: ['yes', 'no', 'partially'],
+    lowercase: true,
+    trim: true,
+    required: true
   },
   customCategories: [{
     name: {
@@ -53,7 +62,10 @@ const studentSchema = new mongoose.Schema({
   summaryFrequency: {
     type: String,
     enum: ['daily', 'weekly', 'monthly'],
-    default: 'daily'
+    default: 'daily',
+    lowercase: true,
+    trim: true,
+    required: true
   },
   createdAt: {
     type: Date,
@@ -74,13 +86,6 @@ studentSchema.index({ userId: 1 });
 studentSchema.index({ educationLevel: 1 });
 studentSchema.index({ livingSituation: 1 });
 
-// Virtual for formatted monthly allowance
-studentSchema.virtual('formattedMonthlyAllowance').get(function() {
-  return new Intl.NumberFormat('en-IN', {
-    style: 'currency',
-    currency: this.currency || 'INR'
-  }).format(this.monthlyAllowance);
-});
 
 const Student = mongoose.model('Student', studentSchema);
 
