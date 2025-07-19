@@ -3,18 +3,10 @@ import mongoose from "mongoose";
 
 
 const userSchema = mongoose.Schema({
-    fullName: {
-        type: String,
-    },
-    email: {
-        type: String,
-    },
-    password: {
-        type: String,
-    },
-    phoneNumber: {
-        type: String,
-    },
+    fullName: { type: String, },
+    email: { type: String, unique: true, },
+    password: { type: String, },
+    phoneNumber: { type: String, },
     currency: {
         type: String,
         enum: ['INR', 'USD', 'EUR'],
@@ -34,6 +26,7 @@ const userSchema = mongoose.Schema({
         default: 'other'
     },
     createdAt: {type: Date, default: Date.now,},
+    updatedAt: {type: Date, default: Date.now,},
     
 })
 

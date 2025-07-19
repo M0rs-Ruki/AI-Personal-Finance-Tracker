@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Financial Guardian - Onboarding</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #0F0F0F;
+            --card-white: #FFFFFF;
+            --text-dark: #333333;
+            --accent-yellow: #FFD700;
+            --light-gray: #F5F5F5;
+            --border-radius: 16px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, rgba(255, 215, 0, 0.05) 0%, rgba(15, 15, 15, 0) 70%);
+            z-index: -1;
+        }
+
+        .pulse {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: rgba(255, 215, 0, 0.1);
+            animation: pulse 3s infinite;
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            z-index: 10;
+        }
+
+        .onboarding-card {
+            background: var(--card-white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: flex;
+            height: 600px;
+        }
+
+        .welcome-panel {
+            flex: 0 0 40%;
+            background: linear-gradient(135deg, #1a1a1a 0%, #0F0F0F 100%);
+            color: white;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .content-panel {
+            flex: 1;
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .user-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .progress-container {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: var(--light-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 35%;
+            background: linear-gradient(90deg, #FFD700, #FFA500);
+            border-radius: 4px;
+            transition: var(--transition);
+        }
+
+        .user-badge {
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .welcome-content {
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .brain-icon {
+            font-size: 60px;
+            color: var(--accent-yellow);
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .welcome-content h1 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .welcome-content p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        .user-type-illustration {
+            text-align: center;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+
+        .user-type-illustration i {
+            font-size: 50px;
+            color: var(--accent-yellow);
+            margin-bottom: 10px;
+        }
+
+        .onboarding-section {
+            margin-bottom: 40px;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .section-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+        }
+
+        .section-title {
+            font-size: 22px;
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .form-group.half {
+            flex: 1;
+        }
+
+        .label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--light-gray);
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: 'Inter', sans-serif;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent-yellow);
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.2);
+        }
+
+        .currency-prefix {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            color: var(--accent-yellow);
+        }
+
+        .currency-input {
+            padding-left: 40px;
+        }
+
+        .toggle-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .toggle-label {
+            font-weight: 500;
+        }
+
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            border-radius: 24px;
+            transition: var(--transition);
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        input:checked + .toggle-slider {
+            background-color: var(--accent-yellow);
+        }
+
+        input:checked + .toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .chip-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .chip {
+            padding: 8px 16px;
+            background: var(--light-gray);
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .chip:hover {
+            background: #e0e0e0;
+        }
+
+        .chip.selected {
+            background: var(--accent-yellow);
+            border-color: var(--accent-yellow);
+            color: var(--bg-dark);
+            font-weight: 500;
+        }
+
+        .add-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-button:hover {
+            background: #ffcc00;
+            transform: translateY(-2px);
+        }
+
+        .expense-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.5s;
+        }
+
+        .expense-row input {
+            flex: 1;
+        }
+
+        .expense-row .amount-input {
+            max-width: 150px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 40px;
+        }
+
+        .btn {
+            padding: 14px 30px;
+            border-radius: var(--border-radius);
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: var(--accent-yellow);
+            color: var(--bg-dark);
+            border: none;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #ffcc00;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid var(--accent-yellow);
+            color: var(--accent-yellow);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 215, 0, 0.1);
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            margin-left: 8px;
+            color: var(--accent-yellow);
+            cursor: help;
+        }
+
+        .tooltip .tooltip-text {
+            visibility: hidden;
+            width: 200px;
+            background: var(--bg-dark);
+            color: white;
+            text-align: center;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 13px;
+            font-weight: 400;
+        }
+
+        .tooltip:hover .tooltip-text {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.8; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .onboarding-card {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .welcome-panel {
+                padding: 30px 20px;
+            }
+            
+            .content-panel {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="background-animation"></div>
+    <div class="pulse"></div>
+    
+    <div class="container">
+        <div class="onboarding-card">
+            <div class="welcome-panel">
+                <div>
+                    <div class="brain-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="welcome-content">
+                        <h1>Welcome, Sarah!</h1>
+                        <p>Let's personalize your financial guardian to match your unique situation and goals.</p>
+                    </div>
+                </div>
+                
+                <div class="user-type-illustration">
+                    <i class="fas fa-briefcase"></i>
+                    <p>Employed Professional</p>
+                </div>
+            </div>
+            
+            <div class="content-panel">
+                <div class="user-header">
+                    <div class="progress-container">
+                        <div class="progress-bar">
+                            <div class="progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="user-badge">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Employed</span>
+                    </div>
+                </div>
+                
+                <div class="onboarding-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <h2 class="section-title">Professional Setup</h2>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label class="label">Job Title</label>
+                            <input type="text" class="form-control" placeholder="e.g., Software Engineer">
+                        </div>
+                        <div class="form-group half">
+                            <label class="label">Monthly Salary</label>
+                            <div class="input-wrapper">
+                                <span class="currency-prefix">$</span>
+                                <input type="text" class="form-control currency-input" placeholder="0.00">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="toggle-group">
+                            <span class="toggle-label">Show pre-tax amount</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label">Recurring Expenses</label>
+                        <button class="add-button">
+                            <i class="fas fa-plus"></i> Add Expense
+                        </button>
+                        
+                        <div class="expense-rows">
+                            <div class="expense-row">
+                                <input type="text" class="form-control" placeholder="Expense name">
+                                <input type="text" class="form-control amount-input" placeholder="Amount">
+                            </div>
+                            <div class="expense-row">
+                                <input type="text" class="form-control" placeholder="Expense name">
+                                <input type="text" class="form-control amount-input" placeholder="Amount">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label">Investment Interests</label>
+                        <div class="chip-container">
+                            <div class="chip selected">Stocks</div>
+                            <div class="chip">Crypto</div>
+                            <div class="chip">Real Estate</div>
+                            <div class="chip">ETFs</div>
+                            <div class="chip">Bonds</div>
+                            <div class="chip">Mutual Funds</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="onboarding-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-bullseye"></i>
+                        </div>
+                        <h2 class="section-title">Financial Goals</h2>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label">Short-Term Goal</label>
+                        <input type="text" class="form-control" placeholder="e.g., Save $5,000 for vacation">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="label">Long-Term Goal</label>
+                        <input type="text" class="form-control" placeholder="e.g., Buy house in 5 years">
+                    </div>
+                </div>
+                
+                <div class="onboarding-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <i class="fas fa-bell"></i>
+                        </div>
+                        <h2 class="section-title">Notification Preferences</h2>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="toggle-group">
+                            <span class="toggle-label">Email Notifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox" checked>
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="toggle-group">
+                            <span class="toggle-label">SMS Notifications</span>
+                            <label class="toggle-switch">
+                                <input type="checkbox">
+                                <span class="toggle-slider"></span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button class="add-button">
+                            <i class="fas fa-bell"></i> Test Notification
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-rocket"></i> Complete Setup
+                    </button>
+                    <button class="btn btn-ghost">
+                        Skip for now
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Chip selection
+            const chips = document.querySelectorAll('.chip');
+            chips.forEach(chip => {
+                chip.addEventListener('click', function() {
+                    this.classList.toggle('selected');
+                });
+            });
+            
+            // Toggle switches
+            const toggles = document.querySelectorAll('.toggle-switch input');
+            toggles.forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    // Add animation effect
+                    const slider = this.nextElementSibling;
+                    slider.classList.add('active');
+                    setTimeout(() => slider.classList.remove('active'), 300);
+                });
+            });
+            
+            // Add expense row
+            const addButton = document.querySelector('.add-button');
+            const expenseRows = document.querySelector('.expense-rows');
+            
+            addButton.addEventListener('click', function() {
+                const newRow = document.createElement('div');
+                newRow.className = 'expense-row';
+                newRow.innerHTML = `
+                    <input type="text" class="form-control" placeholder="Expense name">
+                    <input type="text" class="form-control amount-input" placeholder="Amount">
+                `;
+                expenseRows.appendChild(newRow);
+            });
+            
+            // Update progress bar on interaction
+            const inputs = document.querySelectorAll('input, select');
+            const progressFill = document.querySelector('.progress-fill');
+            
+            inputs.forEach(input => {
+                input.addEventListener('input', updateProgress);
+            });
+            
+            function updateProgress() {
+                let filledCount = 0;
+                inputs.forEach(input => {
+                    if (input.value.trim() !== '') {
+                        filledCount++;
+                    }
+                });
+                
+                const progress = Math.min(100, (filledCount / inputs.length) * 100);
+                progressFill.style.width = `${progress}%`;
+            }
+            
+            // Animated submit button
+            const submitBtn = document.querySelector('.btn-primary');
+            submitBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Show loading state
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Setting up your financial guardian';
+                this.disabled = true;
+                
+                // Simulate processing
+                setTimeout(() => {
+                    // Success animation
+                    document.body.innerHTML = `
+                        <div style="text-align: center; padding: 50px; color: white;">
+                            <div style="font-size: 80px; color: #FFD700; margin-bottom: 20px;">
+                                <i class="fas fa-check-circle"></i>
+                            </div>
+                            <h1 style="font-size: 36px; margin-bottom: 20px;">Your financial guardian is ready!</h1>
+                            <p style="font-size: 18px; opacity: 0.8; max-width: 500px; margin: 0 auto 40px;">
+                                We've personalized your dashboard based on your financial profile
+                            </p>
+                            <button style="background: #FFD700; color: #0F0F0F; border: none; padding: 15px 40px; border-radius: 16px; font-size: 18px; font-weight: 600; cursor: pointer;">
+                                Go to Dashboard
+                            </button>
+                        </div>
+                    `;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
