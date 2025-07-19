@@ -15,7 +15,34 @@ const studentSchema = mongoose.Schema({
         enum: ['hostel', 'family','rental','PG','other'],
     },
     monthlyAllowance: {type: String},
-    
+    isParentFunded: {
+        type: String,
+        enum: ['yes', 'no', 'partially']
+    },
+    customCategories: {
+        type: [String],
+        default: []
+    },
+    budgetLimits: {
+        type: Map,
+        of: Number,
+        default: {}
+    },
+    savingsGoal: {
+        type: Number,
+        default: 0
+    },
+    financialGoals: {
+        type: [String],
+        default: []
+    },
+    summaryFrequency: {
+        type: String,
+        enum: ['daily', 'weekly', 'monthly'],
+        default: 'daily'
+    },
+    createdAt: {type: Date, default: Date.now,},
+        
 })
 
 const Student = mongoose.model('Student', studentSchema);
