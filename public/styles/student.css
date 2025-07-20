@@ -574,35 +574,64 @@ label {
 }
 
 .notification-card {
-    display: flex;
-    align-items: center;
-    background-color: var(--input-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 12px;
-    padding: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
+  background-color: var(--input-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
 }
 
 .notification-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(255, 215, 0, 0.15);
+  transition: all 0.3s ease;
+  border: 2px solid var(--gold-primary);
+}
+
+
+.notification-card label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  cursor: pointer;
 }
 
 .notification-card i {
-    font-size: 1.5rem;
-    margin-right: 1rem;
-    color: var(--text-secondary);
+  font-size: 1.5rem;
+  color: var(--text-secondary);
 }
 
 .notification-card input:checked + .card-content {
-    border-color: var(--gold-primary);
-    color: var(--gold-primary);
+  border-color: var(--gold-primary);
+  color: var(--gold-primary);
+  position: relative;
 }
 
+
 .notification-card input:checked + .card-content i {
-    color: var(--gold-primary);
+  color: var(--gold-primary);
 }
+
+.notification-card input:checked + .card-content::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  /* border: 2px solid var(--gold-primary); */
+  border-radius: 12px;
+  z-index: -1;
+}
+
+.subtext {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
 
 @keyframes pulse {
     0% { transform: scale(1); }

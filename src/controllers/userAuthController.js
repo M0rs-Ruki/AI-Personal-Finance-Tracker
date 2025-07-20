@@ -43,7 +43,7 @@ const StudentPage = async (req, res) => {
       monthlyAllowance,
       isParentFunded,
       customCategories: formattedCategories,
-      financialGoals, // <- this now points to your formatted data
+      financialGoals: frequency ,
       summaryFrequency,
     });
 

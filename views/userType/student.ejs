@@ -324,17 +324,21 @@
                         <label>Summary Frequency</label>
                         <div style="display: flex; flex-direction: column; gap: 0.8rem;">
                             <div class="notification-card">
-                                <input type="radio" id="daily" name="frequency" value="daily">
+                            <label>
+                                <input type="radio" id="daily" name="frequency" value="daily" hidden>
                                 <div class="card-content">
-                                    <i class="fas fa-sun"></i>
-                                    <div>
-                                        <div style="font-weight: 500;">Daily</div>
-                                        <div style="font-size: 0.85rem; color: var(--text-secondary);">Get updates every morning</div>
-                                    </div>
+                                <i class="fas fa-sun"></i>
+                                <div>
+                                    <div style="font-weight: 500;">Daily</div>
+                                    <div class="subtext">Get updates every morning</div>
                                 </div>
+                                </div>
+                            </label>
                             </div>
+
                             <div class="notification-card">
-                                <input type="radio" id="weekly" name="frequency" value="weekly">
+                            <label>
+                                <input type="radio" id="weekly" name="frequency" value="weekly" hidden>
                                 <div class="card-content">
                                     <i class="fas fa-calendar-week"></i>
                                     <div>
@@ -342,9 +346,11 @@
                                         <div style="font-size: 0.85rem; color: var(--text-secondary);">Summary every Monday</div>
                                     </div>
                                 </div>
+                            </label>
                             </div>
                             <div class="notification-card">
-                                <input type="radio" id="monthly" name="frequency" value="monthly">
+                            <label>
+                                <input type="radio" id="monthly" name="frequency" value="monthly" hidden>
                                 <div class="card-content">
                                     <i class="fas fa-calendar-alt"></i>
                                     <div>
@@ -352,6 +358,7 @@
                                         <div style="font-size: 0.85rem; color: var(--text-secondary);">Report at month end</div>
                                     </div>
                                 </div>
+                            </label>
                             </div>
                         </div>
                     </div>
