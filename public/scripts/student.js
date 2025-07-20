@@ -77,11 +77,7 @@ stepIndicators.forEach(indicator => {
     });
 });
 
-// Handle form submission
-document.getElementById('studentForm').addEventListener('submit', function (e) {
-    e.preventDefault();
-    alert('🎉 Profile setup completed successfully! Your financial dashboard is now ready.');
-});
+
 
 // Show coins animation on allowance input focus
 allowanceField.addEventListener('focus', () => {
@@ -171,4 +167,5 @@ document.addEventListener('click', function (e) {
     }
   }
 });
+
 

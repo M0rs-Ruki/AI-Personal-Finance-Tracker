@@ -56,6 +56,8 @@
 
         <div class="form-container">
             <form id="studentForm" action="/user/student" method="POST">
+                <input type="hidden" name="userId" value="<%= userId %>">
+                
                 <!-- Step 1: Education -->
                 <div class="form-section active" id="step-1">
                     <h2 class="section-header"><i class="fas fa-book-open"></i> Education Details</h2>
@@ -367,7 +369,7 @@
                         <button type="button" class="btn btn-outline prev-step" data-prev="5">
                             <i class="fas fa-arrow-left"></i> Back
                         </button>
-                        <button type="submit" class="btn btn-primary">
+                        <button class="btn btn-primary">
                             <i class="fas fa-rocket"></i> Complete Setup
                         </button>
                     </div>
