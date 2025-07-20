@@ -3,7 +3,6 @@ import express from "express";
 import dotenv from "dotenv";
 import {log} from 'console';
 import { registerUser, loginUser, logoutUser } from "../controllers/authController.js";
-import { StudentPage } from "../controllers/userAuthController.js";
 
 const router = express.Router();
 dotenv.config({path: './.env'});
@@ -20,9 +19,6 @@ router.get('/login', (req, res) => {
 router.post('/signup', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', logoutUser);
-
-router.post('/student', StudentPage);
-
 
 
 

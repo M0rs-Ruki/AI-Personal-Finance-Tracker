@@ -58,7 +58,7 @@ const registerUser = async (req, res) => {
 
         // Redirect/render based on user type
         const userTypePage = `userType/${userType || 'other'}`;
-        return res.render(userTypePage, { userId: newUser.userId});
+        return res.render(userTypePage, { userId: newUser._id });
 
     } catch (err) {
         console.error('Error during registration:', err);

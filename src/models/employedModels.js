@@ -13,6 +13,7 @@ const employerSchema = new mongoose.Schema({
   employmentType: {
     type: String,
     enum: ['full-time', 'part-time', 'contract', 'self-employed', 'freelance'],
+    lowercase: true,
   },
   company: {
     type: String,
@@ -37,7 +38,8 @@ const employerSchema = new mongoose.Schema({
   payFrequency: {
     type: String,
     enum: ['weekly', 'bi-weekly', 'monthly', 'semi-monthly', 'annually'],
-    default: 'monthly'
+    default: 'monthly',
+    lowercase: true,
   },
   additionalIncomeSources: [{
     name: {
@@ -54,7 +56,8 @@ const employerSchema = new mongoose.Schema({
     frequency: {
       type: String,
       enum: ['weekly', 'monthly', 'quarterly', 'annually', 'irregular'],
-      default: 'monthly'
+      default: 'monthly',
+      lowercase: true,
     }
   }],
   hasBonuses: {
@@ -66,7 +69,8 @@ const employerSchema = new mongoose.Schema({
       amount: Number,
       frequency: {
         type: String,
-        enum: ['quarterly', 'semi-annual', 'annual', 'project-based']
+        enum: ['quarterly', 'semi-annual', 'annual', 'project-based'],
+        lowercase: true,
       },
       lastReceived: Date
     },
@@ -119,28 +123,33 @@ const employerSchema = new mongoose.Schema({
     priority: {
       type: String,
       enum: ['low', 'medium', 'high', 'critical'],
-      default: 'medium'
+      default: 'medium',
+      lowercase: true,
     }
   }],
   summaryFrequency: {
     type: String,
     enum: ['daily', 'weekly', 'bi-weekly', 'monthly'],
-    default: 'weekly'
+    default: 'weekly',
+    lowercase: true,
   },
   investmentPreferences: {
     riskTolerance: {
       type: String,
       enum: ['low', 'medium', 'high', 'very-high'],
-      default: 'medium'
+      default: 'medium',
+      lowercase: true,
     },
     interestedIn: [{
       type: String,
-      enum: ['stocks', 'bonds', 'mutual-funds', 'etfs', 'real-estate', 'crypto', 'retirement-accounts']
+      enum: ['stocks', 'bonds', 'mutual-funds', 'etfs', 'real-estate', 'crypto', 'retirement-accounts'],
+      lowercase: true,
     }],
     experienceLevel: {
       type: String,
       enum: ['beginner', 'intermediate', 'advanced'],
-      default: 'beginner'
+      default: 'beginner',
+      lowercase: true,
     }
   }
 }, {

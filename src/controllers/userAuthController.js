@@ -60,6 +60,66 @@ const StudentPage = async (req, res) => {
   }
 };
 
+const EmployerPage = async (req, res) => {
+  try {
+    
+    const userId = req.body.userId?.trim();
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID format in EmployerPage" });
+    }
+
+    const user = await User.findById(userId);
+    if(!user) {
+      return res.status(404).json({ message: "User not found in EmployerPage" });
+    }
+
+    // log(req.body.jobTitle)
+    const {
+      jobTitle,
+      employmentType,
+      company,
+      workIndustry,
+      workLocation,
+      monthlySalary,
+      payFrequency,
+      additionalIncomeSources,
+      hasBonuses,
+      bonusDetails,
+      fixedExpenses,
+      budgetLimits,
+      financialGoals,
+      summaryFrequency,
+      investmentPreferences,
+    } = req.body;
+
+    const newEmployer = new Employer({
+      userId: req.body.userId,
+      jobTitle: req.body.job-title,
+      employmentType: req.body.employment-type,
+      company,
+      workIndustry,
+      workLocation,
+      monthlySalary,
+      payFrequency,
+      additionalIncomeSources,
+      hasBonuses,
+      bonusDetails,
+      fixedExpenses,
+      budgetLimits,
+      financialGoals,
+      summaryFrequency,
+      investmentPreferences,
+    })
+    await newEmployer.save();
+    res.redirect("/user/deshboard");
+    // log(newEmployer)
+    log(newEmployer.jobTitle)
+
+  } catch (err) {
+    console.error("Error during employer page:", err);
+    res.status(500).send("Internal Server Error IN EmployerPage");
+  }
+}
 
 
-export { StudentPage };
+export { StudentPage, EmployerPage };

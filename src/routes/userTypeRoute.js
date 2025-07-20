@@ -1,0 +1,17 @@
+
+import express from "express";
+import dotenv from "dotenv";
+import {log} from 'console';
+import { StudentPage , EmployerPage } from "../controllers/userAuthController.js";
+import isLoggedIn from "../middlewares/isLoggedInMiddleware.js";
+
+
+const router = express.Router();
+dotenv.config({path: './.env'});
+
+
+router.post('/student',isLoggedIn, StudentPage);
+router.post('/employed',isLoggedIn, EmployerPage);
+
+
+export default router;

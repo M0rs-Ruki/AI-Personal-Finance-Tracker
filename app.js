@@ -23,11 +23,13 @@ app.use(cookieParser());
 
 import indexRoute from './src/routes/indexRoute.js';
 import userRoute from './src/routes/userRoute.js';
+import userTypeRoute from './src/routes/userTypeRoute.js';
 
 
 
 app.use('/', indexRoute);
 app.use('/user', userRoute);
+app.use('/userType', userTypeRoute);
 
 
 
