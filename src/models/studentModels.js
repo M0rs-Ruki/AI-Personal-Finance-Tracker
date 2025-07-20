@@ -20,8 +20,6 @@ const studentSchema = new mongoose.Schema({
   livingSituation: {
     type: String,
     enum: ['hostel', 'family', 'rental', 'PG', 'other'],
-    lowercase: true,
-    trim: true,
     required: true
   },
   monthlyAllowance: {
@@ -53,7 +51,7 @@ const studentSchema = new mongoose.Schema({
       trim: true,
       maxlength: 50
     },
-    targetAmount: {
+    goalAmount: {
       type: Number,
       min: 0,
     },

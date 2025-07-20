@@ -319,7 +319,7 @@ label {
 
 .accommodation-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 20px rgba(255, 215, 0, 0.2);
 }
 
 .accommodation-card i {
@@ -498,6 +498,34 @@ label {
     letter-spacing: 1px;
 }
 
+.goal-card {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid var(--card-border);
+  border-radius: 10px;
+  background-color: var(--input-bg);
+}
+
+.btn-danger {
+  background-color: transparent;
+  border: 1px solid var(--gold-primary);
+  color: var(--gold-primary);
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.btn-danger:hover {
+  background: rgba(255, 215, 0, 0.08);
+  box-shadow: 0 3px 10px rgba(255, 215, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+
+
 .btn {
     display: inline-flex;
     align-items: center;
@@ -662,3 +690,14 @@ label {
         font-size: 0.9rem;
     }
 }
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.slide-in {
+    animation: slideIn 0.5s ease-out;
+}
+
+

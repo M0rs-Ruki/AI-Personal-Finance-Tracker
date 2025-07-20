@@ -104,41 +104,57 @@
                     <div class="form-group">
                         <label>Accommodation Type</label>
                         <div class="accommodation-grid">
+
                             <div class="accommodation-card">
-                                <input type="radio" id="hostel" name="accommodation" value="hostel">
-                                <div class="card-content">
-                                    <i class="fas fa-building"></i>
-                                    <div>Hostel</div>
-                                </div>
+                                <label>
+                                    <input type="radio" id="hostel" name="accommodation" value="hostel" hidden>
+                                    <div class="card-content">
+                                        <i class="fas fa-building"></i>
+                                        <div>Hostel</div>
+                                    </div>
+                                </label>
                             </div>
+                            
                             <div class="accommodation-card">
-                                <input type="radio" id="family" name="accommodation" value="family">
-                                <div class="card-content">
-                                    <i class="fas fa-users"></i>
-                                    <div>Family</div>
-                                </div>
+                                <label>
+                                    <input type="radio" id="family" name="accommodation" value="family" hidden>
+                                    <div class="card-content">
+                                        <i class="fas fa-users"></i>
+                                        <div>Family</div>
+                                    </div>
+                                </label>
                             </div>
+                            
                             <div class="accommodation-card">
-                                <input type="radio" id="rental" name="accommodation" value="rental">
-                                <div class="card-content">
-                                    <i class="fas fa-house-user"></i>
-                                    <div>Rental</div>
-                                </div>
+                                <label>
+                                    <input type="radio" id="rental" name="accommodation" value="rental" hidden>
+                                    <div class="card-content">
+                                        <i class="fas fa-house-user"></i>
+                                        <div>Rental</div>
+                                    </div>
+                                </label>
                             </div>
+                            
                             <div class="accommodation-card">
-                                <input type="radio" id="pg" name="accommodation" value="pg">
-                                <div class="card-content">
-                                    <i class="fas fa-bed"></i>
-                                    <div>PG</div>
-                                </div>
+                                <label>
+                                    <input type="radio" id="pg" name="accommodation" value="pg" hidden>
+                                    <div class="card-content">
+                                        <i class="fas fa-bed"></i>
+                                        <div>PG</div>
+                                    </div>
+                                </label>
                             </div>
+
                             <div class="accommodation-card">
-                                <input type="radio" id="other-acc" name="accommodation" value="other">
-                                <div class="card-content">
-                                    <i class="fas fa-question-circle"></i>
-                                    <div>Other</div>
-                                </div>
+                                <label>
+                                    <input type="radio" id="other-acc" name="accommodation" value="other" hidden>
+                                    <div class="card-content">
+                                        <i class="fas fa-question-circle"></i>
+                                        <div>Other</div>
+                                    </div>
+                                </label>
                             </div>
+
                         </div>
                     </div>
                     
@@ -202,33 +218,20 @@
                     <div class="budget-card">
                         <div class="category-grid">
                             <div>
-                                <label for="category1">Category Name</label>
-                                <input type="text" id="category1" class="input-field" placeholder="e.g. Books, Transport" maxlength="30">
+                            <label for="category1">Category Name</label>
+                            <input type="text" name="customCategories[0][name]" id="category1" class="input-field" placeholder="e.g. Books" maxlength="30">
                             </div>
                             <div>
-                                <label for="amount1">Budget Limit (₹)</label>
-                                <div class="currency-input">
-                                    <span class="currency-symbol">₹</span>
-                                    <input type="number" id="amount1" class="input-field" placeholder="0.00" step="0.01" min="0">
-                                </div>
+                            <label for="amount1">Budget Limit (₹)</label>
+                            <div class="currency-input">
+                                <span class="currency-symbol">₹</span>
+                                <input type="number" name="customCategories[0][budgetLimit]" id="amount1" class="input-field" placeholder="0.00" step="0.01" min="0">
+                            </div>
                             </div>
                         </div>
-                    </div>
-                    
-                    <div class="budget-card">
-                        <div class="category-grid">
-                            <div>
-                                <label for="category2">Category Name</label>
-                                <input type="text" id="category2" class="input-field" placeholder="e.g. Entertainment, Food" maxlength="30">
-                            </div>
-                            <div>
-                                <label for="amount2">Budget Limit (₹)</label>
-                                <div class="currency-input">
-                                    <span class="currency-symbol">₹</span>
-                                    <input type="number" id="amount2" class="input-field" placeholder="0.00" step="0.01" min="0">
-                                </div>
-                            </div>
-                        </div>
+                        <button type="button" class="btn btn-danger remove-category">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
                     </div>
                     
                     <button type="button" class="btn btn-outline" id="add-category">
@@ -248,28 +251,43 @@
                 <!-- Step 5: Financial Goals -->
                 <div class="form-section" id="step-5">
                     <h2 class="section-header"><i class="fas fa-bullseye"></i> Financial Goals</h2>
-                    <p class="section-description">Set targets to achieve your financial objectives with our guidance.</p>
+                    <p class="section-description">Set financial goals to help you save for important purchases or experiences.</p>
                     
-                    <div class="form-group">
-                        <label for="goal">Goal Name</label>
-                        <input type="text" id="goal" class="input-field" placeholder="e.g. Save for laptop" maxlength="50">
-                    </div>
+                    <p class="goal-info">Define your financial goals below. You can add multiple goals as needed.</p>
                     
-                    <div class="form-group">
-                        <label for="target">Target Amount (₹)</label>
+                    <div class="goal-card">
+                        <div class="form-group">
+                        <label for="goal1">Goal Name</label>
+                        <input type="text" name="financialGoals[0][name]" id="goal1" class="input-field" placeholder="e.g. Save for laptop" maxlength="50">
+                        </div>
+
+                        <div class="form-group">
+                        <label for="target1">Target Amount (₹)</label>
                         <div class="currency-input">
                             <span class="currency-symbol">₹</span>
-                            <input type="number" id="target" class="input-field" placeholder="0.00" step="0.01" min="0">
+                            <input type="number" name="financialGoals[0][goalAmount]" id="target1" class="input-field" placeholder="0.00" step="0.01" min="0">
                         </div>
+                        </div>
+
+                        <div class="form-group">
+                        <label for="date1">Target Date</label>
+                        <input type="date" name="financialGoals[0][targetDate]" id="date1" class="input-field">
+                        </div>
+
+                        <button type="button" class="btn btn-danger remove-goal">
+                            <i class="fas fa-trash"></i> Remove
+                        </button>
                     </div>
+                    <!-- Button to add more goals -->
+                    <button type="button" class="btn btn-outline" id="add-goal">
+                        <i class="fas fa-plus"></i> Add Goal
+                    </button>
+                
+
+
                     
-                    <div class="form-group">
-                        <label for="date">Target Date</label>
-                        <input type="date" id="date" class="input-field">
-                    </div>
-                    
-                    <div class="form-group" style="display: flex; align-items: center; gap: 1.5rem;">
-                        <div class="progress-ring">
+                    <!-- <div class="form-group" style="display: flex; align-items: center; gap: 1.5rem;">
+                         <div class="progress-ring">
                             <svg viewBox="0 0 100 100">
                                 <circle cx="50" cy="50" r="40" />
                                 <circle class="progress" cx="50" cy="50" r="40" 
@@ -280,12 +298,12 @@
                                 <div class="months">8</div>
                                 <div class="label">Months</div>
                             </div>
-                        </div>
-                        <div>
+                        </div> -->
+                        <!-- <div>
                             <p style="font-size: 0.9rem; margin-bottom: 0.5rem;">You have <strong>8 months</strong> to reach your goal</p>
                             <p style="font-size: 0.8rem; color: var(--text-secondary);">₹12,500/month needed</p>
                         </div>
-                    </div>
+                    </div>  -->
                     
                     <div class="form-actions">
                         <button type="button" class="btn btn-outline prev-step" data-prev="4">
