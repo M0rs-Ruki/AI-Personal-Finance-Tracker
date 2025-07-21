@@ -60,54 +60,108 @@ const StudentPage = async (req, res) => {
   }
 };
 
+
 const EmployerPage = async (req, res) => {
   try {
-    
     const userId = req.body.userId?.trim();
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ message: "Invalid user ID format in EmployerPage" });
+      return res.status(400).json({ message: "Invalid user ID Format in EmployerPage" });
     }
 
     const user = await User.findById(userId);
-    if(!user) {
-      return res.status(404).json({ message: "User not found in EmployerPage" });
+    if (!user) {
+      return res.status(404).json({ message: "User not Found in EmployerPage" });
     }
 
-    // log(req.body.jobTitle)
-    const hasBonuses = req.body.hasBonuses === 'on';
+ 
+    const jobTitle = req.body.jobTitle;
+    const employmentType = req.body.employmentType;
+    const company = req.body.company;
+    const workIndustry = req.body.industry;
+    const workLocation = req.body.location;
+    const monthlySalary = parseFloat(req.body.salary) || 0;
+    const payFrequency = req.body.payFrequency;
+    const hasBonuses = !!req.body.hasBonuses;
+    
+    // bonus details
+    let bonusDetails = null;
+    if (hasBonuses) {
+      bonusDetails = {
+        amount: parseFloat(req.body['bonusDetails[amount]']) || 0,
+        frequency: req.body['bonusDetails[frequency]'],
+        lastReceived: req.body['bonusDetails[lastReceived]']
+      };
+    }
 
+    // convert object to array
+    const additionalIncomeSources = req.body.additionalIncomeSources 
+      ? Object.values(req.body.additionalIncomeSources) 
+      : [];
+
+    // Process
+    const fixedExpenses = req.body.fixedExpenses
+      ? Object.values(req.body.fixedExpenses).map(e => ({
+          category: e.category,
+          amount: parseFloat(e.amount) || 0,
+          dueDate: parseInt(e.dueDate) || 1
+        }))
+      : [];
+
+    // Process budget limits
+    const budgetLimits = req.body.budgetLimits
+      ? Object.values(req.body.budgetLimits).map(b => ({
+          category: b.category,
+          limit: parseFloat(b.limit) || 0
+        }))
+      : [];
+
+    // Process financial goals
+    const financialGoals = req.body.financialGoals
+      ? Object.values(req.body.financialGoals).map(g => ({
+          name: g.name,
+          priority: g.priority,
+          targetAmount: parseFloat(g.targetAmount) || 0,
+          targetDate: g.targetDate,
+          currentProgress: parseFloat(g.currentProgress) || 0
+        }))
+      : [];
+
+    // Handle investment interests
+    const investmentInterests = Array.isArray(req.body.investmentInterests)
+      ? req.body.investmentInterests
+      : [req.body.investmentInterests].filter(Boolean);
+
+    // Create the new employer
     const newEmployer = new Employer({
-      userId: req.body.userId,
-      jobTitle: req.body.job-title,
-      employmentType: req.body.employment-type,
-      company: req.body.company,
-      workIndustry: req.body.industry,
-      workLocation: req.body.location,
-      monthlySalary: req.body.salary,
-      payFrequency: req.body.pay-frequency, 
-      additionalIncomeSources: req.body.additionalIncomeSources,
-      hasBonuses: req.body.hasBonuses,
-      bonusDetails: hasBonuses ? {
-        amount: req.body.bonusDetails?.amount,
-        frequency: req.body.bonusDetails?.frequency,
-        lastReceived: req.body.bonusDetails?.lastReceived,
-      } : undefined,
+      userId,
+      jobTitle,
+      employmentType,
+      company,
+      workIndustry,
+      workLocation,
+      monthlySalary,
+      payFrequency,
+      additionalIncomeSources,
+      hasBonuses,
+      bonusDetails,
       fixedExpenses,
       budgetLimits,
       financialGoals,
-      summaryFrequency,
-      investmentPreferences,
-    })
+      summaryFrequency: req.body.summaryFrequency,
+      investmentPreferences: {
+        riskTolerance: req.body.riskTolerance || 'medium',
+        interests: investmentInterests,
+        experienceLevel: req.body.experienceLevel || 'beginner'
+      }
+    });
+
     await newEmployer.save();
-    res.redirect("/user/deshboard");
-    // log(newEmployer)
-    log(newEmployer.jobTitle)
+    res.redirect("/user/dashboard");
 
   } catch (err) {
-    console.error("Error during employer page:", err);
-    res.status(500).send("Internal Server Error IN EmployerPage");
+    console.error("Error saving employer data:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
   }
-}
-
+};
 
 export { StudentPage, EmployerPage };

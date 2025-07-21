@@ -64,6 +64,7 @@
 
         <div class="form-container">
             <form id="employeeForm" action="/userType/employed" method="POST">
+                <input type="hidden" name="userId" value="<%= userId %>">
                 <!-- Step 1: Employment Details -->
                 <div class="form-section active" id="step-1">
                     <h2 class="section-header"><i class="fas fa-briefcase"></i> Employment Details</h2>
@@ -71,12 +72,12 @@
                     
                     <div class="form-group">
                         <label for="job-title">Job Title <span class="required">*</span></label>
-                        <input type="text" id="job-title" class="input-field" name="job-title" placeholder="Software Engineer" maxlength="100" required>
+                        <input type="text" id="job-title" class="input-field" name="jobTitle" placeholder="Software Engineer" maxlength="100" required>
                     </div>
                     
                     <div class="employment-grid">
                         <label class="employment-card">
-                            <input type="radio" id="full-time" name="employment-type" value="full-time" required>
+                            <input type="radio" id="full-time" name="employmentType" value="full-time" required>
                             <div class="card-content">
                                 <i class="fas fa-user-tie"></i>
                                 <div>Full-time</div>
@@ -84,7 +85,7 @@
                         </label>
                         
                         <label class="employment-card">
-                            <input type="radio" id="part-time" name="employment-type" value="part-time">
+                            <input type="radio" id="part-time" name="employmentType" value="part-time">
                             <div class="card-content">
                                 <i class="fas fa-business-time"></i>
                                 <div>Part-time</div>
@@ -92,7 +93,7 @@
                         </label>
                         
                         <label class="employment-card">
-                            <input type="radio" id="contract" name="employment-type" value="contract">
+                            <input type="radio" id="contract" name="employmentType"value="contract">
                             <div class="card-content">
                                 <i class="fas fa-file-contract"></i>
                                 <div>Contract</div>
@@ -100,7 +101,7 @@
                         </label>
                         
                         <label class="employment-card">
-                            <input type="radio" id="self-employed" name="employment-type" value="self-employed">
+                            <input type="radio" id="self-employed" name="employmentType" value="self-employed">
                             <div class="card-content">
                                 <i class="fas fa-user-cog"></i>
                                 <div>Self-employed</div>
@@ -108,7 +109,7 @@
                         </label>
                         
                         <label class="employment-card">
-                            <input type="radio" id="freelance" name="employment-type" value="freelance">
+                            <input type="radio" id="freelance" name="employmentType" value="freelance">
                             <div class="card-content">
                                 <i class="fas fa-laptop-code"></i>
                                 <div>Freelance</div>
@@ -175,19 +176,19 @@
                     <div class="form-group">
                         <label>Pay Frequency <span class="required">*</span></label>
                         <div class="segmented-control">
-                            <input type="radio" id="weekly" name="pay-frequency" value="weekly">
+                            <input type="radio" id="weekly" name="payFrequency" value="weekly">
                             <label for="weekly">Weekly</label>
                             
-                            <input type="radio" id="bi-weekly" name="pay-frequency" value="bi-weekly">
+                            <input type="radio" id="bi-weekly" name="payFrequency" value="bi-weekly">
                             <label for="bi-weekly">Bi-weekly</label>
                             
-                            <input type="radio" id="monthly" name="pay-frequency" value="monthly" checked>
+                            <input type="radio" id="monthly" name="payFrequency" value="monthly" checked>
                             <label for="monthly">Monthly</label>
                             
-                            <input type="radio" id="semi-monthly" name="pay-frequency" value="semi-monthly">
+                            <input type="radio" id="semi-monthly" name="payFrequency" value="semi-monthly">
                             <label for="semi-monthly">Semi-monthly</label>
                             
-                            <input type="radio" id="annually" name="pay-frequency" value="annually">
+                            <input type="radio" id="annually" name="payFrequency" value="annually">
                             <label for="annually">Annually</label>
                         </div>
                     </div>
@@ -450,28 +451,28 @@
                         <label>Summary Frequency <span class="required">*</span></label>
                         <div style="display: flex; flex-direction: column; gap: 0.8rem;">
                             <div class="investment-card">
-                                <input type="radio" id="daily" name="summary-frequency" value="daily">
+                                <input type="radio" id="daily" name="summaryFrequency" value="daily">
                                 <div class="card-content">
                                     <i class="fas fa-sun"></i>
                                     <div>Daily</div>
                                 </div>
                             </div>
                             <div class="investment-card">
-                                <input type="radio" id="weekly" name="summary-frequency" value="weekly" checked>
+                                <input type="radio" id="weekly" name="summaryFrequency" value="weekly" checked>
                                 <div class="card-content">
                                     <i class="fas fa-calendar-week"></i>
                                     <div>Weekly</div>
                                 </div>
                             </div>
                             <div class="investment-card">
-                                <input type="radio" id="bi-weekly" name="summary-frequency" value="bi-weekly">
+                                <input type="radio" id="bi-weekly" name="summaryFrequency" value="bi-weekly">
                                 <div class="card-content">
                                     <i class="fas fa-calendar-alt"></i>
                                     <div>Bi-weekly</div>
                                 </div>
                             </div>
                             <div class="investment-card">
-                                <input type="radio" id="monthly" name="summary-frequency" value="monthly">
+                                <input type="radio" id="monthly" name="summaryFrequency" value="monthly">
                                 <div class="card-content">
                                     <i class="fas fa-calendar"></i>
                                     <div>Monthly</div>
