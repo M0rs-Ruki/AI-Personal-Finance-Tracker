@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import {log} from 'console';
 import cookieParser from "cookie-parser";
 import db from "./src/db/connect.db.js";
+import bodyParser from "body-parser";
 
 
 
@@ -18,6 +19,9 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.static('public'));
 app.set('view engine', 'ejs');
 app.use(cookieParser());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 
 
 

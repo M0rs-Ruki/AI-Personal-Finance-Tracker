@@ -74,23 +74,7 @@ const EmployerPage = async (req, res) => {
     }
 
     // log(req.body.jobTitle)
-    const {
-      jobTitle,
-      employmentType,
-      company,
-      workIndustry,
-      workLocation,
-      monthlySalary,
-      payFrequency,
-      additionalIncomeSources,
-      hasBonuses,
-      bonusDetails,
-      fixedExpenses,
-      budgetLimits,
-      financialGoals,
-      summaryFrequency,
-      investmentPreferences,
-    } = req.body;
+    const hasBonuses = req.body.hasBonuses === 'on';
 
     const newEmployer = new Employer({
       userId: req.body.userId,
@@ -100,10 +84,14 @@ const EmployerPage = async (req, res) => {
       workIndustry: req.body.industry,
       workLocation: req.body.location,
       monthlySalary: req.body.salary,
-      payFrequency: req.body.pay-frequency,
-      additionalIncomeSources,
-      hasBonuses,
-      bonusDetails,
+      payFrequency: req.body.pay-frequency, 
+      additionalIncomeSources: req.body.additionalIncomeSources,
+      hasBonuses: req.body.hasBonuses,
+      bonusDetails: hasBonuses ? {
+        amount: req.body.bonusDetails?.amount,
+        frequency: req.body.bonusDetails?.frequency,
+        lastReceived: req.body.bonusDetails?.lastReceived,
+      } : undefined,
       fixedExpenses,
       budgetLimits,
       financialGoals,

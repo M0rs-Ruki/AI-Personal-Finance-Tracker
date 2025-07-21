@@ -6,7 +6,6 @@
     <title>Employed User Setup - Secure Futurism</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/styles/employed.css">
 </head>
 <body>
@@ -71,13 +70,13 @@
                     <p class="section-description">Tell us about your primary employment to help us understand your financial situation.</p>
                     
                     <div class="form-group">
-                        <label for="job-title">Job Title</label>
-                        <input type="text" id="job-title" class="input-field" name="job-title" placeholder="Software Engineer" maxlength="100">
+                        <label for="job-title">Job Title <span class="required">*</span></label>
+                        <input type="text" id="job-title" class="input-field" name="job-title" placeholder="Software Engineer" maxlength="100" required>
                     </div>
                     
                     <div class="employment-grid">
                         <label class="employment-card">
-                            <input type="radio" id="full-time" name="employment-type" value="full-time">
+                            <input type="radio" id="full-time" name="employment-type" value="full-time" required>
                             <div class="card-content">
                                 <i class="fas fa-user-tie"></i>
                                 <div>Full-time</div>
@@ -131,18 +130,18 @@
                     <p class="section-description">Provide information about your employer to help us understand your professional context.</p>
                     
                     <div class="form-group">
-                        <label for="company">Company Name</label>
-                        <input type="text" id="company" class="input-field" name="company" placeholder="Company Name">
+                        <label for="company">Company Name <span class="required">*</span></label>
+                        <input type="text" id="company" class="input-field" name="company" placeholder="Company Name" required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="industry">Work Industry</label>
-                        <input type="text" id="industry" class="input-field" name="industry" placeholder="Technology, Finance, Healthcare...">
+                        <label for="industry">Work Industry <span class="required">*</span></label>
+                        <input type="text" id="industry" class="input-field" name="industry" placeholder="Technology, Finance, Healthcare..." required>
                     </div>
                     
                     <div class="form-group">
-                        <label for="location">Work Location</label>
-                        <input type="text" id="location" class="input-field" name="location" placeholder="City or Remote">
+                        <label for="location">Work Location <span class="required">*</span></label>
+                        <input type="text" id="location" class="input-field" name="location" placeholder="City or Remote" required>
                     </div>
                     
                     <div class="form-actions">
@@ -161,10 +160,10 @@
                     <p class="section-description">Understanding your income helps us create accurate financial projections.</p>
                     
                     <div class="form-group">
-                        <label for="salary">Monthly Salary (₹)</label>
+                        <label for="salary">Monthly Salary (₹) <span class="required">*</span></label>
                         <div class="currency-input">
                             <span class="currency-symbol">₹</span>
-                            <input type="number" id="salary" class="input-field" name="salary" placeholder="0.00" step="500" min="0">
+                            <input type="number" id="salary" class="input-field" name="salary" placeholder="0.00" step="500" min="0" required>
                             <div class="coins-animation">
                                 <div class="coin"></div>
                                 <div class="coin"></div>
@@ -174,7 +173,7 @@
                     </div>
                     
                     <div class="form-group">
-                        <label>Pay Frequency</label>
+                        <label>Pay Frequency <span class="required">*</span></label>
                         <div class="segmented-control">
                             <input type="radio" id="weekly" name="pay-frequency" value="weekly">
                             <label for="weekly">Weekly</label>
@@ -182,7 +181,7 @@
                             <input type="radio" id="bi-weekly" name="pay-frequency" value="bi-weekly">
                             <label for="bi-weekly">Bi-weekly</label>
                             
-                            <input type="radio" id="monthly" name="pay-frequency" value="monthly">
+                            <input type="radio" id="monthly" name="pay-frequency" value="monthly" checked>
                             <label for="monthly">Monthly</label>
                             
                             <input type="radio" id="semi-monthly" name="pay-frequency" value="semi-monthly">
@@ -208,48 +207,23 @@
                     <h2 class="section-header"><i class="fas fa-plus-circle"></i> Additional Income</h2>
                     <p class="section-description">Add any additional sources of income to complete your financial picture.</p>
                     
-                    <div class="repeating-group">
+                    <div class="repeating-group" id="income-sources">
                         <div class="repeating-item">
                             <div class="grid-3">
                                 <div>
                                     <label for="source-name-1">Source Name</label>
-                                    <input type="text" id="source-name-1" class="input-field" placeholder="Freelance work">
+                                    <input type="text" name="additionalIncomeSources[0][name]" class="input-field" placeholder="Freelance work">
                                 </div>
                                 <div>
                                     <label for="source-amount-1">Amount (₹)</label>
                                     <div class="currency-input">
                                         <span class="currency-symbol">₹</span>
-                                        <input type="number" id="source-amount-1" class="input-field" placeholder="0.00" step="0.01" min="0">
+                                        <input type="number" name="additionalIncomeSources[0][amount]" class="input-field" placeholder="0.00" step="0.01" min="0">
                                     </div>
                                 </div>
                                 <div>
                                     <label for="source-frequency-1">Frequency</label>
-                                    <select id="source-frequency-1" class="input-field">
-                                        <option value="monthly">Monthly</option>
-                                        <option value="quarterly">Quarterly</option>
-                                        <option value="annually">Annually</option>
-                                        <option value="irregular">Irregular</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="repeating-item">
-                            <div class="grid-3">
-                                <div>
-                                    <label for="source-name-2">Source Name</label>
-                                    <input type="text" id="source-name-2" class="input-field" placeholder="Rental income">
-                                </div>
-                                <div>
-                                    <label for="source-amount-2">Amount (₹)</label>
-                                    <div class="currency-input">
-                                        <span class="currency-symbol">₹</span>
-                                        <input type="number" id="source-amount-2" class="input-field" placeholder="0.00" step="0.01" min="0">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="source-frequency-2">Frequency</label>
-                                    <select id="source-frequency-2" class="input-field">
+                                    <select name="additionalIncomeSources[0][frequency]" class="input-field">
                                         <option value="monthly">Monthly</option>
                                         <option value="quarterly">Quarterly</option>
                                         <option value="annually">Annually</option>
@@ -283,7 +257,7 @@
                         <div style="display: flex; align-items: center; gap: 1rem;">
                             <label style="margin-bottom: 0;">Receive bonuses?</label>
                             <label class="toggle-switch">
-                                <input type="checkbox" id="bonus-toggle">
+                                <input type="checkbox" id="bonus-toggle" name="hasBonuses">
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
@@ -295,21 +269,22 @@
                                 <label for="bonus-amount">Amount (₹)</label>
                                 <div class="currency-input">
                                     <span class="currency-symbol">₹</span>
-                                    <input type="number" id="bonus-amount" class="input-field" placeholder="0.00" step="0.01" min="0">
+                                    <input type="number" name="bonusDetails[amount]" id="bonus-amount" class="input-field" placeholder="0.00" step="0.01" min="0">
                                 </div>
                             </div>
                             <div>
                                 <label for="bonus-frequency">Frequency</label>
-                                <select id="bonus-frequency" class="input-field">
+                                <select name="bonusDetails[frequency]" id="bonus-frequency" class="input-field">
                                     <option value="quarterly">Quarterly</option>
                                     <option value="semi-annual">Semi-annual</option>
                                     <option value="annual">Annual</option>
+                                    <option value="project-based">Project-based</option>
                                     <option value="irregular">Irregular</option>
                                 </select>
                             </div>
                             <div>
                                 <label for="bonus-date">Last Received</label>
-                                <input type="date" id="bonus-date" class="input-field">
+                                <input type="date" name="bonusDetails[lastReceived]" id="bonus-date" class="input-field">
                             </div>
                         </div>
                     </div>
@@ -324,17 +299,18 @@
                     </div>
                 </div>
                 
-                <!-- Step 6: Expenses -->
+                <!-- Step 6: Expenses & Budgeting (Fixed) -->
                 <div class="form-section" id="step-6">
                     <h2 class="section-header"><i class="fas fa-file-invoice-dollar"></i> Expenses & Budgeting</h2>
                     <p class="section-description">Track your regular expenses to better manage your monthly budget.</p>
                     
-                    <div class="repeating-group">
+                    <h3>Fixed Expenses</h3>
+                    <div class="repeating-group" id="expenses-group">
                         <div class="repeating-item">
                             <div class="grid-3">
                                 <div>
-                                    <label for="expense-category-1">Category</label>
-                                    <select id="expense-category-1" class="input-field">
+                                    <label>Category</label>
+                                    <select name="fixedExpenses[0][category]" class="input-field">
                                         <option value="rent">Rent/Mortgage</option>
                                         <option value="utilities">Utilities</option>
                                         <option value="loan">Loan Payment</option>
@@ -343,41 +319,12 @@
                                     </select>
                                 </div>
                                 <div>
-                                    <label for="expense-amount-1">Amount (₹)</label>
-                                    <div class="currency-input">
-                                        <span class="currency-symbol">₹</span>
-                                        <input type="number" id="expense-amount-1" class="input-field" placeholder="0.00" step="0.01" min="0">
-                                    </div>
+                                    <label>Amount (₹)</label>
+                                    <input type="number" name="fixedExpenses[0][amount]" placeholder="0.00" step="0.01" min="0" class="input-field">
                                 </div>
                                 <div>
-                                    <label for="expense-due-1">Due Date (1-31)</label>
-                                    <input type="number" id="expense-due-1" class="input-field" placeholder="1" min="1" max="31">
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <div class="repeating-item">
-                            <div class="grid-3">
-                                <div>
-                                    <label for="expense-category-2">Category</label>
-                                    <select id="expense-category-2" class="input-field">
-                                        <option value="rent">Rent/Mortgage</option>
-                                        <option value="utilities">Utilities</option>
-                                        <option value="loan">Loan Payment</option>
-                                        <option value="insurance">Insurance</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    <label for="expense-amount-2">Amount (₹)</label>
-                                    <div class="currency-input">
-                                        <span class="currency-symbol">₹</span>
-                                        <input type="number" id="expense-amount-2" class="input-field" placeholder="0.00" step="0.01" min="0">
-                                    </div>
-                                </div>
-                                <div>
-                                    <label for="expense-due-2">Due Date (1-31)</label>
-                                    <input type="number" id="expense-due-2" class="input-field" placeholder="1" min="1" max="31">
+                                    <label>Due Date (1-31)</label>
+                                    <input type="number" name="fixedExpenses[0][dueDate]" placeholder="1" min="1" max="31" class="input-field">
                                 </div>
                             </div>
                         </div>
@@ -385,6 +332,29 @@
                     
                     <button type="button" class="btn btn-outline" id="add-expense">
                         <i class="fas fa-plus"></i> Add Expense
+                    </button>
+                    
+                    <div class="yellow-divider"></div>
+                    
+                    <h3>Budgeting Limits</h3>
+                    <div class="repeating-group" id="budgets-group">
+                        <div class="repeating-item">
+                            <div class="grid-3">
+                                <div>
+                                    <label>Category</label>
+                                    <input type="text" name="budgetLimits[0][category]" class="input-field" placeholder="e.g., Dining Out">
+                                </div>
+                                <div>
+                                    <label>Limit (₹)</label>
+                                    <input type="number" name="budgetLimits[0][limit]" placeholder="0.00" step="0.01" min="0" class="input-field">
+                                </div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn btn-outline" id="add-budget">
+                        <i class="fas fa-plus"></i> Add Budget
                     </button>
                     
                     <div class="form-actions">
@@ -402,62 +372,62 @@
                     <h2 class="section-header"><i class="fas fa-bullseye"></i> Financial Goals</h2>
                     <p class="section-description">Set your financial objectives to create a personalized roadmap.</p>
                     
-                    <div class="goal-card">
-                        <div style="display: flex; gap: 1.5rem;">
-                            <div class="progress-ring">
-                                <svg viewBox="0 0 100 100">
-                                    <circle cx="50" cy="50" r="40" />
-                                    <circle class="progress" cx="50" cy="50" r="40" 
-                                            stroke-dasharray="251.2" 
-                                            stroke-dashoffset="100" />
-                                </svg>
-                                <div class="progress-text">
-                                    <div class="percent">60%</div>
-                                    <div class="label">Complete</div>
-                                </div>
-                            </div>
-                            <div style="flex: 1;">
-                                <div class="grid-2">
-                                    <div>
-                                        <label for="goal-name">Goal Name</label>
-                                        <input type="text" id="goal-name" class="input-field" placeholder="Down payment">
-                                    </div>
-                                    <div>
-                                        <label for="priority">Priority</label>
-                                        <select id="priority" class="input-field">
-                                            <option value="low">Low</option>
-                                            <option value="medium">Medium</option>
-                                            <option value="high">High</option>
-                                            <option value="critical">Critical</option>
-                                        </select>
+                    <div class="repeating-group" id="goals-group">
+                        <div class="goal-card">
+                            <div style="display: flex; gap: 1.5rem;">
+                                <div class="progress-ring">
+                                    <svg viewBox="0 0 100 100">
+                                        <circle cx="50" cy="50" r="40" />
+                                        <circle class="progress" cx="50" cy="50" r="40" 
+                                                stroke-dasharray="251.2" 
+                                                stroke-dashoffset="0" />
+                                    </svg>
+                                    <div class="progress-text">
+                                        <div class="percent">0%</div>
+                                        <div class="label">Complete</div>
                                     </div>
                                 </div>
-                                <div class="grid-2" style="margin-top: 1rem;">
-                                    <div>
-                                        <label for="target-amount">Target Amount (₹)</label>
-                                        <div class="currency-input">
-                                            <span class="currency-symbol">₹</span>
-                                            <input type="number" id="target-amount" class="input-field" placeholder="0.00" step="0.01" min="0">
+                                <div style="flex: 1;">
+                                    <div class="form-group">
+                                        <label for="goal-name">Goal Name <span class="required">*</span></label>
+                                        <input type="text" name="financialGoals[0][name]" class="input-field" placeholder="Down payment" required>
+                                    </div>
+                                    <div class="grid-3">
+                                        <div>
+                                            <label for="priority">Priority</label>
+                                            <select name="financialGoals[0][priority]" class="input-field priority-select">
+                                                <option value="low">Low</option>
+                                                <option value="medium" selected>Medium</option>
+                                                <option value="high">High</option>
+                                                <option value="critical">Critical</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label for="target-amount">Target Amount (₹) <span class="required">*</span></label>
+                                            <div class="currency-input">
+                                                <span class="currency-symbol">₹</span>
+                                                <input type="number" name="financialGoals[0][targetAmount]" class="input-field target-amount" placeholder="0.00" step="0.01" min="0" required>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="target-date">Target Date <span class="required">*</span></label>
+                                            <input type="date" name="financialGoals[0][targetDate]" class="input-field" required>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label for="target-date">Target Date</label>
-                                        <input type="date" id="target-date" class="input-field">
-                                    </div>
-                                </div>
-                                <div style="margin-top: 1rem;">
-                                    <label for="current-progress">Current Progress (₹)</label>
-                                    <div class="currency-input">
-                                        <span class="currency-symbol">₹</span>
-                                        <input type="number" id="current-progress" class="input-field" placeholder="0.00" step="0.01" min="0">
+                                    <div class="form-group">
+                                        <label for="current-progress">Current Progress (₹)</label>
+                                        <div class="currency-input">
+                                            <span class="currency-symbol">₹</span>
+                                            <input type="number" name="financialGoals[0][currentProgress]" class="input-field progress-input" placeholder="0.00" step="0.01" min="0">
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="priority-indicator"></div>
                         </div>
-                        <div class="priority-indicator"></div>
                     </div>
                     
-                    <button type="button" class="btn btn-outline">
+                    <button type="button" class="btn btn-outline" id="add-goal">
                         <i class="fas fa-plus"></i> Add Goal
                     </button>
                     
@@ -477,7 +447,7 @@
                     <p class="section-description">Customize your experience to match your financial preferences.</p>
                     
                     <div class="form-group">
-                        <label>Summary Frequency</label>
+                        <label>Summary Frequency <span class="required">*</span></label>
                         <div style="display: flex; flex-direction: column; gap: 0.8rem;">
                             <div class="investment-card">
                                 <input type="radio" id="daily" name="summary-frequency" value="daily">
@@ -487,7 +457,7 @@
                                 </div>
                             </div>
                             <div class="investment-card">
-                                <input type="radio" id="weekly" name="summary-frequency" value="weekly">
+                                <input type="radio" id="weekly" name="summary-frequency" value="weekly" checked>
                                 <div class="card-content">
                                     <i class="fas fa-calendar-week"></i>
                                     <div>Weekly</div>
@@ -528,42 +498,42 @@
                             <label>Interested In</label>
                             <div class="investment-grid">
                                 <div class="investment-card">
-                                    <input type="checkbox" id="stocks">
+                                    <input type="checkbox" id="stocks" name="investmentInterests[]" value="stocks">
                                     <div class="card-content">
                                         <i class="fas fa-chart-line"></i>
                                         <div>Stocks</div>
                                     </div>
                                 </div>
                                 <div class="investment-card">
-                                    <input type="checkbox" id="bonds">
+                                    <input type="checkbox" id="bonds" name="investmentInterests[]" value="bonds">
                                     <div class="card-content">
                                         <i class="fas fa-file-invoice-dollar"></i>
                                         <div>Bonds</div>
                                     </div>
                                 </div>
                                 <div class="investment-card">
-                                    <input type="checkbox" id="real-estate">
+                                    <input type="checkbox" id="real-estate" name="investmentInterests[]" value="real-estate">
                                     <div class="card-content">
                                         <i class="fas fa-home"></i>
                                         <div>Real Estate</div>
                                     </div>
                                 </div>
                                 <div class="investment-card">
-                                    <input type="checkbox" id="crypto">
+                                    <input type="checkbox" id="crypto" name="investmentInterests[]" value="crypto">
                                     <div class="card-content">
                                         <i class="fas fa-coins"></i>
                                         <div>Crypto</div>
                                     </div>
                                 </div>
                                 <div class="investment-card">
-                                    <input type="checkbox" id="mutual-funds">
+                                    <input type="checkbox" id="mutual-funds" name="investmentInterests[]" value="mutual-funds">
                                     <div class="card-content">
                                         <i class="fas fa-chart-pie"></i>
                                         <div>Mutual Funds</div>
                                     </div>
                                 </div>
                                 <div class="investment-card">
-                                    <input type="checkbox" id="etfs">
+                                    <input type="checkbox" id="etfs" name="investmentInterests[]" value="etfs">
                                     <div class="card-content">
                                         <i class="fas fa-boxes"></i>
                                         <div>ETFs</div>
@@ -575,10 +545,11 @@
                         <div style="margin-top: 1.5rem;">
                             <label>Experience Level</label>
                             <div class="badge-group">
-                                <div class="badge" data-level="beginner">Beginner</div>
+                                <div class="badge active" data-level="beginner">Beginner</div>
                                 <div class="badge" data-level="intermediate">Intermediate</div>
                                 <div class="badge" data-level="advanced">Advanced</div>
                             </div>
+                            <input type="hidden" id="experience-level" name="experienceLevel" value="beginner">
                         </div>
                     </div>
                     
