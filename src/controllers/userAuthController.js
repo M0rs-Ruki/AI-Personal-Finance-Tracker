@@ -8,7 +8,6 @@ import mongoose from "mongoose";
 
 const StudentPage = async (req, res) => {
   try {
-
     const userId = req.body.userId?.trim();
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: "Invalid user ID format" });
@@ -22,7 +21,7 @@ const StudentPage = async (req, res) => {
     // Parse financial goals safely
     const rawGoals = req.body.financialGoals || [];
     const parsedGoals = Array.isArray(rawGoals)
-      ? rawGoals.map(goal => ({
+      ? rawGoals.map((goal) => ({
           name: goal.name?.trim(),
           goalAmount: parseFloat(goal.goalAmount || 0),
           targetDate: new Date(goal.targetDate),
@@ -32,7 +31,7 @@ const StudentPage = async (req, res) => {
     // Parse budget categories safely
     const rawCategories = req.body.customCategories || [];
     const parsedCategories = Array.isArray(rawCategories)
-      ? rawCategories.map(cat => ({
+      ? rawCategories.map((cat) => ({
           name: cat.name?.trim(),
           budgetLimit: parseFloat(cat.budgetLimit || 0),
         }))
@@ -51,8 +50,8 @@ const StudentPage = async (req, res) => {
     });
 
     await newStudent.save();
-    res.redirect("/user/deshboard");
-    log(newStudent)
+    res.redirect("/dashboard");
+    // log(newStudent);
 
   } catch (err) {
     console.error("Error during student page:", err);
@@ -60,17 +59,20 @@ const StudentPage = async (req, res) => {
   }
 };
 
-
 const EmployerPage = async (req, res) => {
   try {
     const userId = req.body.userId?.trim();
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      return res.status(400).json({ message: "Invalid user ID Format in EmployerPage" });
+      return res
+        .status(400)
+        .json({ message: "Invalid user ID Format in EmployerPage" });
     }
 
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not Found in EmployerPage" });
+      return res
+        .status(404)
+        .json({ message: "User not Found in EmployerPage" });
     }
 
     const {
@@ -92,7 +94,7 @@ const EmployerPage = async (req, res) => {
     } = req.body;
 
     // Convert hasBonuses to Boolean
-    const parsedHasBonuses = hasBonuses === 'true' || false;
+    const parsedHasBonuses = hasBonuses === "true" || false;
 
     // Only include bonusDetails if hasBonuses is true AND bonus amount is provided
     let cleanedBonusDetails = undefined;
@@ -130,7 +132,7 @@ const EmployerPage = async (req, res) => {
     const newEmployer = new Employer(employerData);
     await newEmployer.save();
 
-    res.redirect("/user/dashboard");
+    res.redirect("/dashboard");
 
   } catch (err) {
     console.error("Error saving employer data:", err);
@@ -138,4 +140,46 @@ const EmployerPage = async (req, res) => {
   }
 };
 
-export { StudentPage, EmployerPage };
+const UnEmployedPage = async (req, res) => {
+  try {
+    const userId = req.body.userId?.trim();
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Prevent duplicate entries
+    const existing = await UnEmployed.findOne({ userId });
+    if (existing) {
+      return res.status(400).json({ message: "Profile already exists for this user" });
+    }
+
+    const newUnEmployed = new UnEmployed({
+      userId,
+      employmentStatus: req.body.employmentStatus || "actively-seeking",
+      lastJobDetails: req.body.lastJobDetails || {},
+      currentIncome: parseFloat(req.body.currentIncome || 0),
+      incomeSources: Array.isArray(req.body.incomeSources) ? req.body.incomeSources : [],
+      savingsDetails: req.body.savingsDetails || {},
+      regularExpenses: Array.isArray(req.body.regularExpenses) ? req.body.regularExpenses : [],
+      budgetLimits: Array.isArray(req.body.budgetLimits) ? req.body.budgetLimits : [],
+      financialGoals: Array.isArray(req.body.financialGoals) ? req.body.financialGoals : [],
+      jobSearchDetails: req.body.jobSearchDetails || {},
+      summaryFrequency: req.body.summaryFrequency || 'weekly',
+      supportResources: req.body.supportResources || {}
+    });
+
+    await newUnEmployed.save();
+    res.redirect("/dashboard");
+
+  } catch (err) {
+    console.error("Error in UnEmployedPage:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+export { StudentPage, EmployerPage, UnEmployedPage };

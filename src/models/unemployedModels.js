@@ -4,6 +4,9 @@ const unEmployedSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
+    index: true,
+    unique: true  // Ensure one profile per user
   },
   employmentStatus: {
     type: String,
@@ -11,22 +14,14 @@ const unEmployedSchema = new mongoose.Schema({
     default: 'actively-seeking'
   },
   lastJobDetails: {
-    industry: {
-      type: String,
-      trim: true,
-      maxlength: 100
-    },
-    position: {
-      type: String,
-      trim: true,
-      maxlength: 100
-    },
-    duration: Number // months
+    industry: { type: String, trim: true, maxlength: 100 },
+    position: { type: String, trim: true, maxlength: 100 },
+    duration: Number // in months
   },
   currentIncome: {
     type: Number,
     min: 0,
-    set: value => Math.round(value * 100) / 100 // Store with 2 decimal precision
+    set: value => Math.round(value * 100) / 100
   },
   incomeSources: [{
     sourceType: {
@@ -51,99 +46,45 @@ const unEmployedSchema = new mongoose.Schema({
     }
   }],
   savingsDetails: {
-    amount: {
-      type: Number,
-      min: 0,
-      default: 0
-    },
-    emergencyFund: {
-      type: Number,
-      min: 0
-    },
-    monthsCovered: {
-      type: Number,
-      min: 0,
-      max: 36
-    }
+    amount: { type: Number, min: 0, default: 0 },
+    emergencyFund: { type: Number, min: 0 },
+    monthsCovered: { type: Number, min: 0, max: 36 }
   },
   regularExpenses: [{
-    category: {
-      type: String,
-      trim: true,
-      maxlength: 50
-    },
-    amount: {
-      type: Number,
-      min: 0
-    },
+    category: { type: String, trim: true, maxlength: 50 },
+    amount: { type: Number, min: 0 },
     frequency: {
       type: String,
       enum: ["daily", "weekly", "monthly", "quarterly", "annually"],
       default: "monthly"
     },
-    essential: {
-      type: Boolean,
-      default: true
-    }
+    essential: { type: Boolean, default: true }
   }],
   budgetLimits: [{
-    category: {
-      type: String,
-      trim: true,
-      maxlength: 50
-    },
-    limit: {
-      type: Number,
-      min: 0
-    },
-    currentSpending: {
-      type: Number,
-      default: 0,
-      min: 0
-    }
+    category: { type: String, trim: true, maxlength: 50 },
+    limit: { type: Number, min: 0 },
+    currentSpending: { type: Number, default: 0, min: 0 }
   }],
   financialGoals: [{
-    name: {
-      type: String,
-      trim: true,
-      maxlength: 100
-    },
+    name: { type: String, trim: true, maxlength: 100 },
     type: {
       type: String,
       enum: ["emergency-fund", "debt-repayment", "job-search", "skill-development", "other"],
       default: "job-search"
     },
-    targetAmount: {
-      type: Number,
-      min: 0
-    },
+    targetAmount: { type: Number, min: 0 },
     targetDate: Date,
     priority: {
       type: String,
       enum: ["critical", "high", "medium", "low"],
       default: "medium"
     },
-    progress: {
-      type: Number,
-      min: 0,
-      max: 100,
-      default: 0
-    }
+    progress: { type: Number, min: 0, max: 100, default: 0 }
   }],
   jobSearchDetails: {
-    active: {
-      type: Boolean,
-      default: false
-    },
-    applicationsPerWeek: {
-      type: Number,
-      min: 0,
-      max: 50
-    },
-    jobSearchBudget: {
-      type: Number,
-      min: 0
-    },
+    active: { type: Boolean, default: false },
+    applicationsPerWeek: { type: Number, min: 0, max: 50 },
+    jobSearchBudget: { type: Number, min: 0 },
     industriesTargeted: [String],
     skillsDevelopment: [String]
   },
@@ -153,18 +94,9 @@ const unEmployedSchema = new mongoose.Schema({
     default: 'weekly'
   },
   supportResources: {
-    wantsBudgetHelp: {
-      type: Boolean,
-      default: false
-    },
-    wantsJobResources: {
-      type: Boolean,
-      default: false
-    },
-    wantsDebtAdvice: {
-      type: Boolean,
-      default: false
-    }
+    wantsBudgetHelp: { type: Boolean, default: false },
+    wantsJobResources: { type: Boolean, default: false },
+    wantsDebtAdvice: { type: Boolean, default: false }
   }
 }, {
   timestamps: true,
@@ -172,61 +104,44 @@ const unEmployedSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// Virtual for total monthly expenses
-unEmployedSchema.virtual('totalMonthlyExpenses').get(function() {
+// Virtuals
+unEmployedSchema.virtual('totalMonthlyExpenses').get(function () {
   let total = 0;
-  
-  this.regularExpenses.forEach(expense => {
-    if (expense.frequency === 'daily') {
-      total += expense.amount * 30;
-    } else if (expense.frequency === 'weekly') {
-      total += expense.amount * 4.33;
-    } else if (expense.frequency === 'monthly') {
-      total += expense.amount;
-    } else if (expense.frequency === 'quarterly') {
-      total += expense.amount / 3;
-    } else if (expense.frequency === 'annually') {
-      total += expense.amount / 12;
+  this.regularExpenses.forEach(exp => {
+    const a = exp.amount || 0;
+    switch (exp.frequency) {
+      case 'daily': total += a * 30; break;
+      case 'weekly': total += a * 4.33; break;
+      case 'monthly': total += a; break;
+      case 'quarterly': total += a / 3; break;
+      case 'annually': total += a / 12; break;
     }
   });
-  
   return parseFloat(total.toFixed(2));
 });
 
-// Virtual for monthly income from all sources
-unEmployedSchema.virtual('totalMonthlyIncome').get(function() {
-  let total = this.currentIncome;
-  
+unEmployedSchema.virtual('totalMonthlyIncome').get(function () {
+  let total = this.currentIncome || 0;
   this.incomeSources.forEach(source => {
-    if (source.frequency === 'daily') {
-      total += source.amount * 30;
-    } else if (source.frequency === 'weekly') {
-      total += source.amount * 4.33;
-    } else if (source.frequency === 'monthly') {
-      total += source.amount;
-    } else if (source.frequency === 'quarterly') {
-      total += source.amount / 3;
-    } else if (source.frequency === 'annually') {
-      total += source.amount / 12;
+    const a = source.amount || 0;
+    switch (source.frequency) {
+      case 'daily': total += a * 30; break;
+      case 'weekly': total += a * 4.33; break;
+      case 'monthly': total += a; break;
+      case 'quarterly': total += a / 3; break;
+      case 'annually': total += a / 12; break;
     }
   });
-  
   return parseFloat(total.toFixed(2));
 });
 
-// Virtual for months of savings coverage
-unEmployedSchema.virtual('savingsCoverage').get(function() {
+unEmployedSchema.virtual('savingsCoverage').get(function () {
   if (this.totalMonthlyExpenses <= 0) return 0;
-  return (this.savingsDetails.amount / this.totalMonthlyExpenses).toFixed(1);
+  return parseFloat((this.savingsDetails.amount / this.totalMonthlyExpenses).toFixed(1));
 });
 
-// Indexes
-unEmployedSchema.index({ employmentStatus: 1 });
-unEmployedSchema.index({ 'financialGoals.priority': 1, 'financialGoals.targetDate': 1 });
-unEmployedSchema.index({ 'jobSearchDetails.active': 1 });
-
-// Pre-save hook to calculate emergency fund months covered
-unEmployedSchema.pre('save', function(next) {
+// Hooks
+unEmployedSchema.pre('save', function (next) {
   if (this.savingsDetails.amount > 0 && this.totalMonthlyExpenses > 0) {
     this.savingsDetails.monthsCovered = parseFloat(
       (this.savingsDetails.amount / this.totalMonthlyExpenses).toFixed(1)
@@ -235,6 +150,9 @@ unEmployedSchema.pre('save', function(next) {
   next();
 });
 
-const UnEmployed = mongoose.model('UnEmployed', unEmployedSchema);
+// Indexes
+unEmployedSchema.index({ 'financialGoals.priority': 1, 'financialGoals.targetDate': 1 });
+unEmployedSchema.index({ 'jobSearchDetails.active': 1 });
 
+const UnEmployed = mongoose.model('UnEmployed', unEmployedSchema);
 export default UnEmployed;
