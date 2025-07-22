@@ -17,12 +17,12 @@ document.addEventListener('DOMContentLoaded', function() {
             title: "Software Engineer, Austin"
         },
         {
-            content: "As a small business owner, FinAI gives me clarity on both personal and business expenses. The categorization is incredibly accurate.",
+            content: "As a small business owner, RukiAI gives me clarity on both personal and business expenses. The categorization is incredibly accurate.",
             author: "Jessica Lin",
             title: "Business Owner, Seattle"
         },
         {
-            content: "I've tried every budgeting app out there. FinAI is the first that actually understands my spending habits and provides useful advice.",
+            content: "I've tried every budgeting app out there. RukiAI is the first that actually understands my spending habits and provides useful advice.",
             author: "David Wilson",
             title: "Teacher, Chicago"
         }
