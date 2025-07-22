@@ -15,6 +15,8 @@ class EmployedSetup {
         this.initializeToggleFields();
         this.initializeRiskSlider();
         this.initializeExperienceBadges();
+        this.initializeSummaryFrequency();
+        this.initializeInvestmentCards();
     }
 
     setupEventListeners() {
@@ -52,6 +54,58 @@ class EmployedSetup {
         // Priority color updates
         this.setupPriorityUpdates();
     }
+
+    initializeSummaryFrequency() {
+        const frequencyCards = document.querySelectorAll('.frequency-container .investment-card');
+        frequencyCards.forEach(card => {
+            card.addEventListener('click', () => {
+                // Uncheck all radios
+                document.querySelectorAll('input[name="summaryFrequency"]').forEach(radio => {
+                    radio.checked = false;
+                });
+                
+                // Check the radio inside this card
+                const radio = card.querySelector('input[type="radio"]');
+                radio.checked = true;
+                
+                // Update visual selection
+                frequencyCards.forEach(c => c.classList.remove('selected'));
+                card.classList.add('selected');
+            });
+        });
+        
+        // Initialize first selection
+        document.querySelector('#weekly').closest('.investment-card').classList.add('selected');
+    }
+
+
+    initializeToggleFields() {
+        const bonusToggle = document.getElementById('bonus-toggle');
+        const bonusFields = document.getElementById('bonus-fields');
+        const bonusInputs = bonusFields.querySelectorAll('input, select');
+
+        bonusToggle.addEventListener('change', () => {
+            if (bonusToggle.checked) {
+                bonusFields.classList.add('show');
+                bonusFields.style.maxHeight = '500px';
+
+                // Add required to bonus fields
+                bonusInputs.forEach(input => input.required = true);
+            } else {
+                bonusFields.classList.remove('show');
+                bonusFields.style.maxHeight = '0';
+
+                // Remove required from bonus fields
+                bonusInputs.forEach(input => input.required = false);
+            }
+        });
+
+        // Initial state
+        if (!bonusToggle.checked) {
+            bonusInputs.forEach(input => input.required = false);
+        }
+    }
+
 
     setupDynamicFields() {
         // Add income source
@@ -139,23 +193,33 @@ class EmployedSetup {
     initializeRiskSlider() {
         const riskSlider = document.getElementById('risk-slider');
         const riskLabels = document.querySelectorAll('.risk-labels span');
+        const riskInput = document.getElementById('risk-tolerance');
+
+        const riskMap = ['low', 'medium', 'high', 'very-high'];
 
         riskSlider.addEventListener('input', () => {
-            const value = parseInt(riskSlider.value);
-            
-            // Update active label
-            riskLabels.forEach((label, index) => {
-                label.classList.toggle('active', index === value - 1);
-            });
+            const index = parseInt(riskSlider.value) - 1;
+            riskInput.value = riskMap[index];
 
-            // Update slider background
-            const percentage = ((value - 1) / 3) * 100;
-            riskSlider.style.background = `linear-gradient(to right, var(--accent-gold) 0%, var(--accent-gold) ${percentage}%, rgba(255, 255, 255, 0.1) ${percentage}%, rgba(255, 255, 255, 0.1) 100%)`;
+            // Update active label
+            riskLabels.forEach((label, i) => {
+                label.classList.toggle('active', i === index);
+            });
         });
 
         // Initialize
         riskSlider.dispatchEvent(new Event('input'));
+
+        // Add click handlers for labels
+        riskLabels.forEach((label, index) => {
+            label.addEventListener('click', () => {
+                riskSlider.value = index + 1;
+                riskInput.value = riskMap[index];
+                riskSlider.dispatchEvent(new Event('input'));
+            });
+        });
     }
+
 
     initializeExperienceBadges() {
         const badges = document.querySelectorAll('.badge');
@@ -166,6 +230,12 @@ class EmployedSetup {
                 badges.forEach(b => b.classList.remove('active'));
                 badge.classList.add('active');
                 experienceLevelInput.value = badge.dataset.level;
+                
+                // Add animation feedback
+                badge.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    badge.style.transform = '';
+                }, 200);
             });
         });
     }
@@ -500,26 +570,8 @@ class EmployedSetup {
             return;
         }
         
-        // Collect all form data
-        const formData = new FormData(e.target);
-        const data = Object.fromEntries(formData.entries());
-        
-        // Show loading state
-        const submitBtn = e.target.querySelector('button[type="submit"]');
-        const originalText = submitBtn.innerHTML;
-        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Setting up...';
-        submitBtn.disabled = true;
-        
-        // Simulate form submission
-        setTimeout(() => {
-            this.showSuccessMessage();
-            
-            // Reset button after success
-            setTimeout(() => {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
-            }, 2000);
-        }, 2000);
+        // Submit the form normally - removed all hidden field creation
+        document.getElementById('employeeForm').submit();
     }
 
     showSuccessMessage() {

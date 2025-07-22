@@ -93,7 +93,7 @@
                         </label>
                         
                         <label class="employment-card">
-                            <input type="radio" id="contract" name="employmentType"value="contract">
+                            <input type="radio" id="contract" name="employmentType" value="contract">
                             <div class="card-content">
                                 <i class="fas fa-file-contract"></i>
                                 <div>Contract</div>
@@ -129,21 +129,22 @@
                 <div class="form-section" id="step-2">
                     <h2 class="section-header"><i class="fas fa-building"></i> Company Details</h2>
                     <p class="section-description">Provide information about your employer to help us understand your professional context.</p>
-                    
+
                     <div class="form-group">
                         <label for="company">Company Name <span class="required">*</span></label>
                         <input type="text" id="company" class="input-field" name="company" placeholder="Company Name" required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="industry">Work Industry <span class="required">*</span></label>
-                        <input type="text" id="industry" class="input-field" name="industry" placeholder="Technology, Finance, Healthcare..." required>
+                        <input type="text" id="industry" class="input-field" name="workIndustry" placeholder="Technology, Finance, Healthcare..." required>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="location">Work Location <span class="required">*</span></label>
-                        <input type="text" id="location" class="input-field" name="location" placeholder="City or Remote" required>
+                        <input type="text" id="location" class="input-field" name="workLocation" placeholder="City or Remote" required>
                     </div>
+                
                     
                     <div class="form-actions">
                         <button type="button" class="btn btn-outline prev-step" data-prev="1">
@@ -164,12 +165,7 @@
                         <label for="salary">Monthly Salary (₹) <span class="required">*</span></label>
                         <div class="currency-input">
                             <span class="currency-symbol">₹</span>
-                            <input type="number" id="salary" class="input-field" name="salary" placeholder="0.00" step="500" min="0" required>
-                            <div class="coins-animation">
-                                <div class="coin"></div>
-                                <div class="coin"></div>
-                                <div class="coin"></div>
-                            </div>
+                            <input type="number" id="salary" class="input-field" name="monthlySalary" placeholder="0.00" step="500" min="0" required>
                         </div>
                     </div>
                     
@@ -258,7 +254,7 @@
                         <div style="display: flex; align-items: center; gap: 1rem;">
                             <label style="margin-bottom: 0;">Receive bonuses?</label>
                             <label class="toggle-switch">
-                                <input type="checkbox" id="bonus-toggle" name="hasBonuses">
+                                <input type="checkbox" id="bonus-toggle" name="hasBonuses" value="true">
                                 <span class="toggle-slider"></span>
                             </label>
                         </div>
@@ -449,108 +445,110 @@
                     
                     <div class="form-group">
                         <label>Summary Frequency <span class="required">*</span></label>
-                        <div style="display: flex; flex-direction: column; gap: 0.8rem;">
-                            <div class="investment-card">
-                                <input type="radio" id="daily" name="summaryFrequency" value="daily">
+                        <div class="frequency-container">
+                            <label class="investment-card">
+                                <input type="radio" id="freq-daily" name="summaryFrequency" value="daily">
                                 <div class="card-content">
                                     <i class="fas fa-sun"></i>
                                     <div>Daily</div>
                                 </div>
-                            </div>
-                            <div class="investment-card">
-                                <input type="radio" id="weekly" name="summaryFrequency" value="weekly" checked>
+                            </label>
+                            <label class="investment-card">
+                                <input type="radio" id="freq-weekly" name="summaryFrequency" value="weekly" checked>
                                 <div class="card-content">
                                     <i class="fas fa-calendar-week"></i>
                                     <div>Weekly</div>
                                 </div>
-                            </div>
-                            <div class="investment-card">
-                                <input type="radio" id="bi-weekly" name="summaryFrequency" value="bi-weekly">
+                            </label>
+                            <label class="investment-card">
+                                <input type="radio" id="freq-bi-weekly" name="summaryFrequency" value="bi-weekly">
                                 <div class="card-content">
                                     <i class="fas fa-calendar-alt"></i>
                                     <div>Bi-weekly</div>
                                 </div>
-                            </div>
-                            <div class="investment-card">
-                                <input type="radio" id="monthly" name="summaryFrequency" value="monthly">
+                            </label>
+                            <label class="investment-card">
+                                <input type="radio" id="freq-monthly" name="summaryFrequency" value="monthly">
                                 <div class="card-content">
                                     <i class="fas fa-calendar"></i>
                                     <div>Monthly</div>
                                 </div>
-                            </div>
+                            </label>
                         </div>
                     </div>
                     
                     <div class="form-group">
                         <label>Investment Preferences</label>
                         
-                        <div style="margin-top: 1.5rem;">
+                        <div class="preference-section">
                             <label>Risk Tolerance</label>
                             <input type="range" min="1" max="4" value="2" class="risk-slider" id="risk-slider">
                             <div class="risk-labels">
-                                <span class="active">Low</span>
-                                <span>Medium</span>
-                                <span>High</span>
-                                <span>Very High</span>
+                                <span data-value="low">Low</span>
+                                <span data-value="medium" class="active">Medium</span>
+                                <span data-value="high">High</span>
+                                <span data-value="very-high">Very High</span>
                             </div>
+                            <!-- Hidden input that will store the correct ENUM string -->
+                            <input type="hidden" id="risk-tolerance" name="investmentPreferences[riskTolerance]" value="medium">
                         </div>
                         
-                        <div style="margin-top: 1.5rem;">
+                        <div class="preference-section">
                             <label>Interested In</label>
                             <div class="investment-grid">
-                                <div class="investment-card">
-                                    <input type="checkbox" id="stocks" name="investmentInterests[]" value="stocks">
+                                <label class="investment-card">
+                                    <input type="checkbox" id="stocks" name="investmentPreferences[interestedIn][]" value="stocks">
                                     <div class="card-content">
                                         <i class="fas fa-chart-line"></i>
                                         <div>Stocks</div>
                                     </div>
-                                </div>
-                                <div class="investment-card">
-                                    <input type="checkbox" id="bonds" name="investmentInterests[]" value="bonds">
+                                </label>
+                                <label class="investment-card">
+                                    <input type="checkbox" id="bonds" name="investmentPreferences[interestedIn][]" value="bonds">
                                     <div class="card-content">
                                         <i class="fas fa-file-invoice-dollar"></i>
                                         <div>Bonds</div>
                                     </div>
-                                </div>
-                                <div class="investment-card">
-                                    <input type="checkbox" id="real-estate" name="investmentInterests[]" value="real-estate">
+                                </label>
+                                <label class="investment-card">
+                                    <input type="checkbox" id="real-estate" name="investmentPreferences[interestedIn][]" value="real-estate">
                                     <div class="card-content">
                                         <i class="fas fa-home"></i>
                                         <div>Real Estate</div>
                                     </div>
-                                </div>
-                                <div class="investment-card">
-                                    <input type="checkbox" id="crypto" name="investmentInterests[]" value="crypto">
+                                </label>
+                                <label class="investment-card">
+                                    <input type="checkbox" id="crypto" name="investmentPreferences[interestedIn][]" value="crypto">
                                     <div class="card-content">
                                         <i class="fas fa-coins"></i>
                                         <div>Crypto</div>
                                     </div>
-                                </div>
-                                <div class="investment-card">
-                                    <input type="checkbox" id="mutual-funds" name="investmentInterests[]" value="mutual-funds">
+                                </label>
+                                <label class="investment-card">
+                                    <input type="checkbox" id="mutual-funds" name="investmentPreferences[interestedIn][]" value="mutual-funds">
                                     <div class="card-content">
                                         <i class="fas fa-chart-pie"></i>
                                         <div>Mutual Funds</div>
                                     </div>
-                                </div>
-                                <div class="investment-card">
-                                    <input type="checkbox" id="etfs" name="investmentInterests[]" value="etfs">
+                                </label>
+                                <label class="investment-card">
+                                    <input type="checkbox" id="etfs" name="investmentPreferences[interestedIn][]" value="etfs">
                                     <div class="card-content">
                                         <i class="fas fa-boxes"></i>
                                         <div>ETFs</div>
                                     </div>
-                                </div>
+                                </label>
                             </div>
                         </div>
                         
-                        <div style="margin-top: 1.5rem;">
+                        <div class="preference-section">
                             <label>Experience Level</label>
                             <div class="badge-group">
                                 <div class="badge active" data-level="beginner">Beginner</div>
                                 <div class="badge" data-level="intermediate">Intermediate</div>
                                 <div class="badge" data-level="advanced">Advanced</div>
                             </div>
-                            <input type="hidden" id="experience-level" name="experienceLevel" value="beginner">
+                            <input type="hidden" id="experience-level" name="investmentPreferences[experienceLevel]" value="beginner">
                         </div>
                     </div>
                     

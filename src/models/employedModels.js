@@ -44,13 +44,11 @@ const employerSchema = new mongoose.Schema({
   additionalIncomeSources: [{
     name: {
       type: String,
-      required: true,
       trim: true,
       maxlength: 50
     },
     amount: {
       type: Number,
-      required: true,
       min: 0
     },
     frequency: {
@@ -84,7 +82,6 @@ const employerSchema = new mongoose.Schema({
     },
     amount: {
       type: Number,
-      required: true,
       min: 0
     },
     dueDate: {
