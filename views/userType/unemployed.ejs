@@ -3,297 +3,392 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>UnEmployed Profile Setup</title>
   <link rel="shortcut icon" href="/images/logo.png" type="image/x-icon">
-  <style>
-    body { font-family: Arial; padding: 2rem; max-width: 700px; margin: auto; }
-    input, select, textarea { width: 100%; padding: 0.5rem; margin-top: 5px; margin-bottom: 15px; }
-    label { font-weight: bold; display: block; }
-    .inline-group { display: flex; gap: 10px; }
-  </style>
+  <title>UnEmployed Profile Setup</title>
+  <link rel="stylesheet" href="/styles/unemployed.css">
 </head>
 <body>
-
-  <h2>UnEmployed Profile Setup</h2>
-  <form action="/userType/unemployed" method="POST">
-    <!-- Required: User ID -->
-    <input type="hidden" name="userId" value="<%= userId %>">
-
-    <!-- Employment Status -->
-    <label>Employment Status:</label>
-    <select name="employmentStatus" required>
-      <option value="actively-seeking">Actively Seeking</option>
-      <option value="taking-break">Taking a Break</option>
-      <option value="studying">Studying</option>
-      <option value="caring">Caring</option>
-      <option value="disabled">Disabled</option>
-    </select>
-
-  <!-- Work Experience Toggle -->
-  <label for="hasWorkedSelect">Have you worked before?</label>
-  <select id="hasWorkedSelect">
-    <option value="no" selected>No</option>
-    <option value="yes">Yes</option>
-  </select>
-
-  <!-- Last Job Details (conditionally shown) -->
-  <div id="lastJobDetailsSection" style="display: none;">
-    <fieldset>
-      <legend>Last Job Details</legend>
-      <label>Industry:</label>
-      <input type="text" name="lastJobDetails[industry]" />
-      <label>Position:</label>
-      <input type="text" name="lastJobDetails[position]" />
-      <label>Duration (months):</label>
-      <input type="number" name="lastJobDetails[duration]" min="0" />
-    </fieldset>
-  </div>
-
-    <!-- Current Income -->
-    <label>Current Income:</label>
-    <input type="number" step="500" name="currentIncome" />
-
-    <!-- Income Sources (add at least one) -->
-    <fieldset>
-      <legend>Income Sources</legend>
-      <div>
-        <label>Source Type:</label>
-        <select name="incomeSources[0][sourceType]">
-          <option value="freelance">Freelance</option>
-          <option value="government-aid">Government Aid</option>
-          <option value="family-support">Family Support</option>
-          <option value="savings">Savings</option>
-          <option value="part-time">Part-Time</option>
-          <option value="other">Other</option>
-        </select>
-        <label>Amount:</label>
-        <input type="number" step="500" name="incomeSources[0][amount]" />
-        <label>Frequency:</label>
-        <select name="incomeSources[0][frequency]">
-          <option value="daily">Daily</option>
-          <option value="weekly">Weekly</option>
-          <option value="bi-weekly">Bi-weekly</option>
-          <option value="monthly">Monthly</option>
-          <option value="quarterly">Quarterly</option>
-          <option value="annually">Annually</option>
-          <option value="irregular">Irregular</option>
-        </select>
-        <label>Description:</label>
-        <input type="text" name="incomeSources[0][description]" />
-      </div>
-    </fieldset>
-
-    <!-- Debt Toggle -->
-    <label for="hasDebtSelect">Do you have any debt?</label>
-    <select id="hasDebtSelect">
-      <option value="no" selected>No</option>
-      <option value="yes">Yes</option>
-    </select>
-
-    <!-- Debt Details (conditionally shown) -->
-    <div id="debtSection" style="display: none;">
-      <fieldset>
-        <legend>Debt</legend>
-        <label>Amount:</label>
-        <input type="number" name="debt[amount]" step="0.01" />
-        <label>Monthly Payment:</label>
-        <input type="number" name="debt[monthlyPayment]" step="0.01" />
-        <label>Type:</label>
-        <select name="debt[type]">
-          <option value="credit-card">Credit Card</option>
-          <option value="loan">Loan</option>
-          <option value="student-loan">Student Loan</option>
-          <option value="other">Other</option>
-        </select>
-      </fieldset>
+  <div class="container">
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+      <div class="progress-step active" data-step="1"><span>1</span></div>
+      <div class="progress-step" data-step="2"><span>2</span></div>
+      <div class="progress-step" data-step="3"><span>3</span></div>
+      <div class="progress-step" data-step="4"><span>4</span></div>
+      <div class="progress-step" data-step="5"><span>5</span></div>
     </div>
 
-    <!-- Comfort Budget & Runway Estimate -->
-    <label>Comfort Budget:</label>
-    <input type="number" step="500" name="comfortBudget" />
-    <label>Runway Estimate (months):</label>
-    <input type="number" step="500" name="runwayEstimate" />
+    <form action="/userType/unemployed" method="POST">
+      <!-- Hidden User ID -->
+      <input type="hidden" name="userId" value="<%= userId %>">
 
-    <!-- Living Situation -->
-    <label>Living Situation:</label>
-    <select name="livingSituation">
-      <option value="alone">Alone</option>
-      <option value="with-family">With Family</option>
-      <option value="with-roommates">With Roommates</option>
-    </select>
-
-    <!-- Dependents -->
-    <label>Has Dependents:</label>
-    <select name="hasDependents">
-      <option value="false">No</option>
-      <option value="true">Yes</option>
-    </select>
-    <label>Number of Dependents:</label>
-    <input type="number" name="dependentsCount" min="0" />
-
-    <!-- Gig Interest & Tools -->
-    <label>Interest in Gigs:</label>
-    <select name="gigInterest">
-      <option value="not-at-all">Not at All</option>
-      <option value="somewhat">Somewhat</option>
-      <option value="very-open">Very Open</option>
-    </select>
-
-    <label>Owns Tools:</label>
-    <select name="hasTools">
-      <option value="true">Yes</option>
-      <option value="false">No</option>
-    </select>
-
-    <!-- Relocation -->
-    <label>Willing to Relocate:</label>
-    <select name="willingToRelocate">
-      <option value="true">Yes</option>
-      <option value="false">No</option>
-    </select>
-
-    <!-- Goal Priority -->
-    <label>Top Financial Priority:</label>
-    <select name="goalPriority">
-      <option value="build-emergency-fund">Build Emergency Fund</option>
-      <option value="reduce-debt">Reduce Debt</option>
-      <option value="cover-rent">Cover Rent</option>
-      <option value="invest-small">Invest Small</option>
-      <option value="learn-skill">Learn Skill</option>
-    </select>
-
-    <!-- Savings Details -->
-    <fieldset>
-      <legend>Savings</legend>
-      <label>Amount Saved:</label>
-      <input type="number" step="500" name="savingsDetails[amount]" />
-      <label>Emergency Fund:</label>
-      <input type="number" step="500" name="savingsDetails[emergencyFund]" />
-    </fieldset>
-
-    <!-- Regular Expenses -->
-    <fieldset>
-      <legend>Regular Expenses</legend>
-      <div>
-        <input type="text" name="regularExpenses[0][category]" placeholder="Category" />
-        <input type="number" name="regularExpenses[0][amount]" placeholder="Amount" />
-        <select name="regularExpenses[0][frequency]">
-          <option value="monthly">Monthly</option>
-          <option value="weekly">Weekly</option>
-          <option value="daily">Daily</option>
-          <option value="quarterly">Quarterly</option>
-          <option value="annually">Annually</option>
-        </select>
-        <label>Essential:</label>
-        <select name="regularExpenses[0][essential]">
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </select>
+      <!-- Section 1: Employment Status -->
+      <div class="section-container active" id="section1">
+        <div class="card">
+          <h2 class="gold-heading">Employment Status</h2>
+          
+          <div class="input-group">
+            <label>What's your current employment status?</label>
+            <select name="employmentStatus" required>
+              <option value="actively-seeking">Actively Seeking</option>
+              <option value="taking-break">Taking a Break</option>
+              <option value="studying">Studying</option>
+              <option value="caring">Caring</option>
+              <option value="disabled">Disabled</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="btn-group">
+          <div></div> <!-- Spacer -->
+          <button type="button" class="btn next-btn" data-target="section2">Next →</button>
+        </div>
       </div>
-    </fieldset>
 
-    <!-- Budget Limits -->
-    <fieldset>
-      <legend>Budget Limits</legend>
-      <div>
-        <input type="text" name="budgetLimits[0][category]" placeholder="Category" />
-        <input type="number" name="budgetLimits[0][limit]" placeholder="Limit" />
-        <input type="number" name="budgetLimits[0][currentSpending]" placeholder="Current Spending" />
+      <!-- Section 2: Work Experience -->
+      <div class="section-container" id="section2">
+        <div class="card">
+          <h2 class="gold-heading">Work Experience</h2>
+          
+          <div class="toggle-group">
+            <div class="toggle-option" id="hasWorkedNo">
+              <input type="radio" name="hasWorked" value="no" checked>
+              <label>No previous work</label>
+            </div>
+            <div class="toggle-option" id="hasWorkedYes">
+              <input type="radio" name="hasWorked" value="yes">
+              <label>I've worked before</label>
+            </div>
+          </div>
+          
+          <div id="lastJobDetailsSection" style="display: none;">
+            <div class="card">
+              <h3 class="gold-heading" style="font-size: 1.1rem;">Last Job Details</h3>
+              
+              <div class="inline-group">
+                <div class="input-group">
+                  <label>Industry</label>
+                  <input type="text" name="lastJobDetails[industry]">
+                </div>
+                
+                <div class="input-group">
+                  <label>Position</label>
+                  <input type="text" name="lastJobDetails[position]">
+                </div>
+              </div>
+              
+              <div class="input-group">
+                <label>Duration (months)</label>
+                <input type="number" name="lastJobDetails[duration]" min="0">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline prev-btn" data-target="section1">← Back</button>
+          <button type="button" class="btn next-btn" data-target="section3">Next →</button>
+        </div>
       </div>
-    </fieldset>
 
-    <!-- Financial Goals -->
-    <fieldset>
-      <legend>Financial Goals</legend>
-      <div>
-        <input type="text" name="financialGoals[0][name]" placeholder="Goal Name" />
-        <select name="financialGoals[0][type]">
-          <option value="job-search">Job Search</option>
-          <option value="emergency-fund">Emergency Fund</option>
-          <option value="debt-repayment">Debt Repayment</option>
-          <option value="skill-development">Skill Development</option>
-          <option value="other">Other</option>
-        </select>
-        <input type="number" name="financialGoals[0][targetAmount]" placeholder="Target Amount" />
-        <input type="date" name="financialGoals[0][targetDate]" />
-        <select name="financialGoals[0][priority]">
-          <option value="critical">Critical</option>
-          <option value="high">High</option>
-          <option value="medium" selected>Medium</option>
-          <option value="low">Low</option>
-        </select>
+      <!-- Section 3: Financial Situation -->
+      <div class="section-container" id="section3">
+        <div class="card">
+          <h2 class="gold-heading">Financial Situation</h2>
+          
+          <div class="input-group">
+            <label>Current Income ($)</label>
+            <input type="number" step="500" name="currentIncome">
+          </div>
+          
+          <div class="input-group">
+            <label>Comfort Budget ($)</label>
+            <input type="number" step="500" name="comfortBudget">
+          </div>
+          
+          <div class="input-group">
+            <label>Runway Estimate (months)</label>
+            <input type="number" step="500" name="runwayEstimate">
+          </div>
+          
+          <div class="repeating-group">
+            <h3 class="gold-heading" style="font-size: 1.1rem;">Income Sources</h3>
+            
+            <div id="incomeSourcesContainer">
+              <div class="entry-card">
+                <button class="delete-entry">×</button>
+                
+                <div class="input-group">
+                  <label>Source Type</label>
+                  <select name="incomeSources[0][sourceType]">
+                    <option value="freelance">Freelance</option>
+                    <option value="government-aid">Government Aid</option>
+                    <option value="family-support">Family Support</option>
+                    <option value="savings">Savings</option>
+                    <option value="part-time">Part-Time</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                
+                <div class="inline-group">
+                  <div class="input-group">
+                    <label>Amount</label>
+                    <input type="number" step="500" name="incomeSources[0][amount]">
+                  </div>
+                  
+                  <div class="input-group">
+                    <label>Frequency</label>
+                    <select name="incomeSources[0][frequency]">
+                      <option value="daily">Daily</option>
+                      <option value="weekly">Weekly</option>
+                      <option value="bi-weekly">Bi-weekly</option>
+                      <option value="monthly">Monthly</option>
+                      <option value="quarterly">Quarterly</option>
+                      <option value="annually">Annually</option>
+                      <option value="irregular">Irregular</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="input-group">
+                  <label>Description</label>
+                  <input type="text" name="incomeSources[0][description]">
+                </div>
+              </div>
+            </div>
+            
+            <button type="button" class="add-entry" id="addIncomeSource">+ Add Income Source</button>
+          </div>
+          
+          <div class="toggle-group">
+            <div class="toggle-option" id="hasDebtNo">
+              <input type="radio" name="hasDebt" value="no" checked>
+              <label>No debt</label>
+            </div>
+            <div class="toggle-option" id="hasDebtYes">
+              <input type="radio" name="hasDebt" value="yes">
+              <label>I have debt</label>
+            </div>
+          </div>
+          
+          <div id="debtSection" style="display: none;">
+            <div class="card">
+              <h3 class="gold-heading" style="font-size: 1.1rem;">Debt Details</h3>
+              
+              <div class="inline-group">
+                <div class="input-group">
+                  <label>Amount ($)</label>
+                  <input type="number" name="debt[amount]" step="0.01">
+                </div>
+                
+                <div class="input-group">
+                  <label>Monthly Payment ($)</label>
+                  <input type="number" name="debt[monthlyPayment]" step="0.01">
+                </div>
+              </div>
+              
+              <div class="input-group">
+                <label>Type</label>
+                <select name="debt[type]">
+                  <option value="credit-card">Credit Card</option>
+                  <option value="loan">Loan</option>
+                  <option value="student-loan">Student Loan</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline prev-btn" data-target="section2">← Back</button>
+          <button type="button" class="btn next-btn" data-target="section4">Next →</button>
+        </div>
       </div>
-    </fieldset>
 
-    <!-- Job Search Details -->
-    <fieldset>
-      <legend>Job Search</legend>
-      <label>Actively Searching:</label>
-      <select name="jobSearchDetails[active]">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-      <label>Applications/Week:</label>
-      <input type="number" name="jobSearchDetails[applicationsPerWeek]" />
-      <label>Job Search Budget:</label>
-      <input type="number" name="jobSearchDetails[jobSearchBudget]" />
-      <label>Industries Targeted (comma-separated):</label>
-      <input type="text" name="jobSearchDetails[industriesTargeted]">
-      <label>Skills to Develop (comma-separated):</label>
-      <input type="text" name="jobSearchDetails[skillsDevelopment]">
-    </fieldset>
+      <!-- Section 4: Living & Goals -->
+      <div class="section-container" id="section4">
+        <div class="card">
+          <h2 class="gold-heading">Living Situation</h2>
+          
+          <div class="input-group">
+            <label>Living Situation</label>
+            <select name="livingSituation">
+              <option value="alone">Alone</option>
+              <option value="with-family">With Family</option>
+              <option value="with-roommates">With Roommates</option>
+            </select>
+          </div>
+          
+          <div class="toggle-group">
+            <div class="toggle-option" id="hasDependentsNo">
+              <input type="radio" name="hasDependents" value="false" checked>
+              <label>No dependents</label>
+            </div>
+            <div class="toggle-option" id="hasDependentsYes">
+              <input type="radio" name="hasDependents" value="true">
+              <label>I have dependents</label>
+            </div>
+          </div>
+          
+          <div id="dependentsCountSection" style="display: none;">
+            <div class="input-group">
+              <label>Number of Dependents</label>
+              <input type="number" name="dependentsCount" min="0">
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2 class="gold-heading">Career Preferences</h2>
+          
+          <div class="input-group">
+            <label>Interest in Gigs</label>
+            <select name="gigInterest">
+              <option value="not-at-all">Not at All</option>
+              <option value="somewhat">Somewhat</option>
+              <option value="very-open">Very Open</option>
+            </select>
+          </div>
+          
+          <div class="toggle-group">
+            <div class="toggle-option" id="hasToolsYes">
+              <input type="radio" name="hasTools" value="true" checked>
+              <label>I have tools/equipment</label>
+            </div>
+            <div class="toggle-option" id="hasToolsNo">
+              <input type="radio" name="hasTools" value="false">
+              <label>I don't have tools</label>
+            </div>
+          </div>
+          
+          <div class="toggle-group">
+            <div class="toggle-option" id="willingToRelocateYes">
+              <input type="radio" name="willingToRelocate" value="true" checked>
+              <label>Willing to relocate</label>
+            </div>
+            <div class="toggle-option" id="willingToRelocateNo">
+              <input type="radio" name="willingToRelocate" value="false">
+              <label>Not willing to relocate</label>
+            </div>
+          </div>
+        </div>
+        
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline prev-btn" data-target="section3">← Back</button>
+          <button type="button" class="btn next-btn" data-target="section5">Next →</button>
+        </div>
+      </div>
 
-    <!-- Summary Frequency -->
-    <label>Summary Frequency:</label>
-    <select name="summaryFrequency">
-      <option value="daily">Daily</option>
-      <option value="weekly" selected>Weekly</option>
-      <option value="bi-weekly">Bi-weekly</option>
-      <option value="monthly">Monthly</option>
-    </select>
+      <!-- Section 5: Final Details -->
+      <div class="section-container" id="section5">
+        <div class="card">
+          <h2 class="gold-heading">Financial Goals</h2>
+          
+          <div class="input-group">
+            <label>Top Financial Priority</label>
+            <select name="goalPriority">
+              <option value="build-emergency-fund">Build Emergency Fund</option>
+              <option value="reduce-debt">Reduce Debt</option>
+              <option value="cover-rent">Cover Rent</option>
+              <option value="invest-small">Invest Small</option>
+              <option value="learn-skill">Learn Skill</option>
+            </select>
+          </div>
+          
+          <div class="repeating-group">
+            <h3 class="gold-heading" style="font-size: 1.1rem;">Specific Goals</h3>
+            
+            <div id="financialGoalsContainer">
+              <div class="entry-card">
+                <button class="delete-entry">×</button>
+                
+                <div class="input-group">
+                  <label>Goal Name</label>
+                  <input type="text" name="financialGoals[0][name]" placeholder="e.g., Emergency fund">
+                </div>
+                
+                <div class="inline-group">
+                  <div class="input-group">
+                    <label>Type</label>
+                    <select name="financialGoals[0][type]">
+                      <option value="job-search">Job Search</option>
+                      <option value="emergency-fund">Emergency Fund</option>
+                      <option value="debt-repayment">Debt Repayment</option>
+                      <option value="skill-development">Skill Development</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </div>
+                  
+                  <div class="input-group">
+                    <label>Priority</label>
+                    <select name="financialGoals[0][priority]">
+                      <option value="critical">Critical</option>
+                      <option value="high">High</option>
+                      <option value="medium" selected>Medium</option>
+                      <option value="low">Low</option>
+                    </select>
+                  </div>
+                </div>
+                
+                <div class="inline-group">
+                  <div class="input-group">
+                    <label>Target Amount ($)</label>
+                    <input type="number" name="financialGoals[0][targetAmount]">
+                  </div>
+                  
+                  <div class="input-group">
+                    <label>Target Date</label>
+                    <input type="date" name="financialGoals[0][targetDate]">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <button type="button" class="add-entry" id="addFinancialGoal">+ Add Goal</button>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2 class="gold-heading">Settings</h2>
+          
+          <div class="input-group">
+            <label>Summary Frequency</label>
+            <select name="summaryFrequency">
+              <option value="daily">Daily</option>
+              <option value="weekly" selected>Weekly</option>
+              <option value="bi-weekly">Bi-weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+          
+          <div class="input-group">
+            <label>Which resources would you like?</label>
+            <div class="toggle-group" style="flex-wrap: wrap;">
+              <div class="toggle-option" style="flex: none; width: calc(33.333% - 0.66rem);">
+                <input type="checkbox" name="supportResources[wantsBudgetHelp]" value="true">
+                <label>Budget Help</label>
+              </div>
+              <div class="toggle-option" style="flex: none; width: calc(33.333% - 0.66rem);">
+                <input type="checkbox" name="supportResources[wantsJobResources]" value="true">
+                <label>Job Resources</label>
+              </div>
+              <div class="toggle-option" style="flex: none; width: calc(33.333% - 0.66rem);">
+                <input type="checkbox" name="supportResources[wantsDebtAdvice]" value="true">
+                <label>Debt Advice</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline prev-btn" data-target="section4">← Back</button>
+          <button type="submit" class="btn">Complete Profile</button>
+        </div>
+      </div>
+    </form>
+  </div>
 
-    <!-- Support Resources -->
-    <fieldset>
-      <legend>Support Resources</legend>
-      <label>Want Budget Help?</label>
-      <select name="supportResources[wantsBudgetHelp]">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-      <label>Want Job Resources?</label>
-      <select name="supportResources[wantsJobResources]">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-      <label>Want Debt Advice?</label>
-      <select name="supportResources[wantsDebtAdvice]">
-        <option value="true">Yes</option>
-        <option value="false">No</option>
-      </select>
-    </fieldset>
-
-    <br />
-    <button type="submit">Submit Profile</button>
-  </form>
-
-
+  <script src="/scripts/unemployed.js"></script>
 </body>
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const hasWorkedSelect = document.getElementById("hasWorkedSelect");
-    const lastJobDetailsSection = document.getElementById("lastJobDetailsSection");
-
-    const hasDebtSelect = document.getElementById("hasDebtSelect");
-    const debtSection = document.getElementById("debtSection");
-
-    hasWorkedSelect.addEventListener("change", () => {
-      lastJobDetailsSection.style.display = hasWorkedSelect.value === "yes" ? "block" : "none";
-    });
-
-    hasDebtSelect.addEventListener("change", () => {
-      debtSection.style.display = hasDebtSelect.value === "yes" ? "block" : "none";
-    });
-  });
-</script>
-
 </html>

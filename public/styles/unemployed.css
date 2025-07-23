@@ -1,0 +1,308 @@
+:root {
+    --bg-dark: #0F0F0F;
+    --card-bg: #121212;
+    --gold: #FFD700;
+    --gold-light: rgba(255, 215, 0, 0.3);
+    --text-light: #FFFFFF;
+    --text-muted: #AAAAAA;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.25);
+    --transition: all 0.3s ease;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Montserrat', Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    padding: 2rem;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.progress-bar {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.progress-bar::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: var(--border-color);
+    z-index: -1;
+}
+
+.progress-step {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: var(--card-bg);
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    position: relative;
+    transition: var(--transition);
+}
+
+.progress-step.active {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px var(--gold-light);
+}
+
+.progress-step.completed {
+    background-color: var(--gold);
+    color: var(--bg-dark);
+    border-color: var(--gold);
+}
+
+.progress-step span {
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.section-container {
+    display: none;
+    animation: fadeIn 0.4s ease;
+}
+
+.section-container.active {
+    display: block;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+}
+
+.card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 0 15px var(--gold-light);
+}
+
+.gold-heading {
+    color: var(--gold);
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+}
+
+.gold-heading::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.input-group {
+    margin-bottom: 1.25rem;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--text-light);
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 0.8rem;
+    background-color: #1E1E1E;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-sm);
+    color: var(--text-light);
+    font-family: inherit;
+    font-size: 0.9rem;
+    transition: var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 2px var(--gold-light);
+}
+
+input::placeholder, textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.inline-group {
+    display: flex;
+    gap: 1rem;
+}
+
+.inline-group .input-group {
+    flex: 1;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.8rem 1.8rem;
+    background: var(--gold);
+    color: var(--bg-dark);
+    border: none;
+    border-radius: 999px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px var(--gold-light);
+}
+
+.btn-outline {
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+}
+
+.btn-outline:hover {
+    background: var(--gold-light);
+}
+
+.btn-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 2rem;
+}
+
+.toggle-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.toggle-option {
+    flex: 1;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.toggle-option.selected {
+    border-color: var(--gold);
+    background-color: var(--gold-light);
+}
+
+.toggle-option input {
+    display: none;
+}
+
+.repeating-group {
+    margin-top: 1.5rem;
+}
+
+.entry-card {
+    background-color: rgba(30, 30, 30, 0.5);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    position: relative;
+    animation: slideIn 0.3s ease;
+}
+
+.delete-entry {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: var(--transition);
+}
+
+.delete-entry:hover {
+    color: var(--gold);
+    transform: scale(1.1);
+}
+
+.add-entry {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: 2px dashed var(--border-color);
+    color: var(--text-light);
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    transition: var(--transition);
+    font-weight: 500;
+}
+
+.add-entry:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-10px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 var(--gold-light); }
+    70% { box-shadow: 0 0 0 8px rgba(255, 215, 0, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(255, 215, 0, 0); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    body {
+    padding: 1rem;
+    }
+    
+    .inline-group {
+    flex-direction: column;
+    gap: 0;
+    }
+    
+    .toggle-group {
+    flex-direction: column;
+    }
+}
