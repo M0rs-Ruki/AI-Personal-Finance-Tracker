@@ -52,7 +52,6 @@ const StudentPage = async (req, res) => {
     await newStudent.save();
     res.redirect("/dashboard");
     // log(newStudent);
-
   } catch (err) {
     console.error("Error during student page:", err);
     res.status(500).send("Internal Server Error");
@@ -133,7 +132,6 @@ const EmployerPage = async (req, res) => {
     await newEmployer.save();
 
     res.redirect("/dashboard");
-
   } catch (err) {
     console.error("Error saving employer data:", err);
     res.status(500).json({ message: "Server error", error: err.message });
@@ -152,10 +150,12 @@ const UnEmployedPage = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Prevent duplicate entries
+    // Prevent duplicate profile
     const existing = await UnEmployed.findOne({ userId });
     if (existing) {
-      return res.status(400).json({ message: "Profile already exists for this user" });
+      return res
+        .status(400)
+        .json({ message: "Profile already exists for this user" });
     }
 
     const newUnEmployed = new UnEmployed({
@@ -163,19 +163,38 @@ const UnEmployedPage = async (req, res) => {
       employmentStatus: req.body.employmentStatus || "actively-seeking",
       lastJobDetails: req.body.lastJobDetails || {},
       currentIncome: parseFloat(req.body.currentIncome || 0),
-      incomeSources: Array.isArray(req.body.incomeSources) ? req.body.incomeSources : [],
+      incomeSources: Array.isArray(req.body.incomeSources)
+        ? req.body.incomeSources
+        : [],
       savingsDetails: req.body.savingsDetails || {},
-      regularExpenses: Array.isArray(req.body.regularExpenses) ? req.body.regularExpenses : [],
-      budgetLimits: Array.isArray(req.body.budgetLimits) ? req.body.budgetLimits : [],
-      financialGoals: Array.isArray(req.body.financialGoals) ? req.body.financialGoals : [],
+      regularExpenses: Array.isArray(req.body.regularExpenses)
+        ? req.body.regularExpenses
+        : [],
+      budgetLimits: Array.isArray(req.body.budgetLimits)
+        ? req.body.budgetLimits
+        : [],
+      financialGoals: Array.isArray(req.body.financialGoals)
+        ? req.body.financialGoals
+        : [],
       jobSearchDetails: req.body.jobSearchDetails || {},
-      summaryFrequency: req.body.summaryFrequency || 'weekly',
-      supportResources: req.body.supportResources || {}
+      summaryFrequency: req.body.summaryFrequency || "weekly",
+      supportResources: req.body.supportResources || {},
+
+      // Add newly introduced //
+      debt: req.body.debt || {},
+      comfortBudget: parseFloat(req.body.comfortBudget || 0),
+      runwayEstimate: parseFloat(req.body.runwayEstimate || 0),
+      livingSituation: req.body.livingSituation || "with-family",
+      hasDependents: req.body.hasDependents === "true",
+      dependentsCount: parseInt(req.body.dependentsCount || 0),
+      gigInterest: req.body.gigInterest || "somewhat",
+      hasTools: req.body.hasTools === "true",
+      willingToRelocate: req.body.willingToRelocate === "true",
+      goalPriority: req.body.goalPriority || "build-emergency-fund",
     });
 
     await newUnEmployed.save();
     res.redirect("/dashboard");
-
   } catch (err) {
     console.error("Error in UnEmployedPage:", err);
     res.status(500).json({ message: "Server error", error: err.message });

@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UnEmployed Profile Setup</title>
+  <style>
+    body { font-family: Arial; padding: 2rem; max-width: 700px; margin: auto; }
+    input, select, textarea { width: 100%; padding: 0.5rem; margin-top: 5px; margin-bottom: 15px; }
+    label { font-weight: bold; display: block; }
+    .inline-group { display: flex; gap: 10px; }
+  </style>
+</head>
+<body>
+
+  <h2>UnEmployed Profile Setup</h2>
+  <form action="/userType/unemployed" method="POST">
+    <!-- Required: User ID -->
+    <input type="hidden" name="userId" value="<%= userId %>">
+
+    <!-- Employment Status -->
+    <label>Employment Status:</label>
+    <select name="employmentStatus" required>
+      <option value="actively-seeking">Actively Seeking</option>
+      <option value="taking-break">Taking a Break</option>
+      <option value="studying">Studying</option>
+      <option value="caring">Caring</option>
+      <option value="disabled">Disabled</option>
+    </select>
+
+    <!-- Last Job Details -->
+    <fieldset>
+      <legend>Last Job Details</legend>
+      <label>Industry:</label>
+      <input type="text" name="lastJobDetails[industry]" />
+      <label>Position:</label>
+      <input type="text" name="lastJobDetails[position]" />
+      <label>Duration (months):</label>
+      <input type="number" name="lastJobDetails[duration]" min="0" />
+    </fieldset>
+
+    <!-- Current Income -->
+    <label>Current Income:</label>
+    <input type="number" step="500" name="currentIncome" />
+
+    <!-- Income Sources (add at least one) -->
+    <fieldset>
+      <legend>Income Sources</legend>
+      <div>
+        <label>Source Type:</label>
+        <select name="incomeSources[0][sourceType]">
+          <option value="freelance">Freelance</option>
+          <option value="government-aid">Government Aid</option>
+          <option value="family-support">Family Support</option>
+          <option value="savings">Savings</option>
+          <option value="part-time">Part-Time</option>
+          <option value="other">Other</option>
+        </select>
+        <label>Amount:</label>
+        <input type="number" step="500" name="incomeSources[0][amount]" />
+        <label>Frequency:</label>
+        <select name="incomeSources[0][frequency]">
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="bi-weekly">Bi-weekly</option>
+          <option value="monthly">Monthly</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="annually">Annually</option>
+          <option value="irregular">Irregular</option>
+        </select>
+        <label>Description:</label>
+        <input type="text" name="incomeSources[0][description]" />
+      </div>
+    </fieldset>
+
+    <!-- Debt -->
+    <fieldset>
+      <legend>Debt</legend>
+      <label>Amount:</label>
+      <input type="number" name="debt[amount]" step="500" />
+      <label>Monthly Payment:</label>
+      <input type="number" name="debt[monthlyPayment]" step="500" />
+      <label>Type:</label>
+      <select name="debt[type]">
+        <option value="credit-card">Credit Card</option>
+        <option value="loan">Loan</option>
+        <option value="student-loan">Student Loan</option>
+        <option value="other">Other</option>
+      </select>
+    </fieldset>
+
+    <!-- Comfort Budget & Runway Estimate -->
+    <label>Comfort Budget:</label>
+    <input type="number" step="500" name="comfortBudget" />
+    <label>Runway Estimate (months):</label>
+    <input type="number" step="500" name="runwayEstimate" />
+
+    <!-- Living Situation -->
+    <label>Living Situation:</label>
+    <select name="livingSituation">
+      <option value="alone">Alone</option>
+      <option value="with-family">With Family</option>
+      <option value="with-roommates">With Roommates</option>
+    </select>
+
+    <!-- Dependents -->
+    <label>Has Dependents:</label>
+    <select name="hasDependents">
+      <option value="false">No</option>
+      <option value="true">Yes</option>
+    </select>
+    <label>Number of Dependents:</label>
+    <input type="number" name="dependentsCount" min="0" />
+
+    <!-- Gig Interest & Tools -->
+    <label>Interest in Gigs:</label>
+    <select name="gigInterest">
+      <option value="not-at-all">Not at All</option>
+      <option value="somewhat">Somewhat</option>
+      <option value="very-open">Very Open</option>
+    </select>
+
+    <label>Owns Tools:</label>
+    <select name="hasTools">
+      <option value="true">Yes</option>
+      <option value="false">No</option>
+    </select>
+
+    <!-- Relocation -->
+    <label>Willing to Relocate:</label>
+    <select name="willingToRelocate">
+      <option value="true">Yes</option>
+      <option value="false">No</option>
+    </select>
+
+    <!-- Goal Priority -->
+    <label>Top Financial Priority:</label>
+    <select name="goalPriority">
+      <option value="build-emergency-fund">Build Emergency Fund</option>
+      <option value="reduce-debt">Reduce Debt</option>
+      <option value="cover-rent">Cover Rent</option>
+      <option value="invest-small">Invest Small</option>
+      <option value="learn-skill">Learn Skill</option>
+    </select>
+
+    <!-- Savings Details -->
+    <fieldset>
+      <legend>Savings</legend>
+      <label>Amount Saved:</label>
+      <input type="number" step="500" name="savingsDetails[amount]" />
+      <label>Emergency Fund:</label>
+      <input type="number" step="500" name="savingsDetails[emergencyFund]" />
+    </fieldset>
+
+    <!-- Regular Expenses -->
+    <fieldset>
+      <legend>Regular Expenses</legend>
+      <div>
+        <input type="text" name="regularExpenses[0][category]" placeholder="Category" />
+        <input type="number" name="regularExpenses[0][amount]" placeholder="Amount" />
+        <select name="regularExpenses[0][frequency]">
+          <option value="monthly">Monthly</option>
+          <option value="weekly">Weekly</option>
+          <option value="daily">Daily</option>
+          <option value="quarterly">Quarterly</option>
+          <option value="annually">Annually</option>
+        </select>
+        <label>Essential:</label>
+        <select name="regularExpenses[0][essential]">
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <!-- Budget Limits -->
+    <fieldset>
+      <legend>Budget Limits</legend>
+      <div>
+        <input type="text" name="budgetLimits[0][category]" placeholder="Category" />
+        <input type="number" name="budgetLimits[0][limit]" placeholder="Limit" />
+        <input type="number" name="budgetLimits[0][currentSpending]" placeholder="Current Spending" />
+      </div>
+    </fieldset>
+
+    <!-- Financial Goals -->
+    <fieldset>
+      <legend>Financial Goals</legend>
+      <div>
+        <input type="text" name="financialGoals[0][name]" placeholder="Goal Name" />
+        <select name="financialGoals[0][type]">
+          <option value="job-search">Job Search</option>
+          <option value="emergency-fund">Emergency Fund</option>
+          <option value="debt-repayment">Debt Repayment</option>
+          <option value="skill-development">Skill Development</option>
+          <option value="other">Other</option>
+        </select>
+        <input type="number" name="financialGoals[0][targetAmount]" placeholder="Target Amount" />
+        <input type="date" name="financialGoals[0][targetDate]" />
+        <select name="financialGoals[0][priority]">
+          <option value="critical">Critical</option>
+          <option value="high">High</option>
+          <option value="medium" selected>Medium</option>
+          <option value="low">Low</option>
+        </select>
+      </div>
+    </fieldset>
+
+    <!-- Job Search Details -->
+    <fieldset>
+      <legend>Job Search</legend>
+      <label>Actively Searching:</label>
+      <select name="jobSearchDetails[active]">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <label>Applications/Week:</label>
+      <input type="number" name="jobSearchDetails[applicationsPerWeek]" />
+      <label>Job Search Budget:</label>
+      <input type="number" name="jobSearchDetails[jobSearchBudget]" />
+      <label>Industries Targeted (comma-separated):</label>
+      <input type="text" name="jobSearchDetails[industriesTargeted]">
+      <label>Skills to Develop (comma-separated):</label>
+      <input type="text" name="jobSearchDetails[skillsDevelopment]">
+    </fieldset>
+
+    <!-- Summary Frequency -->
+    <label>Summary Frequency:</label>
+    <select name="summaryFrequency">
+      <option value="daily">Daily</option>
+      <option value="weekly" selected>Weekly</option>
+      <option value="bi-weekly">Bi-weekly</option>
+      <option value="monthly">Monthly</option>
+    </select>
+
+    <!-- Support Resources -->
+    <fieldset>
+      <legend>Support Resources</legend>
+      <label>Want Budget Help?</label>
+      <select name="supportResources[wantsBudgetHelp]">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <label>Want Job Resources?</label>
+      <select name="supportResources[wantsJobResources]">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+      <label>Want Debt Advice?</label>
+      <select name="supportResources[wantsDebtAdvice]">
+        <option value="true">Yes</option>
+        <option value="false">No</option>
+      </select>
+    </fieldset>
+
+    <br />
+    <button type="submit">Submit Profile</button>
+  </form>
+
+
+</body>
+</html>
