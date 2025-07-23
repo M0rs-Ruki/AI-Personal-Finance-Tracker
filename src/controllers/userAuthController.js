@@ -151,12 +151,12 @@ const UnEmployedPage = async (req, res) => {
     }
 
     // Prevent duplicate profile
-    const existing = await UnEmployed.findOne({ userId });
-    if (existing) {
-      return res
-        .status(400)
-        .json({ message: "Profile already exists for this user" });
-    }
+    // const existing = await UnEmployed.findOne({ userId });
+    // if (existing) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Profile already exists for this user" });
+    // }
 
     const newUnEmployed = new UnEmployed({
       userId,

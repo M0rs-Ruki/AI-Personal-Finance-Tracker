@@ -248,3 +248,29 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     });
 });
+
+
+// Generic toggle group logic
+document.querySelectorAll('.toggle-group').forEach(group => {
+    const options = group.querySelectorAll('.toggle-option');
+
+    options.forEach(option => {
+        option.addEventListener('click', () => {
+            // Remove .selected from all options in the group
+            options.forEach(opt => opt.classList.remove('selected'));
+
+            // Add .selected to the clicked one
+            option.classList.add('selected');
+
+            // Set the actual radio input as checked
+            const input = option.querySelector('input[type="radio"]');
+            if (input) input.checked = true;
+        });
+
+        // On load, if input is checked, mark it as selected
+        const input = option.querySelector('input[type="radio"]');
+        if (input && input.checked) {
+            option.classList.add('selected');
+        }
+    });
+});
