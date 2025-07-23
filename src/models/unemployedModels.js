@@ -7,8 +7,9 @@ const unEmployedSchema = new mongoose.Schema(
       ref: "User",
       required: true,
       index: true,
-      unique: true, // Ensure one profile per user
+      unique: true, 
     },
+
     employmentStatus: {
       type: String,
       enum: [
@@ -20,16 +21,19 @@ const unEmployedSchema = new mongoose.Schema(
       ],
       default: "actively-seeking",
     },
+
     lastJobDetails: {
       industry: { type: String, trim: true, maxlength: 100 },
       position: { type: String, trim: true, maxlength: 100 },
-      duration: Number, // in months
+      duration: Number,
     },
+
     currentIncome: {
       type: Number,
       min: 0,
       set: (value) => Math.round(value * 100) / 100,
     },
+
     incomeSources: [
       {
         sourceType: {
@@ -81,19 +85,24 @@ const unEmployedSchema = new mongoose.Schema(
     
     comfortBudget: { type: Number, min: 0 }, 
     runwayEstimate: { type: Number, min: 0 },
+
     livingSituation: {
       type: String,
       enum: ["alone", "with-family", "with-roommates"],
     },
+
     hasDependents: { type: Boolean, default: false },
     dependentsCount: { type: Number, min: 0 },
+
     gigInterest: {
       type: String,
       enum: ["not-at-all", "somewhat", "very-open"],
       default: "somewhat",
     },
+
     hasTools: { type: Boolean, default: true },
     willingToRelocate: { type: Boolean, default: false },
+
     goalPriority: {
       type: String,
       enum: [
@@ -104,11 +113,13 @@ const unEmployedSchema = new mongoose.Schema(
         "learn-skill",
       ],
     },
+
     savingsDetails: {
       amount: { type: Number, min: 0, default: 0 },
       emergencyFund: { type: Number, min: 0 },
       monthsCovered: { type: Number, min: 0, max: 36 },
     },
+
     regularExpenses: [
       {
         category: { type: String, trim: true, maxlength: 50 },
@@ -121,6 +132,7 @@ const unEmployedSchema = new mongoose.Schema(
         essential: { type: Boolean, default: true },
       },
     ],
+
     budgetLimits: [
       {
         category: { type: String, trim: true, maxlength: 50 },
@@ -128,6 +140,7 @@ const unEmployedSchema = new mongoose.Schema(
         currentSpending: { type: Number, default: 0, min: 0 },
       },
     ],
+
     financialGoals: [
       {
         name: { type: String, trim: true, maxlength: 100 },
@@ -152,6 +165,7 @@ const unEmployedSchema = new mongoose.Schema(
         progress: { type: Number, min: 0, max: 100, default: 0 },
       },
     ],
+
     jobSearchDetails: {
       active: { type: Boolean, default: false },
       applicationsPerWeek: { type: Number, min: 0, max: 50 },
@@ -159,16 +173,19 @@ const unEmployedSchema = new mongoose.Schema(
       industriesTargeted: [String],
       skillsDevelopment: [String],
     },
+
     summaryFrequency: {
       type: String,
       enum: ["daily", "weekly", "bi-weekly", "monthly"],
       default: "weekly",
     },
+
     supportResources: {
       wantsBudgetHelp: { type: Boolean, default: false },
       wantsJobResources: { type: Boolean, default: false },
       wantsDebtAdvice: { type: Boolean, default: false },
     },
+
   },
   {
     timestamps: true,

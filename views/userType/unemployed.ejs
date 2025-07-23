@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>UnEmployed Profile Setup</title>
+  <link rel="shortcut icon" href="/images/logo.png" type="image/x-icon">
   <style>
     body { font-family: Arial; padding: 2rem; max-width: 700px; margin: auto; }
     input, select, textarea { width: 100%; padding: 0.5rem; margin-top: 5px; margin-bottom: 15px; }
@@ -28,7 +29,15 @@
       <option value="disabled">Disabled</option>
     </select>
 
-    <!-- Last Job Details -->
+  <!-- Work Experience Toggle -->
+  <label for="hasWorkedSelect">Have you worked before?</label>
+  <select id="hasWorkedSelect">
+    <option value="no" selected>No</option>
+    <option value="yes">Yes</option>
+  </select>
+
+  <!-- Last Job Details (conditionally shown) -->
+  <div id="lastJobDetailsSection" style="display: none;">
     <fieldset>
       <legend>Last Job Details</legend>
       <label>Industry:</label>
@@ -38,6 +47,7 @@
       <label>Duration (months):</label>
       <input type="number" name="lastJobDetails[duration]" min="0" />
     </fieldset>
+  </div>
 
     <!-- Current Income -->
     <label>Current Income:</label>
@@ -73,21 +83,30 @@
       </div>
     </fieldset>
 
-    <!-- Debt -->
-    <fieldset>
-      <legend>Debt</legend>
-      <label>Amount:</label>
-      <input type="number" name="debt[amount]" step="500" />
-      <label>Monthly Payment:</label>
-      <input type="number" name="debt[monthlyPayment]" step="500" />
-      <label>Type:</label>
-      <select name="debt[type]">
-        <option value="credit-card">Credit Card</option>
-        <option value="loan">Loan</option>
-        <option value="student-loan">Student Loan</option>
-        <option value="other">Other</option>
-      </select>
-    </fieldset>
+    <!-- Debt Toggle -->
+    <label for="hasDebtSelect">Do you have any debt?</label>
+    <select id="hasDebtSelect">
+      <option value="no" selected>No</option>
+      <option value="yes">Yes</option>
+    </select>
+
+    <!-- Debt Details (conditionally shown) -->
+    <div id="debtSection" style="display: none;">
+      <fieldset>
+        <legend>Debt</legend>
+        <label>Amount:</label>
+        <input type="number" name="debt[amount]" step="0.01" />
+        <label>Monthly Payment:</label>
+        <input type="number" name="debt[monthlyPayment]" step="0.01" />
+        <label>Type:</label>
+        <select name="debt[type]">
+          <option value="credit-card">Credit Card</option>
+          <option value="loan">Loan</option>
+          <option value="student-loan">Student Loan</option>
+          <option value="other">Other</option>
+        </select>
+      </fieldset>
+    </div>
 
     <!-- Comfort Budget & Runway Estimate -->
     <label>Comfort Budget:</label>
@@ -259,4 +278,22 @@
 
 
 </body>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const hasWorkedSelect = document.getElementById("hasWorkedSelect");
+    const lastJobDetailsSection = document.getElementById("lastJobDetailsSection");
+
+    const hasDebtSelect = document.getElementById("hasDebtSelect");
+    const debtSection = document.getElementById("debtSection");
+
+    hasWorkedSelect.addEventListener("change", () => {
+      lastJobDetailsSection.style.display = hasWorkedSelect.value === "yes" ? "block" : "none";
+    });
+
+    hasDebtSelect.addEventListener("change", () => {
+      debtSection.style.display = hasDebtSelect.value === "yes" ? "block" : "none";
+    });
+  });
+</script>
+
 </html>
