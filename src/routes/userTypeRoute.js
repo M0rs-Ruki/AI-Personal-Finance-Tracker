@@ -5,6 +5,7 @@ import {log} from 'console';
 import { StudentPage,
     EmployerPage,
     UnEmployedPage,
+    RetiredPage
  } from "../controllers/userAuthController.js";
 import isLoggedIn from "../middlewares/isLoggedInMiddleware.js";
 
@@ -16,6 +17,7 @@ dotenv.config({path: './.env'});
 router.post('/student',isLoggedIn, StudentPage);
 router.post('/employed',isLoggedIn, EmployerPage);
 router.post('/unemployed',isLoggedIn, UnEmployedPage);
+router.post('/retired', RetiredPage);
 
 
 export default router;

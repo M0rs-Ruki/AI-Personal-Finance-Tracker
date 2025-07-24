@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Retired User Profile Setup</title>
+</head>
+<body>
+  <h1>Retired User Profile Setup</h1>
+  <form action="/userType/retired" method="POST">
+    <!-- Required -->
+    <input type="hidden" name="userId" value="<%= userId %>">
+
+    <label>Retirement Date:</label>
+    <input type="date" name="retirementDate"><br><br>
+
+    <h3>Pension Details</h3>
+    <label>Receives Pension:</label>
+    <input type="checkbox" name="pensionDetails[receivesPension]" value="true"><br>
+
+    <label>Pension Source Name:</label>
+    <input type="text" name="pensionDetails[sources][0][name]"><br>
+    <label>Amount:</label>
+    <input type="number" name="pensionDetails[sources][0][amount]" step="0.01"><br>
+    <label>Frequency:</label>
+    <select name="pensionDetails[sources][0][frequency]">
+      <option value="monthly">Monthly</option>
+      <option value="quarterly">Quarterly</option>
+      <option value="semi-annual">Semi-Annual</option>
+      <option value="annual">Annual</option>
+    </select><br>
+    <label>Taxable:</label>
+    <input type="checkbox" name="pensionDetails[sources][0][taxable]" value="true"><br><br>
+
+    <h3>Retirement Accounts</h3>
+    <label>Account Name:</label>
+    <input type="text" name="retirementAccounts[0][name]"><br>
+    <label>Type:</label>
+    <select name="retirementAccounts[0][type]">
+      <option value="401k">401k</option>
+      <option value="IRA">IRA</option>
+      <option value="Roth IRA">Roth IRA</option>
+      <option value="pension">Pension</option>
+      <option value="annuity">Annuity</option>
+      <option value="brokerage">Brokerage</option>
+      <option value="other">Other</option>
+    </select><br>
+    <label>Current Value:</label>
+    <input type="number" name="retirementAccounts[0][currentValue]" step="0.01"><br>
+    <label>Withdrawal Rate (%):</label>
+    <input type="number" name="retirementAccounts[0][withdrawalRate]" step="0.01"><br><br>
+
+    <h3>Other Income</h3>
+    <label>Source:</label>
+    <input type="text" name="otherIncomeSources[0][source]"><br>
+    <label>Amount:</label>
+    <input type="number" name="otherIncomeSources[0][amount]" step="0.01"><br>
+    <label>Frequency:</label>
+    <select name="otherIncomeSources[0][frequency]">
+      <option value="monthly">Monthly</option>
+      <option value="quarterly">Quarterly</option>
+      <option value="semi-annual">Semi-Annual</option>
+      <option value="annual">Annual</option>
+      <option value="occasional">Occasional</option>
+    </select><br><br>
+
+    <h3>Healthcare Details</h3>
+    <label>Has Coverage:</label>
+    <input type="checkbox" name="healthcareDetails[hasCoverage]" value="true"><br>
+    <label>Monthly Premium:</label>
+    <input type="number" name="healthcareDetails[monthlyPremium]" step="0.01"><br>
+    <label>Estimated Annual Expenses:</label>
+    <input type="number" name="healthcareDetails[estimatedAnnualExpenses]" step="0.01"><br><br>
+
+    <h3>Living</h3>
+    <label>Living Situation:</label>
+    <select name="livingSituation">
+      <option value="own-home">Own Home</option>
+      <option value="renting">Renting</option>
+      <option value="retirement-community">Retirement Community</option>
+      <option value="with-family">With Family</option>
+      <option value="assisted-living">Assisted Living</option>
+    </select><br><br>
+
+    <h3>Housing Expenses</h3>
+    <label>Mortgage/Rent:</label>
+    <input type="number" name="housingExpenses[mortgageOrRent]" step="0.01"><br>
+    <label>Property Tax:</label>
+    <input type="number" name="housingExpenses[propertyTax]" step="0.01"><br>
+    <label>Home Insurance:</label>
+    <input type="number" name="housingExpenses[homeInsurance]" step="0.01"><br><br>
+
+    <h3>Legacy Planning</h3>
+    <label>Has Will:</label>
+    <input type="checkbox" name="legacyPlanning[hasWill]" value="true"><br>
+    <label>Has Estate Plan:</label>
+    <input type="checkbox" name="legacyPlanning[hasEstatePlan]" value="true"><br><br>
+
+    <h3>Summary Frequency</h3>
+    <label>How often do you want summaries?</label>
+    <select name="summaryFrequency">
+      <option value="weekly">Weekly</option>
+      <option value="bi-weekly">Bi-weekly</option>
+      <option value="monthly" selected>Monthly</option>
+      <option value="quarterly">Quarterly</option>
+    </select><br><br>
+
+    <h3>Budget Preferences</h3>
+    <label>Travel Budget:</label>
+    <input type="number" name="budgetPreferences[travelBudget]" step="0.01"><br>
+    <label>Leisure Budget:</label>
+    <input type="number" name="budgetPreferences[leisureBudget]" step="0.01"><br>
+    <label>Healthcare Budget:</label>
+    <input type="number" name="budgetPreferences[healthcareBudget]" step="0.01"><br>
+    <label>Gifting Budget:</label>
+    <input type="number" name="budgetPreferences[giftingBudget]" step="0.01"><br><br>
+
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

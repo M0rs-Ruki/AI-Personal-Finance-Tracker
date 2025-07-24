@@ -151,12 +151,12 @@ const UnEmployedPage = async (req, res) => {
     }
 
     // Prevent duplicate profile
-    // const existing = await UnEmployed.findOne({ userId });
-    // if (existing) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Profile already exists for this user" });
-    // }
+    const existing = await UnEmployed.findOne({ userId });
+    if (existing) {
+      return res
+        .status(400)
+        .json({ message: "Profile already exists for this user" });
+    }
 
     const newUnEmployed = new UnEmployed({
       userId,
@@ -201,4 +201,57 @@ const UnEmployedPage = async (req, res) => {
   }
 };
 
-export { StudentPage, EmployerPage, UnEmployedPage };
+const RetiredPage = async (req, res) => {
+  try {
+    const {
+      userId,
+      retirementDate,
+      livingSituation,
+      summaryFrequency,
+      budgetPreferences = {},
+      pensionDetails = {},
+      retirementAccounts = [],
+      otherIncomeSources = [],
+      healthcareDetails = {},
+      housingExpenses = {},
+      legacyPlanning = {}
+    } = req.body;
+
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      return res.status(400).json({ message: "Invalid user ID format" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const existing = await Retired.findOne({ userId });
+    if (existing) {
+      return res.status(400).json({ message: "Profile already exists for this user" });
+    }
+
+    const newRetired = new Retired({
+      userId,
+      retirementDate,
+      livingSituation,
+      summaryFrequency,
+      budgetPreferences,
+      pensionDetails,
+      retirementAccounts: Array.isArray(retirementAccounts) ? retirementAccounts : [retirementAccounts],
+      otherIncomeSources: Array.isArray(otherIncomeSources) ? otherIncomeSources : [otherIncomeSources],
+      healthcareDetails,
+      housingExpenses,
+      legacyPlanning
+    });
+
+    await newRetired.save();
+    res.redirect("/dashboard");
+
+  } catch (err) {
+    console.error("Error in RetiredPage:", err);
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
+};
+
+export { StudentPage, EmployerPage, UnEmployedPage, RetiredPage };
