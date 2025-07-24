@@ -31,6 +31,7 @@
       <!-- Hidden User ID -->
       <input type="hidden" name="userId" value="<%= userId %>">
 
+
       <!-- Section 1: Employment Status -->
       <div class="section-container active" id="section1">
         <div class="card">
@@ -46,16 +47,53 @@
               <option value="disabled">Disabled</option>
             </select>
           </div>
-        </div>
-        
-        <div class="btn-group">
-          <div></div> <!-- Spacer -->
-          <button type="button" class="btn next-btn" data-target="section2">Next →</button>
-        </div>
-      </div>
 
-      <!-- Section 2: Work Experience -->
-      <div class="section-container" id="section2">
+          <!-- Job Search Status Question -->
+          <div class="input-group">
+            <label>Are you currently searching for jobs?</label>
+            <select name="jobSearching" id="jobSearching" onchange="toggleJobSearchDetails()">
+              <option value="">Select an option</option>
+              <option value="yes">Yes</option>
+              <option value="no">No</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Job Search Details Section (Hidden by default) -->
+        <div class="card" id="jobSearchDetailsCard" style="display: none;">
+          <h2 class="gold-heading"><i class="fas fa-search"></i> Job Search Details</h2>
+          
+          <div class="input-group">
+            <label>Actively Searching:</label>
+            <select name="jobSearchDetails[active]">
+              <option value="true">Yes</option>
+              <option value="false">No</option>
+            </select>
+          </div>
+          
+          <div class="inline-group">
+            <div class="input-group">
+              <label>Applications/Week:</label>
+              <input type="number" name="jobSearchDetails[applicationsPerWeek]">
+            </div>
+            
+            <div class="input-group">
+              <label>Job Search Budget:</label>
+              <input type="number" name="jobSearchDetails[jobSearchBudget]">
+            </div>
+          </div>
+          
+          <div class="input-group">
+            <label>Industries Targeted (comma-separated):</label>
+            <input type="text" name="jobSearchDetails[industriesTargeted]" placeholder="e.g., Tech, Healthcare, Education">
+          </div>
+          
+          <div class="input-group">
+            <label>Skills to Develop (comma-separated):</label>
+            <input type="text" name="jobSearchDetails[skillsDevelopment]" placeholder="e.g., JavaScript, Project Management, Data Analysis">
+          </div>
+        </div>
+
         <div class="card">
           <h2 class="gold-heading">Work Experience</h2>
           
@@ -93,15 +131,15 @@
             </div>
           </div>
         </div>
-        
+
         <div class="btn-group">
-          <button type="button" class="btn btn-outline prev-btn" data-target="section1">← Back</button>
-          <button type="button" class="btn next-btn" data-target="section3">Next →</button>
+          <div></div> <!-- Spacer -->
+          <button type="button" class="btn next-btn" data-target="section2">Next →</button>
         </div>
       </div>
 
-      <!-- Section 3: Financial Situation -->
-      <div class="section-container" id="section3">
+      <!-- Section 2: Work Experience -->
+      <div class="section-container" id="section2">
         <div class="card">
           <h2 class="gold-heading">Financial Situation</h2>
           
@@ -168,7 +206,6 @@
             
             <button type="button" class="add-entry" id="addIncomeSource">+ Add Income Source</button>
           </div>
-          
           <div class="toggle-group">
             <div class="toggle-option" id="hasDebtNo">
               <input type="radio" name="hasDebt" value="no">
@@ -207,6 +244,77 @@
               </div>
             </div>
           </div>
+        </div>
+        
+        <div class="btn-group">
+          <button type="button" class="btn btn-outline prev-btn" data-target="section1">← Back</button>
+          <button type="button" class="btn next-btn" data-target="section3">Next →</button>
+        </div>
+      </div>
+
+      <!-- Section 3: Financial Situation -->
+      <div class="section-container" id="section3">
+        <!-- Regular Expenses Section -->
+        <div class="card">
+          <h3 class="gold-heading"><i class="fas fa-receipt"></i> Regular Expenses</h3>
+          <div id="regularExpensesContainer">
+            <div class="entry-card">
+              <button class="delete-entry" style="display: none;">×</button>
+              <div class="input-group">
+                <label>Category</label>
+                <input type="text" name="regularExpenses[0][category]" placeholder="e.g., Rent, Food, Transportation">
+              </div>
+              <div class="inline-group">
+                <div class="input-group">
+                  <label>Amount</label>
+                  <input type="number" step="500" name="regularExpenses[0][amount]">
+                </div>
+                <div class="input-group">
+                  <label>Frequency</label>
+                  <select name="regularExpenses[0][frequency]">
+                    <option value="monthly">Monthly</option>
+                    <option value="weekly">Weekly</option>
+                    <option value="daily">Daily</option>
+                    <option value="quarterly">Quarterly</option>
+                    <option value="annually">Annually</option>
+                  </select>
+                </div>
+              </div>
+              <div class="input-group">
+                <label>Essential?</label>
+                <select name="regularExpenses[0][essential]">
+                  <option value="true">Yes</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="add-entry" id="addRegularExpense">+ Add Expense</button>
+        </div>
+
+        <!-- Budget Limits Section -->
+        <div class="card">
+          <h3 class="gold-heading"><i class="fas fa-chart-line"></i> Budget Limits</h3>
+          <div id="budgetLimitsContainer">
+            <div class="entry-card">
+              <button class="delete-entry" style="display: none;">×</button>
+              <div class="input-group">
+                <label>Category</label>
+                <input type="text" name="budgetLimits[0][category]" placeholder="e.g., Rent, Food, Transportation">
+              </div>
+              <div class="inline-group">
+                <div class="input-group">
+                  <label>Limit</label>
+                  <input type="number" step="500" name="budgetLimits[0][limit]">
+                </div>
+                <div class="input-group">
+                  <label>Current Spending</label>
+                  <input type="number" step="500" name="budgetLimits[0][currentSpending]">
+                </div>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="add-entry" id="addBudgetLimits">+ Add Budget Limit</button>
         </div>
         
         <div class="btn-group">

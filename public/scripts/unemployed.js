@@ -247,6 +247,93 @@ document.addEventListener('DOMContentLoaded', function() {
         this.closest('.entry-card').remove();
     });
     });
+
+    // Regular expenses
+    const regularExpensesContainer = document.getElementById('regularExpensesContainer');
+    const addRegularExpenseBtn = document.getElementById('addRegularExpense');
+
+    let regularExpenseCount = 1;
+
+    addRegularExpenseBtn.addEventListener('click', function() {
+        const newEntry = document.createElement('div');
+        newEntry.className = 'entry-card';
+        newEntry.innerHTML = `
+            <button class="delete-entry">×</button>
+            <div class="input-group">
+                <label>Category</label>
+                <input type="text" name="regularExpenses[${regularExpenseCount}][category]" placeholder="e.g., Rent, Food, Transportation">
+            </div>
+            <div class="inline-group">
+                <div class="input-group">
+                    <label>Amount</label>
+                    <input type="number" step="500" name="regularExpenses[${regularExpenseCount}][amount]">
+                </div>
+                <div class="input-group">
+                    <label>Frequency</label>
+                    <select name="regularExpenses[${regularExpenseCount}][frequency]">
+                        <option value="monthly">Monthly</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="daily">Daily</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="annually">Annually</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group">
+                <label>Essential?</label>
+                <select name="regularExpenses[${regularExpenseCount}][essential]">
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+        `;
+        
+        regularExpensesContainer.appendChild(newEntry);
+        regularExpenseCount++;
+        
+        // Add delete functionality
+        newEntry.querySelector('.delete-entry').addEventListener('click', function() {
+            newEntry.remove();
+        });
+    });
+
+    // Budget limits
+    const budgetLimitsContainer = document.getElementById('budgetLimitsContainer');
+    const addBudgetLimitsBtn = document.getElementById('addBudgetLimits');
+
+    let budgetLimitCount = 1;
+
+    addBudgetLimitsBtn.addEventListener('click', function() {
+        const newEntry = document.createElement('div');
+        newEntry.className = 'entry-card';
+        newEntry.innerHTML = `
+            <button class="delete-entry">×</button>
+            <div class="input-group">
+                <label>Category</label>
+                <input type="text" name="budgetLimits[${budgetLimitCount}][category]" placeholder="e.g., Rent, Food, Transportation">
+            </div>
+            <div class="inline-group">
+                <div class="input-group">
+                    <label>Limit</label>
+                    <input type="number" step="500" name="budgetLimits[${budgetLimitCount}][limit]">
+                </div>
+                <div class="input-group">
+                    <label>Current Spending</label>
+                    <input type="number" step="500" name="budgetLimits[${budgetLimitCount}][currentSpending]">
+                </div>
+            </div>
+        `;
+        
+        budgetLimitsContainer.appendChild(newEntry);
+        budgetLimitCount++;
+        
+        // Add delete functionality
+        newEntry.querySelector('.delete-entry').addEventListener('click', function() {
+            newEntry.remove();
+        });
+    });
+
+
 });
 
 
@@ -274,3 +361,15 @@ document.querySelectorAll('.toggle-group').forEach(group => {
         }
     });
 });
+
+
+function toggleJobSearchDetails() {
+  const jobSearching = document.getElementById('jobSearching').value;
+  const jobSearchDetailsCard = document.getElementById('jobSearchDetailsCard');
+  
+  if (jobSearching === 'yes') {
+    jobSearchDetailsCard.style.display = 'block';
+  } else {
+    jobSearchDetailsCard.style.display = 'none';
+  }
+}
