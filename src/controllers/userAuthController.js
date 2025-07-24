@@ -205,52 +205,75 @@ const RetiredPage = async (req, res) => {
   try {
     const {
       userId,
-      retirementDate,
-      livingSituation,
-      summaryFrequency,
-      budgetPreferences = {},
-      pensionDetails = {},
-      retirementAccounts = [],
-      otherIncomeSources = [],
-      healthcareDetails = {},
-      housingExpenses = {},
-      legacyPlanning = {}
+      pension,
+      retirementAccountWithdrawals,
+      otherIncomeSources,
+      housing,
+      healthcare,
+      otherExpenses,
+      retirementAccounts,
+      savingsGoals,
+      legacyPlanning
     } = req.body;
 
+    // ✅ Validate user ID format
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: "Invalid user ID format" });
     }
 
+    // ✅ Check if user exists
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
 
+    // ✅ Check for existing retired profile
     const existing = await Retired.findOne({ userId });
     if (existing) {
-      return res.status(400).json({ message: "Profile already exists for this user" });
+      return res.status(400).json({ message: "Retired profile already exists for this user" });
     }
 
+    // ✅ Create new Retired document with safe fallbacks
     const newRetired = new Retired({
       userId,
-      retirementDate,
-      livingSituation,
-      summaryFrequency,
-      budgetPreferences,
-      pensionDetails,
-      retirementAccounts: Array.isArray(retirementAccounts) ? retirementAccounts : [retirementAccounts],
-      otherIncomeSources: Array.isArray(otherIncomeSources) ? otherIncomeSources : [otherIncomeSources],
-      healthcareDetails,
-      housingExpenses,
-      legacyPlanning
+      pension,
+      retirementAccountWithdrawals: retirementAccountWithdrawals || [],
+      otherIncomeSources: otherIncomeSources || [],
+      housing: housing || {},
+      healthcare: healthcare || {},
+      otherExpenses: otherExpenses || [],
+      retirementAccounts: retirementAccounts || [],
+      savingsGoals: savingsGoals || [],
+      legacyPlanning: legacyPlanning || {}
     });
 
+    // ✅ Validate and save
+    await newRetired.validate();
     await newRetired.save();
-    res.redirect("/dashboard");
+
+    // ✅ Success response
+    return res.status(201).json({
+      message: "Retired profile created successfully",
+      data: newRetired
+    });
 
   } catch (err) {
-    console.error("Error in RetiredPage:", err);
-    res.status(500).json({ message: "Server error", error: err.message });
+    console.error("Error creating retired profile:", err);
+
+    // ✅ Validation error
+    if (err.name === "ValidationError") {
+      const errors = Object.values(err.errors).map(e => e.message);
+      return res.status(400).json({
+        message: "Validation failed",
+        errors
+      });
+    }
+
+    // ✅ Fallback error
+    return res.status(500).json({
+      message: "Server error",
+      error: err.message
+    });
   }
 };
 

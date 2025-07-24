@@ -1,315 +1,198 @@
 import mongoose from "mongoose";
 
-const retiredSchema = new mongoose.Schema({
+const retiredUserSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
+    required: true,
+    unique: true
   },
-  retirementDate: {
-    type: Date,
-  },
-  pensionDetails: {
-    receivesPension: {
-      type: Boolean,
-      default: false
-    },
-    sources: [{
-      name: {
-        type: String,
-        trim: true,
-        maxlength: 100
-      },
-      amount: {
-        type: Number,
-        min: 0
-      },
-      frequency: {
-        type: String,
-        enum: ['monthly', 'quarterly', 'semi-annual', 'annual'],
-        default: 'monthly'
-      },
-      taxable: {
-        type: Boolean,
-        default: true
-      }
-    }]
-  },
-  retirementAccounts: [{
-    name: {
+
+  // 1. INCOME SOURCES
+  pension: {
+    receives: { type: Boolean, default: false },
+    amount: { type: Number, min: 0 },
+    frequency: {
       type: String,
-      trim: true,
-      maxlength: 100
-    },
-    type: {
-      type: String,
-      enum: ['401k', 'IRA', 'Roth IRA', 'pension', 'annuity', 'brokerage', 'other'],
-      required: true
-    },
-    currentValue: {
-      type: Number,
-      min: 0,
-      required: true
-    },
-    withdrawalRate: {
-      type: Number,
-      min: 0,
-      max: 100
+      enum: ['monthly', 'quarterly', 'semi-annual', 'annual'],
+      default: 'monthly'
     }
-  }],
+  },
   otherIncomeSources: [{
-    source: {
-      type: String,
-      trim: true,
-      maxlength: 100
-    },
-    amount: {
-      type: Number,
-      min: 0,
-    },
+    source: { type: String, trim: true },
+    amount: { type: Number, min: 0 },
     frequency: {
       type: String,
       enum: ['monthly', 'quarterly', 'semi-annual', 'annual', 'occasional'],
       default: 'monthly'
     }
   }],
-  healthcareDetails: {
-    hasCoverage: {
-      type: Boolean,
-      default: false
-    },
-    monthlyPremium: {
-      type: Number,
-      min: 0,
-      default: 0
-    },
-    outOfPocketMax: {
-      type: Number,
-      min: 0
-    },
-    estimatedAnnualExpenses: {
-      type: Number,
-      min: 0
-    },
-    longTermCareCoverage: {
-      type: Boolean,
-      default: false
-    }
-  },
-  livingSituation: {
-    type: String,
-    enum: ['own-home', 'renting', 'retirement-community', 'with-family', 'assisted-living'],
-    default: 'own-home'
-  },
-  housingExpenses: {
-    mortgageOrRent: {
-      type: Number,
-      min: 0
-    },
-    propertyTax: {
-      type: Number,
-      min: 0
-    },
-    homeInsurance: {
-      type: Number,
-      min: 0
-    },
-    maintenance: {
-      type: Number,
-      min: 0
-    }
-  },
-  financialResponsibilities: [{
-    name: {
+  retirementAccountWithdrawals: [{
+    type: {
       type: String,
-      trim: true,
-      maxlength: 100
+      enum: [
+        'EPF (Employee Provident Fund)',
+        'NPS (National Pension System)',
+        'PPF (Public Provident Fund)',
+        'Annuity (Pension Plans from Insurance Companies)',
+        'Other'
+      ],
+      trim: true
     },
-    amount: {
-      type: Number,
-      min: 0,
-    },
+    monthlyAmount: { type: Number, min: 0 }
+  }],
+
+  // 2. EXPENSES
+  housing: {
+    mortgageOrRent: { type: Number, min: 0 },
+    insurance: { type: Number, min: 0 },
+    maintenance: { type: Number, min: 0 }
+  },
+  healthcare: {
+    monthlyPremium: { type: Number, min: 0 },
+    outOfPocket: { type: Number, min: 0 }
+  },
+  otherExpenses: [{
+    name: { type: String, trim: true },
+    amount: { type: Number, min: 0 },
     frequency: {
       type: String,
-      enum: ['monthly', 'quarterly', 'annual', 'one-time'],
+      enum: ['monthly', 'quarterly', 'annual'],
       default: 'monthly'
-    },
-    endDate: Date,
-    description: {
-      type: String,
-      trim: true,
-      maxlength: 200
     }
   }],
+
+  // 3. ASSETS
+  retirementAccounts: [{
+    type: {
+      type: String,
+      enum: [
+        'EPF (Employee Provident Fund)',
+        'NPS (National Pension System)',
+        'PPF (Public Provident Fund)',
+        'Annuity (Pension Plans from Insurance Companies)',
+        'Other'
+      ],
+      trim: true
+    },
+    currentValue: { type: Number, min: 0 }
+  }],
+
+  // 4. SAVINGS GOALS
   savingsGoals: [{
-    name: {
+    name: { type: String, trim: true },
+    targetAmount: { type: Number, min: 0 },
+    currentAmount: { type: Number, min: 0 },
+    category: {
       type: String,
-      trim: true,
-      maxlength: 100
-    },
-    targetAmount: {
-      type: Number,
-      min: 0,
-    },
-    currentAmount: {
-      type: Number,
-      min: 0,
-      default: 0
-    },
-    targetDate: Date,
-    priority: {
-      type: String,
-      enum: ['essential', 'important', 'discretionary'],
-      default: 'important'
+      enum: ['travel', 'medical', 'gifts', 'other'],
+      default: 'other'
     }
   }],
+
+  // 5. LEGACY & PLANNING
   legacyPlanning: {
-    hasEstatePlan: {
-      type: Boolean,
-      default: false
-    },
-    hasWill: {
-      type: Boolean,
-      default: false
-    },
+    hasWill: { type: Boolean, default: false },
+    hasEstatePlan: { type: Boolean, default: false },
     beneficiaries: [{
       name: String,
       relationship: String,
-      percentage: Number
+      percentage: { type: Number, min: 0, max: 100 }
     }]
-  },
-  summaryFrequency: {
-    type: String,
-    enum: ['weekly', 'bi-weekly', 'monthly', 'quarterly'],
-    default: 'monthly'
-  },
-  budgetPreferences: {
-    travelBudget: {
-      type: Number,
-      min: 0
-    },
-    leisureBudget: {
-      type: Number,
-      min: 0
-    },
-    healthcareBudget: {
-      type: Number,
-      min: 0
-    },
-    giftingBudget: {
-      type: Number,
-      min: 0
-    }
   }
+
 }, {
   timestamps: true,
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });
 
-// Virtual for total monthly income
-retiredSchema.virtual('totalMonthlyIncome').get(function() {
+// ✅ Virtual: Total Monthly Income
+retiredUserSchema.virtual('totalMonthlyIncome').get(function () {
   let total = 0;
-  
-  // Pension income
-  this.pensionDetails.sources.forEach(pension => {
-    if (pension.frequency === 'monthly') {
-      total += pension.amount || 0;
-    } else if (pension.frequency === 'quarterly') {
-      total += (pension.amount || 0) / 3;
-    } else if (pension.frequency === 'semi-annual') {
-      total += (pension.amount || 0) / 6;
-    } else if (pension.frequency === 'annual') {
-      total += (pension.amount || 0) / 12;
-    }
+
+  if (this.pension?.receives) {
+    const { amount, frequency } = this.pension;
+    const multiplier = {
+      monthly: 1,
+      quarterly: 1 / 3,
+      'semi-annual': 1 / 6,
+      annual: 1 / 12
+    };
+    total += (amount || 0) * (multiplier[frequency] || 1);
+  }
+
+  this.otherIncomeSources?.forEach(src => {
+    const multiplier = {
+      monthly: 1,
+      quarterly: 1 / 3,
+      'semi-annual': 1 / 6,
+      annual: 1 / 12,
+      occasional: 1 / 12
+    };
+    total += (src.amount || 0) * (multiplier[src.frequency] || 1);
   });
-  
-  // Other income sources
-  this.otherIncomeSources.forEach(source => {
-    if (source.frequency === 'monthly') {
-      total += source.amount || 0;
-    } else if (source.frequency === 'quarterly') {
-      total += (source.amount || 0) / 3;
-    } else if (source.frequency === 'semi-annual') {
-      total += (source.amount || 0) / 6;
-    } else if (source.frequency === 'annual') {
-      total += (source.amount || 0) / 12;
-    } else if (source.frequency === 'occasional') {
-      // Average occasional income as monthly
-      total += (source.amount || 0) / 12;
-    }
+
+  this.retirementAccountWithdrawals?.forEach(acc => {
+    total += acc.monthlyAmount || 0;
   });
-  
-  // Withdrawals from retirement accounts
-  this.retirementAccounts.forEach(account => {
-    if (account.withdrawalRate && account.currentValue) {
-      const annualWithdrawal = account.currentValue * (account.withdrawalRate / 100);
-      total += annualWithdrawal / 12;
-    }
-  });
-  
+
   return parseFloat(total.toFixed(2));
 });
 
-// Virtual for total monthly expenses
-retiredSchema.virtual('totalMonthlyExpenses').get(function() {
+// ✅ Virtual: Total Monthly Expenses
+retiredUserSchema.virtual('totalMonthlyExpenses').get(function () {
   let total = 0;
-  
-  // Housing expenses
-  if (this.housingExpenses) {
-    total += this.housingExpenses.mortgageOrRent || 0;
-    total += (this.housingExpenses.propertyTax || 0) / 12;
-    total += this.housingExpenses.homeInsurance || 0;
-    total += this.housingExpenses.maintenance || 0;
+
+  if (this.housing) {
+    total += this.housing.mortgageOrRent || 0;
+    total += this.housing.insurance || 0;
+    total += this.housing.maintenance || 0;
   }
-  
-  // Healthcare expenses
-  if (this.healthcareDetails) {
-    total += this.healthcareDetails.monthlyPremium || 0;
-    total += (this.healthcareDetails.estimatedAnnualExpenses || 0) / 12;
+
+  if (this.healthcare) {
+    total += this.healthcare.monthlyPremium || 0;
+    total += this.healthcare.outOfPocket || 0;
   }
-  
-  // Financial responsibilities
-  this.financialResponsibilities.forEach(resp => {
-    if (resp.frequency === 'monthly') {
-      total += resp.amount || 0;
-    } else if (resp.frequency === 'quarterly') {
-      total += (resp.amount || 0) / 3;
-    } else if (resp.frequency === 'annual') {
-      total += (resp.amount || 0) / 12;
-    }
+
+  this.otherExpenses?.forEach(exp => {
+    const multiplier = {
+      monthly: 1,
+      quarterly: 1 / 3,
+      annual: 1 / 12
+    };
+    total += (exp.amount || 0) * (multiplier[exp.frequency] || 1);
   });
-  
+
   return parseFloat(total.toFixed(2));
 });
 
-// Virtual for safe withdrawal rate
-retiredSchema.virtual('safeWithdrawalRate').get(function() {
-  const totalAssets = this.retirementAccounts.reduce((sum, account) => 
-    sum + (account.currentValue || 0), 0);
-  
-  if (totalAssets <= 0) return 0;
-  
-  const annualIncomeNeeded = (this.totalMonthlyExpenses * 12) - (this.totalMonthlyIncome * 12);
-  if (annualIncomeNeeded <= 0) return 0;
-  
-  return parseFloat(((annualIncomeNeeded / totalAssets) * 100).toFixed(2));
+// ✅ Virtual: Safe Withdrawal Rate
+retiredUserSchema.virtual('safeWithdrawalRate').get(function () {
+  const totalAssets = this.retirementAccounts?.reduce(
+    (sum, acc) => sum + (acc.currentValue || 0),
+    0
+  ) || 0;
+
+  if (totalAssets === 0) return 0;
+
+  const annualGap = (this.totalMonthlyExpenses * 12) - (this.totalMonthlyIncome * 12);
+  if (annualGap <= 0) return 0;
+
+  return parseFloat(((annualGap / totalAssets) * 100).toFixed(2));
 });
 
-// Indexes
-retiredSchema.index({ retirementDate: 1 });
-retiredSchema.index({ 'savingsGoals.priority': 1, 'savingsGoals.targetDate': 1 });
-retiredSchema.index({ 'healthcareDetails.hasCoverage': 1 });
-
-// Pre-save hook to update legacy planning status
-retiredSchema.pre('save', function(next) {
-  if (this.legacyPlanning.hasWill || this.legacyPlanning.hasEstatePlan) {
-    this.legacyPlanning.isPlanned = true;
-  } else {
-    this.legacyPlanning.isPlanned = false;
+// ✅ Beneficiary percentage validation (should not exceed 100%)
+retiredUserSchema.pre('save', function (next) {
+  const beneficiaries = this.legacyPlanning?.beneficiaries;
+  if (Array.isArray(beneficiaries) && beneficiaries.length > 0) {
+    const totalPercent = beneficiaries.reduce((sum, b) => sum + (b.percentage || 0), 0);
+    if (totalPercent > 100) {
+      return next(new Error('Total beneficiary percentage cannot exceed 100%'));
+    }
   }
   next();
 });
 
-const Retired = mongoose.model('Retired', retiredSchema);
-
+const Retired = mongoose.model('Retired', retiredUserSchema);
 export default Retired;
