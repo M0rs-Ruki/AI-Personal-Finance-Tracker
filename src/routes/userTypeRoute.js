@@ -15,7 +15,7 @@ dotenv.config({path: './.env'});
 
 router.post('/student',isLoggedIn, StudentPage);
 router.post('/employed',isLoggedIn, EmployerPage);
-router.post('/unemployed',UnEmployedPage);
+router.post('/unemployed',isLoggedIn, UnEmployedPage);
 
 
 export default router;

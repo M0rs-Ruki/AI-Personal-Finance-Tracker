@@ -11,12 +11,7 @@ const dashboardPage = async (req, res) => {
     try {
         
         const user = await User.findById(req.user._id).lean();
-        // log(user);
-        if (!user) {
-            return res.status(404).render('dashboard', user)
-        }
-
-        
+        log(user);
 
     } catch (err) {
         console.error("Error during dashboard page:", err);

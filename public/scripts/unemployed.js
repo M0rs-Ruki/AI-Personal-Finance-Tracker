@@ -337,27 +337,62 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Generic toggle group logic
+// Generic toggle group logic - handles both radio buttons and checkboxes
 document.querySelectorAll('.toggle-group').forEach(group => {
     const options = group.querySelectorAll('.toggle-option');
 
     options.forEach(option => {
-        option.addEventListener('click', () => {
-            // Remove .selected from all options in the group
-            options.forEach(opt => opt.classList.remove('selected'));
-
-            // Add .selected to the clicked one
-            option.classList.add('selected');
-
-            // Set the actual radio input as checked
-            const input = option.querySelector('input[type="radio"]');
-            if (input) input.checked = true;
-        });
-
-        // On load, if input is checked, mark it as selected
-        const input = option.querySelector('input[type="radio"]');
-        if (input && input.checked) {
-            option.classList.add('selected');
+        const input = option.querySelector('input');
+        
+        // Handle both radio and checkbox inputs
+        if (input && input.type === 'checkbox') {
+            // Checkbox logic (multi-select)
+            option.addEventListener('click', (e) => {
+                // Prevent double-triggering when clicking the input directly
+                if (e.target === input) return;
+                
+                // Toggle the checkbox state
+                input.checked = !input.checked;
+                
+                // Toggle visual state
+                if (input.checked) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // Handle direct checkbox clicks
+            input.addEventListener('change', () => {
+                if (input.checked) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+            
+            // Set initial state
+            if (input.checked) {
+                option.classList.add('selected');
+            }
+            
+        } else if (input && input.type === 'radio') {
+            // Radio logic (single select) - existing functionality
+            option.addEventListener('click', () => {
+                // Remove .selected from all options in the group
+                options.forEach(opt => opt.classList.remove('selected'));
+                
+                // Add .selected to the clicked one
+                option.classList.add('selected');
+                
+                // Set the radio input as checked
+                input.checked = true;
+            });
+            
+            // Set initial state for radio
+            if (input.checked) {
+                option.classList.add('selected');
+            }
         }
     });
 });
