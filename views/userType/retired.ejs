@@ -1,191 +1,375 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Retired User Profile Setup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retirement Profile Tester</title>
 </head>
 <body>
-  <h1>Retired User Profile Setup</h1>
-  <form action="/userType/retired" method="POST">
-    <input type="hidden" name="userId" value="<%= userId %>" />
+    <h1>Retirement Profile Tester</h1>
+    
+    <form method="POST" action="/userType/retired">
+        <!-- User ID -->
+        <input type="hidden" name="userId" value="<%= userId %>">
 
-    <!-- INCOME SOURCES -->
-    <fieldset>
-      <legend>Pension</legend>
-      <label>
-        Receive Pension?
-        <input type="checkbox" name="pension[receives]" value="true">
-      </label>
-      <label>Amount: <input type="number" name="pension[amount]" step="0.01"></label>
-      <label>Frequency:
-        <select name="pension[frequency]">
-          <option value="monthly">Monthly</option>
-          <option value="quarterly">Quarterly</option>
-          <option value="semi-annual">Semi-Annual</option>
-          <option value="annual">Annual</option>
-        </select>
-      </label>
-      <label>Start Date: <input type="date" name="pension[startDate]"></label>
-    </fieldset>
+        <!-- Income Sources -->
+        <fieldset>
+            <legend>Income Sources</legend>
+            
+            <!-- Pension Question -->
+            <h3>Do you receive a pension?</h3>
+            <div>
+                <input type="radio" id="pensionYes" name="receivesPension" value="yes">
+                <label for="pensionYes">Yes</label>
+                <input type="radio" id="pensionNo" name="receivesPension" value="no" checked>
+                <label for="pensionNo">No</label>
+            </div>
 
-    <fieldset>
-      <legend>Social Security</legend>
-      <label>
-        Receive?
-        <input type="checkbox" name="socialSecurity[receives]" value="true">
-      </label>
-      <label>Monthly Amount: <input type="number" name="socialSecurity[monthlyAmount]" step="0.01"></label>
-      <label>Start Date: <input type="date" name="socialSecurity[startDate]"></label>
-    </fieldset>
+            <div id="pensionDetailsContainer" style="display: none;">
+                <h3>Pension</h3>
+                <div>
+                    <div>
+                        <input type="checkbox" id="pensionReceives" name="pension[receives]" value="true">
+                        <label for="pensionReceives">Receives pension?</label>
+                    </div>
+                    <label for="pensionAmount">Amount</label>
+                    <input type="number" id="pensionAmount" name="pension[amount]" min="0">
+                    <label for="pensionFrequency">Frequency</label>
+                    <select id="pensionFrequency" name="pension[frequency]">
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="semi-annual">Semi-Annual</option>
+                        <option value="annual">Annual</option>
+                    </select>
+                </div>
+            </div>
+            
+            <h3>Other Income Sources</h3>
+            <div>
+                <h4>Source 1</h4>
+                <div>
+                    <label>Source</label>
+                    <input type="text" name="otherIncomeSources[0][source]" placeholder="Source name">
+                    <label>Amount</label>
+                    <input type="number" name="otherIncomeSources[0][amount]" min="0">
+                    <label>Frequency</label>
+                    <select name="otherIncomeSources[0][frequency]">
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="semi-annual">Semi-Annual</option>
+                        <option value="annual">Annual</option>
+                        <option value="occasional">Occasional</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div>
+                <h4>Source 2</h4>
+                <div>
+                    <label>Source</label>
+                    <input type="text" name="otherIncomeSources[1][source]" placeholder="Source name">
+                    <label>Amount</label>
+                    <input type="number" name="otherIncomeSources[1][amount]" min="0">
+                    <label>Frequency</label>
+                    <select name="otherIncomeSources[1][frequency]">
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="semi-annual">Semi-Annual</option>
+                        <option value="annual">Annual</option>
+                        <option value="occasional">Occasional</option>
+                    </select>
+                </div>
+            </div>
+            
+            <h3>Retirement Account Withdrawals</h3>
+            <div>
+                <h4>Withdrawal 1</h4>
+                <div>
+                    <label>Type</label>
+                    <select name="retirementAccountWithdrawals[0][type]">
+                        <option value="EPF (Employee Provident Fund)">EPF</option>
+                        <option value="NPS (National Pension System)">NPS</option>
+                        <option value="PPF (Public Provident Fund)">PPF</option>
+                        <option value="Annuity (Pension Plans from Insurance Companies)">Annuity</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <label>Monthly Amount</label>
+                    <input type="number" name="retirementAccountWithdrawals[0][monthlyAmount]" min="0">
+                </div>
+            </div>
+            
+            <div>
+                <h4>Withdrawal 2</h4>
+                <div>
+                    <label>Type</label>
+                    <select name="retirementAccountWithdrawals[1][type]">
+                        <option value="EPF (Employee Provident Fund)">EPF</option>
+                        <option value="NPS (National Pension System)">NPS</option>
+                        <option value="PPF (Public Provident Fund)">PPF</option>
+                        <option value="Annuity (Pension Plans from Insurance Companies)">Annuity</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <label>Monthly Amount</label>
+                    <input type="number" name="retirementAccountWithdrawals[1][monthlyAmount]" min="0">
+                </div>
+            </div>
+        </fieldset>
 
-    <fieldset>
-      <legend>Other Income Sources</legend>
-      <div id="otherIncomeSourcesContainer">
-        <div class="source">
-          <input type="text" name="otherIncomeSources[0][source]" placeholder="Source">
-          <input type="number" name="otherIncomeSources[0][amount]" placeholder="Amount">
-          <select name="otherIncomeSources[0][frequency]">
-            <option value="monthly">Monthly</option>
-            <option value="quarterly">Quarterly</option>
-            <option value="semi-annual">Semi-Annual</option>
-            <option value="annual">Annual</option>
-            <option value="occasional">Occasional</option>
-          </select>
-          <label>Taxable? <input type="checkbox" name="otherIncomeSources[0][taxable]" checked></label>
-        </div>
-      </div>
-    </fieldset>
+        <!-- Expenses -->
+        <fieldset>
+            <legend>Expenses</legend>
+            
+            <h3>Housing</h3>
+            <div>
+                <label>Mortgage/Rent</label>
+                <input type="number" name="housing[mortgageOrRent]" min="0">
+                <label>Insurance</label>
+                <input type="number" name="housing[insurance]" min="0">
+                <label>Maintenance</label>
+                <input type="number" name="housing[maintenance]" min="0">
+            </div>
+            
+            <h3>Healthcare</h3>
+            <div>
+                <label>Monthly Premium</label>
+                <input type="number" name="healthcare[monthlyPremium]" min="0">
+                <label>Out-of-Pocket</label>
+                <input type="number" name="healthcare[outOfPocket]" min="0">
+            </div>
+            
+            <h3>Other Expenses</h3>
+            <div>
+                <h4>Expense 1</h4>
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="otherExpenses[0][name]" placeholder="Expense name">
+                    <label>Amount</label>
+                    <input type="number" name="otherExpenses[0][amount]" min="0">
+                    <label>Frequency</label>
+                    <select name="otherExpenses[0][frequency]">
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="annual">Annual</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div>
+                <h4>Expense 2</h4>
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="otherExpenses[1][name]" placeholder="Expense name">
+                    <label>Amount</label>
+                    <input type="number" name="otherExpenses[1][amount]" min="0">
+                    <label>Frequency</label>
+                    <select name="otherExpenses[1][frequency]">
+                        <option value="monthly">Monthly</option>
+                        <option value="quarterly">Quarterly</option>
+                        <option value="annual">Annual</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
 
-    <!-- EXPENSES -->
-    <fieldset>
-      <legend>Housing</legend>
-      <label>Mortgage/Rent: <input type="number" name="housing[mortgageOrRent]"></label>
-      <label>Property Tax: <input type="number" name="housing[propertyTax]"></label>
-      <label>Insurance: <input type="number" name="housing[insurance]"></label>
-      <label>Utilities: <input type="number" name="housing[utilities]"></label>
-      <label>Maintenance: <input type="number" name="housing[maintenance]"></label>
-    </fieldset>
+        <!-- Assets -->
+        <fieldset>
+            <legend>Assets</legend>
+            
+            <!-- New Retirement Accounts Question -->
+            <h3>Do you have retirement accounts?</h3>
+            <div>
+                <input type="radio" id="retirementAccountsYes" name="hasRetirementAccounts" value="yes">
+                <label for="retirementAccountsYes">Yes</label>
+                <input type="radio" id="retirementAccountsNo" name="hasRetirementAccounts" value="no" checked>
+                <label for="retirementAccountsNo">No</label>
+            </div>
 
-    <fieldset>
-      <legend>Healthcare</legend>
-      <label>Monthly Premium: <input type="number" name="healthcare[monthlyPremium]"></label>
-      <label>Out of Pocket: <input type="number" name="healthcare[outOfPocket]"></label>
-      <label>Prescriptions: <input type="number" name="healthcare[prescriptions]"></label>
-    </fieldset>
+            <div id="retirementAccountsDetailsContainer" style="display: none;">
+                <h3>Retirement Accounts</h3>
+                <div>
+                    <h4>Account 1</h4>
+                    <div>
+                        <label>Type</label>
+                        <select name="retirementAccounts[0][type]">
+                            <option value="EPF (Employee Provident Fund)">EPF</option>
+                            <option value="NPS (National Pension System)">NPS</option>
+                            <option value="PPF (Public Provident Fund)">PPF</option>
+                            <option value="Annuity (Pension Plans from Insurance Companies)">Annuity</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label>Current Value</label>
+                        <input type="number" name="retirementAccounts[0][currentValue]" min="0">
+                    </div>
+                </div>
+                
+                <div>
+                    <h4>Account 2</h4>
+                    <div>
+                        <label>Type</label>
+                        <select name="retirementAccounts[1][type]">
+                            <option value="EPF (Employee Provident Fund)">EPF</option>
+                            <option value="NPS (National Pension System)">NPS</option>
+                            <option value="PPF (Public Provident Fund)">PPF</option>
+                            <option value="Annuity (Pension Plans from Insurance Companies)">Annuity</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <label>Current Value</label>
+                        <input type="number" name="retirementAccounts[1][currentValue]" min="0">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
 
-    <fieldset>
-      <legend>Transportation</legend>
-      <label>Car Payment: <input type="number" name="transportation[carPayment]"></label>
-      <label>Insurance: <input type="number" name="transportation[insurance]"></label>
-      <label>Maintenance: <input type="number" name="transportation[maintenance]"></label>
-      <label>Fuel: <input type="number" name="transportation[fuel]"></label>
-    </fieldset>
+        <!-- Savings Goals -->
+        <fieldset>
+            <legend>Savings Goals</legend>
+            <div>
+                <h4>Goal 1</h4>
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="savingsGoals[0][name]" placeholder="Goal name">
+                    <label>Target Amount</label>
+                    <input type="number" name="savingsGoals[0][targetAmount]" min="0">
+                    <label>Current Amount</label>
+                    <input type="number" name="savingsGoals[0][currentAmount]" min="0">
+                    <label>Category</label>
+                    <select name="savingsGoals[0][category]">
+                        <option value="travel">Travel</option>
+                        <option value="medical">Medical</option>
+                        <option value="gifts">Gifts</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div>
+                <h4>Goal 2</h4>
+                <div>
+                    <label>Name</label>
+                    <input type="text" name="savingsGoals[1][name]" placeholder="Goal name">
+                    <label>Target Amount</label>
+                    <input type="number" name="savingsGoals[1][targetAmount]" min="0">
+                    <label>Current Amount</label>
+                    <input type="number" name="savingsGoals[1][currentAmount]" min="0">
+                    <label>Category</label>
+                    <select name="savingsGoals[1][category]">
+                        <option value="travel">Travel</option>
+                        <option value="medical">Medical</option>
+                        <option value="gifts">Gifts</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+            </div>
+        </fieldset>
 
-    <!-- RETIREMENT ACCOUNTS -->
-    <fieldset>
-      <legend>Retirement Accounts</legend>
-      <div class="account">
-        <input type="text" name="retirementAccounts[0][accountName]" placeholder="Name">
-        <select name="retirementAccounts[0][type]">
-          <option value="Savings Account">Savings</option>
-          <option value="Current Account">Current</option>
-          <option value="Fixed Deposit (FD) Account">FD</option>
-          <option value="Recurring Deposit (RD) Account">RD</option>
-          <option value="Salary Account">Salary</option>
-          <option value="Other">Other</option>
-        </select>
-        <input type="number" name="retirementAccounts[0][currentValue]" placeholder="Current Value">
-        <input type="text" name="retirementAccounts[0][institution]" placeholder="Institution">
-        <input type="date" name="retirementAccounts[0][lastUpdated]">
-      </div>
-    </fieldset>
+        <!-- Legacy Planning -->
+        <fieldset>
+            <legend>Legacy Planning</legend>
+            <div id="legacyPlanningCheckboxes">
+                <div>
+                    <input type="checkbox" id="hasWill" name="legacyPlanning[hasWill]" value="true">
+                    <label for="hasWill">Has Will?</label>
+                </div>
+                
+                <div>
+                    <input type="checkbox" id="hasEstatePlan" name="legacyPlanning[hasEstatePlan]" value="true">
+                    <label for="hasEstatePlan">Has Estate Plan?</label>
+                </div>
+            </div>
 
-    <!-- REAL ESTATE -->
-    <fieldset>
-      <legend>Real Estate</legend>
-      <div class="property">
-        <select name="realEstate[0][type]">
-          <option value="primary">Primary</option>
-          <option value="rental">Rental</option>
-          <option value="vacation">Vacation</option>
-          <option value="land">Land</option>
-          <option value="other">Other</option>
-        </select>
-        <input type="number" name="realEstate[0][estimatedValue]" placeholder="Estimated Value">
-        <input type="number" name="realEstate[0][mortgage][balance]" placeholder="Mortgage Balance">
-        <input type="number" name="realEstate[0][mortgage][payment]" placeholder="Mortgage Payment">
-        <input type="number" name="realEstate[0][monthlyIncome]" placeholder="Monthly Income">
-      </div>
-    </fieldset>
+            <!-- Beneficiary Question -->
+            <h3>Do you have beneficiaries?</h3>
+            <div>
+                <input type="radio" id="beneficiariesYes" name="hasBeneficiaries" value="yes">
+                <label for="beneficiariesYes">Yes</label>
+                <input type="radio" id="beneficiariesNo" name="hasBeneficiaries" value="no" checked>
+                <label for="beneficiariesNo">No</label>
+            </div>
 
-    <!-- SAVINGS GOALS -->
-    <fieldset>
-      <legend>Savings Goals</legend>
-      <div class="goal">
-        <input type="text" name="savingsGoals[0][name]" placeholder="Goal Name">
-        <input type="number" name="savingsGoals[0][targetAmount]" placeholder="Target Amount">
-        <input type="number" name="savingsGoals[0][currentAmount]" placeholder="Current Amount">
-        <input type="date" name="savingsGoals[0][targetDate]">
-        <select name="savingsGoals[0][category]">
-          <option value="travel">Travel</option>
-          <option value="medical">Medical</option>
-          <option value="gifts">Gifts</option>
-          <option value="home-improvement">Home Improvement</option>
-          <option value="emergency">Emergency</option>
-          <option value="other">Other</option>
-        </select>
-        <select name="savingsGoals[0][priority]">
-          <option value="high">High</option>
-          <option value="medium" selected>Medium</option>
-          <option value="low">Low</option>
-        </select>
-      </div>
-    </fieldset>
+            <div id="beneficiariesDetailsContainer" style="display: none;">
+                <h3>Beneficiaries</h3>
+                <div>
+                    <h4>Beneficiary 1</h4>
+                    <div>
+                        <label>Name</label>
+                        <input type="text" name="legacyPlanning[beneficiaries][0][name]" placeholder="Full name">
+                        <label>Relationship</label>
+                        <input type="text" name="legacyPlanning[beneficiaries][0][relationship]" placeholder="Relationship">
+                        <label>Percentage</label>
+                        <input type="number" name="legacyPlanning[beneficiaries][0][percentage]" min="0" max="100" step="1">
+                    </div>
+                </div>
+                
+                <div>
+                    <h4>Beneficiary 2</h4>
+                    <div>
+                        <label>Name</label>
+                        <input type="text" name="legacyPlanning[beneficiaries][1][name]" placeholder="Full name">
+                        <label>Relationship</label>
+                        <input type="text" name="legacyPlanning[beneficiaries][1][relationship]" placeholder="Relationship">
+                        <label>Percentage</label>
+                        <input type="number" name="legacyPlanning[beneficiaries][1][percentage]" min="0" max="100" step="1">
+                    </div>
+                </div>
+            </div>
+        </fieldset>
 
-    <!-- LEGACY PLANNING -->
-    <fieldset>
-      <legend>Legacy Planning</legend>
-      <label>Has Will? <input type="checkbox" name="legacyPlanning[hasWill]"></label>
-      <label>Will Last Updated: <input type="date" name="legacyPlanning[willLastUpdated]"></label>
-      <label>Has Estate Plan? <input type="checkbox" name="legacyPlanning[hasEstatePlan]"></label>
-      <label>Estate Plan Last Updated: <input type="date" name="legacyPlanning[estatePlanLastUpdated]"></label>
-      <label>Has Power of Attorney? <input type="checkbox" name="legacyPlanning[hasPowerOfAttorney]"></label>
-      <label>Has Healthcare Directive? <input type="checkbox" name="legacyPlanning[hasHealthcareDirective]"></label>
+        <button type="submit">Test Schema</button>
+    </form>
 
-      <div class="beneficiary">
-        <input type="text" name="legacyPlanning[beneficiaries][0][name]" placeholder="Beneficiary Name">
-        <select name="legacyPlanning[beneficiaries][0][relationship]">
-          <option value="spouse">Spouse</option>
-          <option value="child">Child</option>
-          <option value="parent">Parent</option>
-          <option value="sibling">Sibling</option>
-          <option value="grandchild">Grandchild</option>
-          <option value="friend">Friend</option>
-          <option value="charity">Charity</option>
-          <option value="other">Other</option>
-        </select>
-        <input type="number" name="legacyPlanning[beneficiaries][0][percentage]" placeholder="%" step="0.01">
-        <label>Contingent? <input type="checkbox" name="legacyPlanning[beneficiaries][0][contingent]"></label>
-      </div>
-    </fieldset>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Pension toggle logic
+            const pensionYes = document.getElementById('pensionYes');
+            const pensionNo = document.getElementById('pensionNo');
+            const pensionDetailsContainer = document.getElementById('pensionDetailsContainer');
 
-    <!-- OTHER -->
-    <fieldset>
-      <legend>Additional</legend>
-      <label>Risk Tolerance:
-        <select name="riskTolerance">
-          <option value="conservative">Conservative</option>
-          <option value="moderate" selected>Moderate</option>
-          <option value="aggressive">Aggressive</option>
-        </select>
-      </label>
-      <label>Notes:
-        <textarea name="notes" rows="3" cols="40"></textarea>
-      </label>
-    </fieldset>
+            function togglePensionDetails() {
+                if (pensionYes.checked) {
+                    pensionDetailsContainer.style.display = 'block'; 
+                } else {
+                    pensionDetailsContainer.style.display = 'none';
+                }
+            }
 
-    <button type="submit">Submit Profile</button>
-  </form>
+            pensionYes.addEventListener('change', togglePensionDetails);
+            pensionNo.addEventListener('change', togglePensionDetails);
+            togglePensionDetails(); // Set initial state
 
+            // Beneficiaries toggle logic
+            const beneficiariesYes = document.getElementById('beneficiariesYes');
+            const beneficiariesNo = document.getElementById('beneficiariesNo');
+            const beneficiariesDetailsContainer = document.getElementById('beneficiariesDetailsContainer');
+
+            function toggleBeneficiariesDetails() {
+                if (beneficiariesYes.checked) {
+                    beneficiariesDetailsContainer.style.display = 'block';
+                } else {
+                    beneficiariesDetailsContainer.style.display = 'none';
+                }
+            }
+
+            beneficiariesYes.addEventListener('change', toggleBeneficiariesDetails);
+            beneficiariesNo.addEventListener('change', toggleBeneficiariesDetails);
+            toggleBeneficiariesDetails(); // Set initial state
+
+            // Retirement Accounts toggle logic
+            const retirementAccountsYes = document.getElementById('retirementAccountsYes');
+            const retirementAccountsNo = document.getElementById('retirementAccountsNo');
+            const retirementAccountsDetailsContainer = document.getElementById('retirementAccountsDetailsContainer');
+
+            function toggleRetirementAccountsDetails() {
+                if (retirementAccountsYes.checked) {
+                    retirementAccountsDetailsContainer.style.display = 'block';
+                } else {
+                    retirementAccountsDetailsContainer.style.display = 'none';
+                }
+            }
+
+            retirementAccountsYes.addEventListener('change', toggleRetirementAccountsDetails);
+            retirementAccountsNo.addEventListener('change', toggleRetirementAccountsDetails);
+            toggleRetirementAccountsDetails(); // Set initial state
+        });
+    </script>
 </body>
 </html>
