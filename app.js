@@ -5,7 +5,7 @@ import {log} from 'console';
 import cookieParser from "cookie-parser";
 import db from "./src/db/connect.db.js";
 import bodyParser from "body-parser";
-
+import qs from 'qs';
 
 
 
@@ -21,6 +21,12 @@ app.set('view engine', 'ejs');
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.post('/your-route', (req, res, next) => {
+  if (req.headers['content-type']?.includes('application/x-www-form-urlencoded')) {
+    req.body = qs.parse(req.body);
+  }
+  next();
+});
 
 
 

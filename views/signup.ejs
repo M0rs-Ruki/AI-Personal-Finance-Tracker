@@ -19,7 +19,7 @@
                 <p>Join our financial community in seconds</p>
             </div>
             
-            <form id="registration-form" action="/user/signup" method="POST">
+            <form id="registration-form" action="/user/guest" method="POST">
                 <!-- Full Name -->
                 <div class="form-group">
                     <label class="label required">Full Name</label>
@@ -114,7 +114,7 @@
                 <div class="form-group">
                     <label class="label optional">User Type</label>
                     <select class="form-control" id="user-type" name="userType">
-                        <option value="other">Other</option>
+                        <option value="guest">Guest</option>
                         <option value="student">Student</option>
                         <option value="employed">Employed</option>
                         <option value="unemployed">Unemployed</option>
@@ -126,7 +126,7 @@
                 <button class="btn btn-primary">
                     <i class="fas fa-rocket"></i> CREATE ACCOUNT
                 </button>
-                <button type="button" class="btn btn-ghost">
+                <button type="button" class="btn btn-ghost" onclick="window.location.href='/user/guest'">
                     Continue as Guest
                 </button>
                 

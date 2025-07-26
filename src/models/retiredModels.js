@@ -18,29 +18,35 @@ const retiredUserSchema = new mongoose.Schema({
       default: 'monthly'
     }
   },
-  otherIncomeSources: [{
-    source: { type: String, trim: true },
-    amount: { type: Number, min: 0 },
-    frequency: {
-      type: String,
-      enum: ['monthly', 'quarterly', 'semi-annual', 'annual', 'occasional'],
-      default: 'monthly'
-    }
-  }],
-  retirementAccountWithdrawals: [{
-    type: {
-      type: String,
-      enum: [
-        'EPF (Employee Provident Fund)',
-        'NPS (National Pension System)',
-        'PPF (Public Provident Fund)',
-        'Annuity (Pension Plans from Insurance Companies)',
-        'Other'
-      ],
-      trim: true
-    },
-    monthlyAmount: { type: Number, min: 0 }
-  }],
+  otherIncomeSources: {
+    type: [{
+      source: { type: String, trim: true },
+      amount: { type: Number, min: 0 },
+      frequency: {
+        type: String,
+        enum: ['monthly', 'quarterly', 'semi-annual', 'annual', 'occasional'],
+        default: 'monthly'
+      }
+    }],
+    default: []
+  },
+  retirementAccountWithdrawals: {
+    type: [{
+      type: {
+        type: String,
+        enum: [
+          'EPF (Employee Provident Fund)',
+          'NPS (National Pension System)',
+          'PPF (Public Provident Fund)',
+          'Annuity (Pension Plans from Insurance Companies)',
+          'other'
+        ],
+        trim: true
+      },
+      monthlyAmount: { type: Number, min: 0 }
+    }],
+    default: []
+  },
 
   // 2. EXPENSES
   housing: {
@@ -52,53 +58,76 @@ const retiredUserSchema = new mongoose.Schema({
     monthlyPremium: { type: Number, min: 0 },
     outOfPocket: { type: Number, min: 0 }
   },
-  otherExpenses: [{
-    name: { type: String, trim: true },
-    amount: { type: Number, min: 0 },
-    frequency: {
-      type: String,
-      enum: ['monthly', 'quarterly', 'annual'],
-      default: 'monthly'
-    }
-  }],
+  otherExpenses: {
+    type: [{
+      name: { type: String, trim: true },
+      amount: { type: Number, min: 0 },
+      frequency: {
+        type: String,
+        enum: ['monthly', 'quarterly', 'annual'],
+        default: 'monthly'
+      }
+    }],
+    default: []
+  },
 
   // 3. ASSETS
-  retirementAccounts: [{
-    type: {
-      type: String,
-      enum: [
-        'EPF (Employee Provident Fund)',
-        'NPS (National Pension System)',
-        'PPF (Public Provident Fund)',
-        'Annuity (Pension Plans from Insurance Companies)',
-        'Other'
-      ],
-      trim: true
-    },
-    currentValue: { type: Number, min: 0 }
-  }],
+  retirementAccounts: {
+    type: [{
+      type: {
+        type: String,
+        enum: [
+          'EPF (Employee Provident Fund)',
+          'NPS (National Pension System)',
+          'PPF (Public Provident Fund)',
+          'Annuity (Pension Plans from Insurance Companies)',
+          'other'
+        ],
+        trim: true
+      },
+      currentValue: { type: Number, min: 0 }
+    }],
+    default: []
+  },
+  otherAssets: {
+    type: [{
+      type: {
+        type: String,
+        enum: ['property', 'investments', 'savings', 'other'],
+        lowercase: true,
+        trim: true
+      },
+      estimatedValue: { type: Number, min: 0 }
+    }],
+    default: []
+  },
 
   // 4. SAVINGS GOALS
-  savingsGoals: [{
-    name: { type: String, trim: true },
-    targetAmount: { type: Number, min: 0 },
-    currentAmount: { type: Number, min: 0 },
-    category: {
-      type: String,
-      enum: ['travel', 'medical', 'gifts', 'other'],
-      default: 'other'
-    }
-  }],
+  savingsGoals: {
+    type: [{
+      name: { type: String, trim: true },
+      targetAmount: { type: Number, min: 0 },
+      currentAmount: { type: Number, min: 0 },
+      category: {
+        type: String,
+        enum: ['travel', 'medical', 'gifts', 'other'],
+        default: 'other',
+        lowercase: true
+      }
+    }],
+    default: []
+  },
 
   // 5. LEGACY & PLANNING
   legacyPlanning: {
-    hasWill: { type: Boolean, default: false },
-    hasEstatePlan: { type: Boolean, default: false },
-    beneficiaries: [{
-      name: String,
-      relationship: String,
-      percentage: { type: Number, min: 0, max: 100 }
-    }]
+    beneficiaries: {
+      type: [{
+        name: { type: String },
+        relationship: { type: String },
+        percentage: { type: Number, min: 0, max: 100 }
+      }],
+      default: []
+    }
   }
 
 }, {
@@ -107,7 +136,7 @@ const retiredUserSchema = new mongoose.Schema({
   toObject: { virtuals: true }
 });
 
-// ✅ Virtual: Total Monthly Income
+// Virtuals
 retiredUserSchema.virtual('totalMonthlyIncome').get(function () {
   let total = 0;
 
@@ -140,7 +169,6 @@ retiredUserSchema.virtual('totalMonthlyIncome').get(function () {
   return parseFloat(total.toFixed(2));
 });
 
-// ✅ Virtual: Total Monthly Expenses
 retiredUserSchema.virtual('totalMonthlyExpenses').get(function () {
   let total = 0;
 
@@ -167,7 +195,6 @@ retiredUserSchema.virtual('totalMonthlyExpenses').get(function () {
   return parseFloat(total.toFixed(2));
 });
 
-// ✅ Virtual: Safe Withdrawal Rate
 retiredUserSchema.virtual('safeWithdrawalRate').get(function () {
   const totalAssets = this.retirementAccounts?.reduce(
     (sum, acc) => sum + (acc.currentValue || 0),
@@ -182,14 +209,14 @@ retiredUserSchema.virtual('safeWithdrawalRate').get(function () {
   return parseFloat(((annualGap / totalAssets) * 100).toFixed(2));
 });
 
-// ✅ Beneficiary percentage validation (should not exceed 100%)
+// Validation: Total beneficiary percentage ≤ 100%
 retiredUserSchema.pre('save', function (next) {
   const beneficiaries = this.legacyPlanning?.beneficiaries;
-  if (Array.isArray(beneficiaries) && beneficiaries.length > 0) {
-    const totalPercent = beneficiaries.reduce((sum, b) => sum + (b.percentage || 0), 0);
-    if (totalPercent > 100) {
-      return next(new Error('Total beneficiary percentage cannot exceed 100%'));
-    }
+  if (!beneficiaries || beneficiaries.length === 0) return next();
+
+  const totalPercent = beneficiaries.reduce((sum, b) => sum + (b.percentage || 0), 0);
+  if (totalPercent > 100) {
+    return next(new Error('Total beneficiary percentage cannot exceed 100%'));
   }
   next();
 });

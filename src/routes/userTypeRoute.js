@@ -5,7 +5,7 @@ import {log} from 'console';
 import { StudentPage,
     EmployerPage,
     UnEmployedPage,
-    RetiredPage
+    RetiredPage,
  } from "../controllers/userAuthController.js";
 import isLoggedIn from "../middlewares/isLoggedInMiddleware.js";
 
