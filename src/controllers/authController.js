@@ -87,8 +87,9 @@ const GuestUser = async (req, res) => {
       secure: process.env.NODE_ENV === 'production',
       maxAge: 24 * 60 * 60 * 1000,
     });
-    
-    res.render('userType/guest')
+    const userId = newGuestUser._id;
+    res.render('userType/guest', { userId })
+    // log(userId)
 
   } catch (err) {
     console.error('Error creating guest user:', err);
