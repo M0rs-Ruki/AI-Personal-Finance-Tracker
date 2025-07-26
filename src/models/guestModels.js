@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 
 const guestSchema = mongoose.Schema({
     fullName: { type: String, },
-    email: { type: String, unique: true, },
+    email: { type: String, },
     password: { type: String, },
     phoneNumber: { type: String, },
     currency: {

@@ -19,7 +19,7 @@ router.get('/login', (req, res) => {
 router.post('/signup', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', logoutUser);
-router.post('/guest', GuestUser);
+router.get('/guest', GuestUser);
 
 
 

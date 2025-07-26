@@ -69,9 +69,10 @@ const registerUser = async (req, res) => {
 const GuestUser = async (req, res) => {
   try {
     // Create a new guest user
+    const randomId = Date.now();
     const newGuestUser = new Guest({
         fullName: 'Guest User',
-        email: 'guest@user.com',
+        email: `guest${randomId}@user.com`,
         password: 'guestpassword',
         phoneNumber: '1234567890',
         currency: 'INR',
@@ -79,7 +80,15 @@ const GuestUser = async (req, res) => {
     })
 
     await newGuestUser.save();
-    res.redirect('/dashboard'); 
+
+    const token = generateToken(newGuestUser);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    
+    res.render('userType/guest')
 
   } catch (err) {
     console.error('Error creating guest user:', err);
@@ -116,6 +125,7 @@ const loginUser = async (req, res) => {
     const userType = user.userType;
     const userTypePage = `userType/${userType || "other"}`;
     return res.render(userTypePage, { userId: user._id });
+
   } catch (err) {
     console.log(err);
     res.status(500).json({ message: " Error operating during login user " });
