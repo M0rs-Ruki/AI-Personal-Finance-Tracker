@@ -12,6 +12,7 @@
     --success: #4ade80;
     --error: #f87171;
     --progress-track: #2d2d2d;
+    --grid-line: rgba(255, 255, 255, 0.02);
 }
 
 * {
@@ -31,6 +32,10 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 30px 30px;
 }
 
 body::before {

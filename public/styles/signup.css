@@ -8,6 +8,7 @@
     --border-radius-md: 16px;
     --border-radius-lg: 24px;
     --transition: all 0.3s ease;
+    --grid-line: rgba(255, 255, 255, 0.02);
 }
 
 * {
@@ -26,6 +27,10 @@ body {
     align-items: center;
     justify-content: center;
     padding: 20px;
+    background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 30px 30px;
 }
 
 .container {

@@ -5,6 +5,7 @@
     --border-radius: 16px;
     --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     --transition: all 0.3s ease;
+    --grid-line: rgba(255, 255, 255, 0.02);
 }
 
 * {
@@ -25,6 +26,10 @@ body {
     padding: 20px;
     position: relative;
     overflow: hidden;
+    background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 30px 30px;
 }
 
 .vault-door {
