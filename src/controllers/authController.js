@@ -2,7 +2,7 @@ import User from "../models/userModels.js";
 import { count, log } from "console";
 import generateToken from "../utils/generateTokenUtlis.js";
 import { hashPassword, comparePassword } from "../utils/bcryptPasswordUtlis.js";
-import GuestUser from "../models/guestModels.js";
+import Guest from "../models/guestModels.js";
 
 const registerUser = async (req, res) => {
   try {
@@ -66,22 +66,20 @@ const registerUser = async (req, res) => {
   }
 };
 
-const GuestUserPage = async (req, res) => {
+const GuestUser = async (req, res) => {
   try {
     // Create a new guest user
-    const newGuestUser = new GuestUser({
+    const newGuestUser = new Guest({
         fullName: 'Guest User',
         email: 'guest@user.com',
         password: 'guestpassword',
         phoneNumber: '1234567890',
         currency: 'INR',
-        monthlyIncome: 0,
         userType: 'guest',
-        notificationPreferences: 'email',
     })
 
     await newGuestUser.save();
-    res.redirect('/dashboard');
+    res.redirect('/dashboard'); 
 
   } catch (err) {
     console.error('Error creating guest user:', err);
@@ -133,4 +131,4 @@ const logoutUser = async (req, res) => {
   }
 };
 
-export { registerUser, loginUser, logoutUser, GuestUserPage };
+export { registerUser, loginUser, logoutUser, GuestUser };
