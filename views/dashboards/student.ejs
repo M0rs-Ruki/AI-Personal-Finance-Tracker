@@ -128,10 +128,6 @@
                 <i class="fas fa-calendar-alt text-gold-primary mr-2"></i>
                 <span><%= new Date().toDateString() %></span>
               </div>
-              <div class="futuristic-input flex items-center">
-                <i class="fas fa-clock text-gold-primary mr-2"></i>
-                <span>Week 30</span>
-              </div>
             </div>
           </div>
           <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -145,7 +141,7 @@
               </div>
               <div>
                 <p class="text-gray-400 text-sm"> Monthly Allowance</p>
-                <p class="text-xl font-bold"> <%= student.monthlyAllowance %> </p>
+                <p class="text-xl font-bold"> <%= student.monthlyAllowance.toLocaleString('en-IN') %> </p>
               </div>
             </div>
             <div
@@ -156,9 +152,19 @@
               >
                 <i class="fas fa-wallet text-gold-primary"></i>
               </div>
+              <% 
+                const totalSpent = student.customCategories?.reduce((sum, cat) => sum + (cat.actualSpent || 0), 0);
+                const remaining = student.monthlyAllowance - totalSpent;
+                const totalSaved = student.financialGoals?.reduce((sum, goal) => sum + (goal.savedAmount || 0), 0);
+                const monthlyIncome = student.monthlyAllowance || 1;
+                const savingsRate = Math.max(Math.min((totalSaved / monthlyIncome) * 100, 100), 0).toFixed(1);
+              %>
+              <!-- Remaining Balance -->
               <div>
                 <p class="text-gray-400 text-sm">Remaining</p>
-                <p class="text-xl font-bold text-green-400">₹3,450</p>
+                <p class="text-xl font-bold <%= remaining >= 0 ? 'text-green-400' : 'text-red-400' %>">
+                  ₹<%= remaining.toLocaleString('en-IN') %>
+                </p>
               </div>
             </div>
             <div
@@ -184,7 +190,9 @@
               </div>
               <div>
                 <p class="text-gray-400 text-sm">Savings Rate</p>
-                <p class="text-xl font-bold text-green-400">42%</p>
+                <p class="text-xl font-bold <%= savingsRate >= 20 ? 'text-green-400' : 'text-yellow-400' %>">
+                  <%= savingsRate %>%
+                </p>
               </div>
             </div>
           </div>
@@ -202,9 +210,6 @@
               >
                 📊 BUDGET OVERVIEW
               </h2>
-              <button class="futuristic-button text-sm px-4 py-2">
-                <i class="fas fa-plus mr-2"></i> Add Transaction
-              </button>
             </div>
 
             <div class="space-y-5">
@@ -224,8 +229,8 @@
                         <h3 class="font-semibold"><%= cat.name %></h3>
                       </div>
                       <div class="text-sm">
-                        <span class="text-gold-primary">₹<%= spent %></span>
-                        <span class="text-gray-500">/ ₹<%= limit %></span>
+                        <span class="text-gold-primary">₹<%= spent.toLocaleString('en-IN') %></span>
+                        <span class="text-gray-500">/ ₹<%= limit.toLocaleString('en-IN') %></span>
                       </div>
                     </div>
 
@@ -355,43 +360,44 @@
 
             <div class="flex flex-col items-center mb-8">
               <div class="relative mb-6">
-                <div
-                  class="w-48 h-48 rounded-full border-8 border-gray-800 flex items-center justify-center"
-                >
-                  <div
-                    class="w-40 h-40 rounded-full border-4 border-gold-primary/30 flex items-center justify-center"
-                  >
+                <div class="w-48 h-48 rounded-full border-8 border-gray-800 flex items-center justify-center">
+                  <div class="w-40 h-40 rounded-full border-4 border-gold-primary/30 flex items-center justify-center">
                     <div class="text-center">
                       <div class="text-2xl font-bold text-gold-primary">
-                        ₹3,450
+                        ₹<%= remaining.toLocaleString('en-IN') %>
                       </div>
                       <div class="text-gray-400 text-sm">Available</div>
                     </div>
                   </div>
                 </div>
+
+                <!-- Spent Floating -->
                 <div
                   class="absolute top-0 right-0 w-20 h-20 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center floating-element"
                 >
                   <div class="text-center">
                     <div class="text-xs text-blue-400">Spent</div>
-                    <div class="text-blue-400 font-bold">₹4,550</div>
+                    <div class="text-blue-400 font-bold">₹<%= totalSpent.toLocaleString('en-IN') %></div>
                   </div>
                 </div>
+
+                <!-- Saved Floating -->
                 <div
                   class="absolute bottom-0 left-0 w-20 h-20 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center floating-element"
                   style="animation-delay: 1.5s"
                 >
                   <div class="text-center">
                     <div class="text-xs text-green-400">Saved</div>
-                    <div class="text-green-400 font-bold">₹1,850</div>
+                    <div class="text-green-400 font-bold">₹<%= totalSaved.toLocaleString('en-IN') %></div>
                   </div>
                 </div>
               </div>
 
+              <!-- Monthly Allowance and Progress Bar -->
               <div class="text-center">
                 <p class="text-gray-400 mb-2">
-                  Weekly Allowance:
-                  <span class="text-gold-primary">₹8,000</span>
+                  Monthly Allowance:
+                  <span class="text-gold-primary">₹<%= student.monthlyAllowance.toLocaleString('en-IN') %></span>
                 </p>
                 <div class="w-64 h-3 rounded-full bg-gray-800 overflow-hidden">
                   <div
@@ -426,9 +432,6 @@
               >
                 🎯 FINANCIAL GOALS
               </h2>
-              <button class="futuristic-button text-sm px-4 py-2">
-                <i class="fas fa-plus mr-2"></i> New Goal
-              </button>
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -453,11 +456,11 @@
                         <div class="flex justify-between text-xs mb-2">
                           <span>
                             Saved:
-                            <span class="text-green-400">₹<%= goal.savedAmount %></span>
+                            <span class="text-green-400">₹<%= goal.savedAmount.toLocaleString('en-IN') %></span>
                           </span>
                           <span>
                             Goal:
-                            <span class="text-gold-primary">₹<%= goal.goalAmount %></span>
+                            <span class="text-gold-primary">₹<%= goal.goalAmount.toLocaleString('en-IN') %></span>
                           </span>
                         </div>
 
