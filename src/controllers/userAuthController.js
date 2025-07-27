@@ -277,7 +277,10 @@ const parseGroupedFieldsToArray = (group) => {
 const GuestUserPage = async (req, res) => {
   try {
     const userId = req.body.userId?.trim();
-
+    const user = await Guest.findById(req.body.userId);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
     // Validate userId
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).send("Invalid user ID format");
@@ -319,7 +322,8 @@ const GuestUserPage = async (req, res) => {
     });
 
     await newGuest.save();
-    res.redirect("/dashboard");
+    res.render("dashboards/guest", { user, guest: newGuest });
+
 
   } catch (err) {
     console.error("Error in GuestUserPage:", err);
