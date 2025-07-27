@@ -24,6 +24,7 @@ const StudentPage = async (req, res) => {
       ? rawGoals.map((goal) => ({
           name: goal.name?.trim(),
           goalAmount: parseFloat(goal.goalAmount || 0),
+          savedAmount: parseFloat(goal.savedAmount || 0),
           targetDate: new Date(goal.targetDate),
         }))
       : [];
@@ -34,6 +35,7 @@ const StudentPage = async (req, res) => {
       ? rawCategories.map((cat) => ({
           name: cat.name?.trim(),
           budgetLimit: parseFloat(cat.budgetLimit || 0),
+          actualSpent: parseFloat(cat.actualSpent || 0),
         }))
       : [];
 

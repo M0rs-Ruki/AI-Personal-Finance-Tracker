@@ -43,6 +43,10 @@ const studentSchema = new mongoose.Schema({
     budgetLimit: {
       type: Number,
       min: 0,
+    },
+    actualSpent: {
+      type: Number,
+      min: 0,
     }
   }],
   financialGoals: [{
@@ -52,6 +56,10 @@ const studentSchema = new mongoose.Schema({
       maxlength: 50
     },
     goalAmount: {
+      type: Number,
+      min: 0,
+    },
+    savedAmount: {
       type: Number,
       min: 0,
     },

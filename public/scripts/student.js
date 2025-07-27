@@ -95,39 +95,39 @@ document.getElementById('add-category').addEventListener('click', function () {
   const budgetSection = document.getElementById('step-4');
   const newCard = document.querySelector('.budget-card').cloneNode(true);
 
-  // Update input values
+  // Clear input values
   const nameInput = newCard.querySelector('input[type="text"]');
-  const amountInput = newCard.querySelector('input[type="number"]');
+  const numberInputs = newCard.querySelectorAll('input[type="number"]');
+
+  if (numberInputs.length < 2) {
+    console.error("Expected two number inputs: budgetLimit and actualSpent");
+    return;
+  }
+
+  const amountInput = numberInputs[0];       // budgetLimit
+  const actualSpentInput = numberInputs[1];  // actualSpent
 
   nameInput.value = '';
   amountInput.value = '';
+  actualSpentInput.value = '';
 
-  // Update name attributes for form serialization
+  // Assign proper names
   nameInput.name = `customCategories[${categoryIndex}][name]`;
   amountInput.name = `customCategories[${categoryIndex}][budgetLimit]`;
+  actualSpentInput.name = `customCategories[${categoryIndex}][actualSpent]`;
 
-  // Optional: update IDs (not required)
+  // Optional but helpful: unique IDs
   nameInput.id = `category${categoryIndex + 1}`;
-  amountInput.id = `amount${categoryIndex + 1}`;
+  amountInput.id = `limit${categoryIndex + 1}`;
+  actualSpentInput.id = `spent${categoryIndex + 1}`;
 
-  // Add animation if you want
+  // Optional: add animation class
   newCard.classList.add('slide-in');
 
   // Insert before the "Add Category" button
   budgetSection.insertBefore(newCard, this);
 
   categoryIndex++;
-});
-
-document.addEventListener('click', function (e) {
-  if (e.target.closest('.remove-category')) {
-    const allCards = document.querySelectorAll('.budget-card');
-    if (allCards.length > 1) {
-      e.target.closest('.budget-card').remove();
-    } else {
-      alert("At least one category is required.");
-    }
-  }
 });
 
 
@@ -139,23 +139,42 @@ document.getElementById('add-goal').addEventListener('click', function () {
   const firstCard = document.querySelector('.goal-card');
   const newCard = firstCard.cloneNode(true);
 
+  // Clear values
   newCard.querySelectorAll('input').forEach(input => {
     input.value = '';
   });
 
-  newCard.querySelector('input[type="text"]').name = `financialGoals[${goalIndex}][name]`;
-  newCard.querySelector('input[type="number"]').name = `financialGoals[${goalIndex}][goalAmount]`;
-  newCard.querySelector('input[type="date"]').name = `financialGoals[${goalIndex}][targetDate]`;
+  // Select inputs in the correct order
+  const textInput = newCard.querySelector('input[type="text"]');
+  const numberInputs = newCard.querySelectorAll('input[type="number"]');
+  const dateInput = newCard.querySelector('input[type="date"]');
 
-  newCard.querySelector('input[type="text"]').id = `goal${goalIndex + 1}`;
-  newCard.querySelector('input[type="number"]').id = `target${goalIndex + 1}`;
-  newCard.querySelector('input[type="date"]').id = `date${goalIndex + 1}`;
+  // Assign unique names
+  if (textInput) {
+    textInput.name = `financialGoals[${goalIndex}][name]`;
+    textInput.id = `goal${goalIndex + 1}`;
+  }
 
+  if (numberInputs.length >= 2) {
+    numberInputs[0].name = `financialGoals[${goalIndex}][goalAmount]`;
+    numberInputs[0].id = `target${goalIndex + 1}-amount`;
+
+    numberInputs[1].name = `financialGoals[${goalIndex}][savedAmount]`;
+    numberInputs[1].id = `target${goalIndex + 1}-saved`;
+  }
+
+  if (dateInput) {
+    dateInput.name = `financialGoals[${goalIndex}][targetDate]`;
+    dateInput.id = `date${goalIndex + 1}`;
+  }
+
+  // Add animation class and insert
   newCard.classList.add('slide-in');
   goalSection.insertBefore(newCard, this);
 
   goalIndex++;
 });
+
 
 document.addEventListener('click', function (e) {
   if (e.target.closest('.remove-goal')) {
