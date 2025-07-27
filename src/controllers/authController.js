@@ -56,7 +56,7 @@ const registerUser = async (req, res) => {
     });
 
     // Redirect/render based on user type
-    const userTypePage = `userType/${userType || "other"}`;
+    const userTypePage = `userType/${userType || "guest"}`;
     return res.render(userTypePage, { userId: newUser._id });
   } catch (err) {
     console.error("Error during registration:", err);
@@ -120,12 +120,10 @@ const loginUser = async (req, res) => {
 
     const token = generateToken(user);
     res.cookie("token", token);
-    // res.redirect('/user/deshboard'); for now
 
-    // Redirect/render based on user type
+    // Redirect based on user type
     const userType = user.userType;
-    const userTypePage = `userType/${userType || "other"}`;
-    return res.render(userTypePage, { userId: user._id });
+    return res.redirect(`/dashboard/${userType}`);
 
   } catch (err) {
     console.log(err);

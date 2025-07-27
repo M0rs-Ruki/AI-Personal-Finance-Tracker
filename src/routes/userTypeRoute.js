@@ -1,6 +1,5 @@
 
 import express from "express";
-import dotenv from "dotenv";
 import {log} from 'console';
 import { StudentPage,
     EmployerPage,
@@ -12,7 +11,6 @@ import isLoggedIn from "../middlewares/isLoggedInMiddleware.js";
 
 
 const router = express.Router();
-dotenv.config({path: './.env'});
 
 
 router.post('/student',isLoggedIn, StudentPage);

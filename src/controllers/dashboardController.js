@@ -4,21 +4,17 @@ import Student from "../models/studentModels.js";
 import Employer from "../models/employedModels.js";
 import UnEmployed from "../models/unemployedModels.js";
 import Retired from "../models/retiredModels.js";
+import GuestModel from "../models/guestUserModels.js";
 import { log } from "console";
 
 
-const dashboardPage = async (req, res) => {
+const StudentDashboard = async (req, res) => {
     try {
-        
-        const user = await User.findById(req.user._id).lean();
-        log(user);
-
+        res.send("Student Dashboard")
     } catch (err) {
-        console.error("Error during dashboard page:", err);
-        res.status(500).send("Internal Server Error");
-        
+        console.error("Error in StudentDashboard:", err);
+        res.status(500).send("Something went wrong. Please try again later.");
     }
 };
 
-
-export { dashboardPage };
+export { StudentDashboard };
