@@ -8,7 +8,7 @@ import {log} from 'console';
 
 const router = express.Router();
 
-router.get('/student', StudentDashboard );
+router.get('/student',isLoggedIn, StudentDashboard );
 
 
 export default router;

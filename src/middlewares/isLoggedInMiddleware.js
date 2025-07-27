@@ -10,7 +10,7 @@ dotenv.config({path: './.env'});
 const isLoggedIn = async (req, res, next) => {
     const token = req.cookies.token;
     if (!token) {
-        return res.redirect('/login');
+        return res.redirect('/user/login');
     }
 
     try {
@@ -19,13 +19,13 @@ const isLoggedIn = async (req, res, next) => {
         .findOne({email: decoded.email})
         .select('-password');
         if (!user) {
-            return res.redirect('/login');
+            return res.redirect('/user/login');
         }
         req.user = user;
         next();
 
     } catch (err) {
-        req.redirect('/login');
+        req.redirect('/user/login');
         console.log(err, 'Error in isLoggedIn');
     }
 }
