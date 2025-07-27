@@ -16,7 +16,7 @@ router.get('/login', (req, res) => {
 
 router.post('/signup', registerUser);
 router.post('/login', loginUser);
-router.post('/logout', logoutUser);
+router.get('/logout', logoutUser);
 router.get('/guest', GuestUser);
 
 

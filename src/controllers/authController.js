@@ -133,11 +133,19 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
   try {
-    res.clearCookie("token");
+    res.clearCookie("token", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
+    // Redirect to homepage or login
     res.redirect("/");
   } catch (err) {
-    res.status(500).json({ message: " Error operating during logout user " });
+    console.error("Logout error:", err);
+    res.status(500).send("Error occurred during logout");
   }
 };
+
 
 export { registerUser, loginUser, logoutUser, GuestUser };
