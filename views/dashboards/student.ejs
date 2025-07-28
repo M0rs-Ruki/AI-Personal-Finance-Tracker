@@ -1,163 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Secure Futurism Student Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="/styles/dashboard/student.css">
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              "dark-bg": "#0F0F0F",
-              "card-bg": "#1A1A1A",
-              "gold-primary": "#D4AF37",
-              "gold-secondary": "#FFD700",
-              "muted-white": "#EAEAEA",
-              "futurism-blue": "#0ea5e9",
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Secure Futurism Student Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="/styles/dashboard/student.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            "dark-bg": "#0F0F0F",
+            "card-bg": "#1A1A1A",
+            "gold-primary": "#D4AF37",
+            "gold-secondary": "#FFD700",
+            "muted-white": "#EAEAEA",
+            "futurism-blue": "#0ea5e9",
+          },
+          fontFamily: {
+            montserrat: ["Montserrat", "sans-serif"],
+            orbitron: ["Orbitron", "sans-serif"],
+          },
+          boxShadow: {
+            "gold-glow": "0 0 15px rgba(212, 175, 55, 0.5)",
+            "gold-glow-md": "0 0 25px rgba(212, 175, 55, 0.7)",
+            "blue-glow": "0 0 15px rgba(14, 165, 233, 0.5)",
+          },
+          animation: {
+            "pulse-gold":
+              "pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+            float: "float 6s ease-in-out infinite",
+            "pulse-blue":
+              "pulse-blue 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+          },
+          keyframes: {
+            "pulse-gold": {
+              "0%, 100%": { "box-shadow": "0 0 0 0 rgba(212, 175, 55, 0.7)" },
+              "50%": { "box-shadow": "0 0 0 10px rgba(212, 175, 55, 0)" },
             },
-            fontFamily: {
-              montserrat: ["Montserrat", "sans-serif"],
-              orbitron: ["Orbitron", "sans-serif"],
+            float: {
+              "0%, 100%": { transform: "translateY(0)" },
+              "50%": { transform: "translateY(-10px)" },
             },
-            boxShadow: {
-              "gold-glow": "0 0 15px rgba(212, 175, 55, 0.5)",
-              "gold-glow-md": "0 0 25px rgba(212, 175, 55, 0.7)",
-              "blue-glow": "0 0 15px rgba(14, 165, 233, 0.5)",
-            },
-            animation: {
-              "pulse-gold":
-                "pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-              float: "float 6s ease-in-out infinite",
-              "pulse-blue":
-                "pulse-blue 4s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-            },
-            keyframes: {
-              "pulse-gold": {
-                "0%, 100%": { "box-shadow": "0 0 0 0 rgba(212, 175, 55, 0.7)" },
-                "50%": { "box-shadow": "0 0 0 10px rgba(212, 175, 55, 0)" },
-              },
-              float: {
-                "0%, 100%": { transform: "translateY(0)" },
-                "50%": { transform: "translateY(-10px)" },
-              },
-              "pulse-blue": {
-                "0%, 100%": { "box-shadow": "0 0 0 0 rgba(14, 165, 233, 0.3)" },
-                "50%": { "box-shadow": "0 0 0 15px rgba(14, 165, 233, 0)" },
-              },
+            "pulse-blue": {
+              "0%, 100%": { "box-shadow": "0 0 0 0 rgba(14, 165, 233, 0.3)" },
+              "50%": { "box-shadow": "0 0 0 15px rgba(14, 165, 233, 0)" },
             },
           },
         },
-      };
-    </script>
+      },
+    };
+  </script>
 
-  </head>
-  <body class="min-h-screen py-8 px-4 sm:px-8">
-    <div class="max-w-7xl mx-auto">
-      <!-- Top Navigation Bar -->
-      <nav
-        class="futuristic-border mb-10 py-5 px-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0"
-      >
-        <div class="flex items-center space-x-3">
+</head>
+
+<body class="min-h-screen py-8 px-4 sm:px-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Top Navigation Bar -->
+    <nav
+      class="futuristic-border mb-10 py-5 px-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+      <div class="flex items-center space-x-3">
+        <div class="hexagon w-14 h-14 flex items-center justify-center blue-gradient">
+          <i class="fas fa-graduation-cap text-dark-bg text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold font-orbitron tracking-wider">
+            EDU<span class="text-gold-primary">FUTURE</span>
+          </h1>
+          <p class="text-xs text-gray-400">Student Financial Dashboard</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-4">
+        <div class="relative">
           <div
-            class="hexagon w-14 h-14 flex items-center justify-center blue-gradient"
-          >
-            <i class="fas fa-graduation-cap text-dark-bg text-xl"></i>
+            class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-xs animate-pulse">
+            1
           </div>
+          <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='#'">
+            <i class="fas fa-bell"></i>
+          </button>
+        </div>
+        <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='##'">
+          <i class="fas fa-cog"></i>
+        </button>
+        <button class="glowing-icon p-2 rounded-full text-xl">
+          <i class="fas fa-user-astronaut"></i>
+        </button>
+        <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='/user/logout'">
+          <i class="fas fa-power-off"></i>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Welcome Header -->
+    <div class="grid-header mb-8">
+      <div class="holographic-card p-8 relative overflow-hidden">
+        <div class="circuit-pattern"></div>
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
           <div>
-            <h1 class="text-xl font-bold font-orbitron tracking-wider">
-              EDU<span class="text-gold-primary">FUTURE</span>
-            </h1>
-            <p class="text-xs text-gray-400">Student Financial Dashboard</p>
-          </div>
-        </div>
-
-        <div class="flex items-center space-x-4">
-          <div class="relative">
-            <div
-              class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-xs animate-pulse"
-            >
-              1
-            </div>
-            <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='#'">
-              <i class="fas fa-bell"></i>
-            </button>
-          </div>
-          <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='##'">
-            <i class="fas fa-cog"></i>
-          </button>
-          <button class="glowing-icon p-2 rounded-full text-xl">
-            <i class="fas fa-user-astronaut"></i>
-          </button>
-          <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='/user/logout'">
-            <i class="fas fa-power-off"></i>
-          </button>
-        </div>
-      </nav>
-
-      <!-- Welcome Header -->
-      <div class="grid-header mb-8">
-        <div class="holographic-card p-8 relative overflow-hidden">
-          <div class="circuit-pattern"></div>
-          <div
-            class="flex flex-col md:flex-row justify-between items-start md:items-center"
-          >
-            <div>
-              <h1 class="text-3xl font-bold mb-2">
-                Welcome back,
-                <span class="text-gold-primary"> <%= user.fullName %> </span>
+            <h1 class="text-3xl font-bold mb-2">
+              Welcome back,
+              <span class="text-gold-primary">
+                <%= user.fullName %>
               </span>
-                <span class="text-futurism-blue">🚀</span>
-              </h1>
-              <p class="text-gray-400">
-                Here's your financial overview for this week
+              </span>
+              <span class="text-futurism-blue">🚀</span>
+            </h1>
+            <p class="text-gray-400">
+              Here's your financial overview for this week
+            </p>
+          </div>
+          <div class="mt-4 md:mt-0 flex space-x-3">
+            <div class="futuristic-input flex items-center">
+              <i class="fas fa-calendar-alt text-gold-primary mr-2"></i>
+              <span>
+                <%= new Date().toDateString() %>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 flex items-center">
+            <div class="w-12 h-12 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3">
+              <i class="fas fa-rupee-sign text-gold-primary"></i>
+            </div>
+            <div>
+              <p class="text-gray-400 text-sm"> Monthly Allowance</p>
+              <p class="text-xl font-bold">
+                <%= student.monthlyAllowance.toLocaleString('en-IN') %>
               </p>
             </div>
-            <div class="mt-4 md:mt-0 flex space-x-3">
-              <div class="futuristic-input flex items-center">
-                <i class="fas fa-calendar-alt text-gold-primary mr-2"></i>
-                <span><%= new Date().toDateString() %></span>
-              </div>
-            </div>
           </div>
-          <div class="mt-6 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div
-              class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 flex items-center"
-            >
-              <div
-                class="w-12 h-12 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-rupee-sign text-gold-primary"></i>
-              </div>
-              <div>
-                <p class="text-gray-400 text-sm"> Monthly Allowance</p>
-                <p class="text-xl font-bold"> <%= student.monthlyAllowance.toLocaleString('en-IN') %> </p>
-              </div>
+          <div class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 flex items-center">
+            <div class="w-12 h-12 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3">
+              <i class="fas fa-wallet text-gold-primary"></i>
             </div>
-            <div
-              class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 flex items-center"
-            >
-              <div
-                class="w-12 h-12 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-wallet text-gold-primary"></i>
-              </div>
-              <% 
-                const totalSpent = student.customCategories?.reduce((sum, cat) => sum + (cat.actualSpent || 0), 0);
-                const remaining = student.monthlyAllowance - totalSpent;
-                const totalSaved = student.financialGoals?.reduce((sum, goal) => sum + (goal.savedAmount || 0), 0);
-                const monthlyIncome = student.monthlyAllowance || 1;
-                const savingsRate = Math.max(Math.min((totalSaved / monthlyIncome) * 100, 100), 0).toFixed(1);
+            <% const totalSpent=student.customCategories?.reduce((sum, cat)=> sum + (cat.actualSpent || 0), 0);
+              const remaining = student.monthlyAllowance - totalSpent;
+              const totalSaved = student.financialGoals?.reduce((sum, goal) => sum + (goal.savedAmount || 0), 0);
+              const monthlyIncome = student.monthlyAllowance || 1;
+              const savingsRate = Math.max(Math.min((totalSaved / monthlyIncome) * 100, 100), 0).toFixed(1);
               %>
               <!-- Remaining Balance -->
               <div>
@@ -166,577 +155,529 @@
                   ₹<%= remaining.toLocaleString('en-IN') %>
                 </p>
               </div>
+          </div>
+          <div class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 flex items-center">
+            <div class="w-12 h-12 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3">
+              <i class="fas fa-bullseye text-gold-primary"></i>
             </div>
-            <div
-              class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 flex items-center"
-            >
-              <div
-                class="w-12 h-12 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-bullseye text-gold-primary"></i>
+            <div>
+              <p class="text-gray-400 text-sm">Active Goals</p>
+              <p class="text-xl font-bold">
+                <%= student.financialGoals.length %>
+              </p>
+            </div>
+          </div>
+          <div class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 flex items-center">
+            <div class="w-12 h-12 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3">
+              <i class="fas fa-chart-line text-gold-primary"></i>
+            </div>
+            <div>
+              <p class="text-gray-400 text-sm">Savings Rate</p>
+              <p class="text-xl font-bold <%= savingsRate >= 20 ? 'text-green-400' : 'text-yellow-400' %>">
+                <%= savingsRate %>%
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Dashboard Content -->
+    <div class="dashboard-grid">
+      <!-- Summary Section -->
+      <div class="grid-summary">
+        <div class="holographic-card p-6 mb-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold font-orbitron text-gold-primary tracking-wider">
+              📊 BUDGET OVERVIEW
+            </h2>
+          </div>
+
+          <div class="space-y-5">
+            <!-- Budget Category -->
+            <% if (student.customCategories && student.customCategories.length> 0) { %>
+              <% student.customCategories.forEach((cat)=> {
+                const spent = cat.actualSpent || 0;
+                const limit = cat.budgetLimit || 1; // prevent divide by zero
+                const usage = Math.min((spent / limit) * 100, 100).toFixed(1);
+                %>
+                <div class="mb-6">
+                  <div class="flex justify-between mb-2">
+                    <div class="flex items-center">
+                      <div class="w-8 h-8 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3">
+                        <i class="fas fa-book text-gold-primary"></i>
+                      </div>
+                      <h3 class="font-semibold">
+                        <%= cat.name %>
+                      </h3>
+                    </div>
+                    <div class="text-sm">
+                      <span class="text-gold-primary">₹<%= spent.toLocaleString('en-IN') %></span>
+                      <span class="text-gray-500">/ ₹<%= limit.toLocaleString('en-IN') %></span>
+                    </div>
+                  </div>
+
+                  <div class="flex items-center">
+                    <div class="progress-bar flex-1 mr-3 bg-gray-800 h-2 rounded overflow-hidden">
+                      <div class="progress-bar-fill bg-gold-primary h-2" style="width: <%= usage %>%"></div>
+                    </div>
+                    <span class="text-sm text-yellow-500">
+                      <%= usage %>%
+                    </span>
+                  </div>
+
+                  <% if (usage>= 90) { %>
+                    <div class="mt-1 text-xs text-red-400 flex items-center">
+                      <i class="fas fa-exclamation-circle mr-1"></i>
+                      You've used <%= usage %>% of your "<%= cat.name %>" budget
+                    </div>
+                    <% } %>
+                </div>
+                <% }) %>
+                  <% } else { %>
+                    <p class="text-sm text-gray-500 italic">No budget categories set up.</p>
+                    <% } %>
+
+
+
+
+                      <div class="pt-4">
+                        <button id="open-modal"
+                          class="w-full py-3 rounded-xl border border-dashed border-gold-primary/40 flex items-center justify-center text-gold-primary hover:bg-gold-primary/10 transition"
+                          type="button">
+                          <i class="fas fa-plus mr-2"></i> Add New Category
+                        </button>
+                      </div>
+          </div>
+        </div>
+
+        <!-- Education Info -->
+        <div class="holographic-card p-6">
+          <h2 class="text-xl font-bold font-orbitron text-gold-primary tracking-wider mb-6">
+            🎓 EDUCATION PROFILE
+          </h2>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <div class="flex items-center mb-4">
+                <div class="w-12 h-12 rounded-xl bg-gold-primary/10 flex items-center justify-center mr-3">
+                  <i class="fas fa-university text-xl text-gold-primary"></i>
+                </div>
+                <div>
+                  <h3 class="font-bold">
+                    <%= student.institutionName %>
+                  </h3>
+                  <p class="text-sm text-gray-400">
+                    Computer Science Engineering
+                  </p>
+                </div>
               </div>
-              <div>
-                <p class="text-gray-400 text-sm">Active Goals</p>
-                <p class="text-xl font-bold"><%= student.financialGoals.length %></p>
+
+              <div class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 mt-4">
+                <div class="flex justify-between mb-2">
+                  <span class="text-gray-400">Semester Progress</span>
+                  <span class="text-gold-primary">75%</span>
+                </div>
+                <div class="progress-bar">
+                  <div class="progress-bar-fill" style="width: 75%"></div>
+                </div>
               </div>
             </div>
-            <div
-              class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 flex items-center"
-            >
-              <div
-                class="w-12 h-12 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-chart-line text-gold-primary"></i>
-              </div>
-              <div>
-                <p class="text-gray-400 text-sm">Savings Rate</p>
-                <p class="text-xl font-bold <%= savingsRate >= 20 ? 'text-green-400' : 'text-yellow-400' %>">
-                  <%= savingsRate %>%
-                </p>
+
+            <div>
+              <div class="space-y-4">
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mr-3">
+                    <i class="fas fa-home text-blue-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold">Accommodation</h3>
+                    <p class="text-sm text-gray-400">
+                      <%= student.livingSituation %>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center mr-3">
+                    <i class="fas fa-graduation-cap text-green-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold">Level</h3>
+                    <p class="text-sm text-gray-400">
+                      <%= student.educationLevel %>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-center">
+                  <div class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center mr-3">
+                    <i class="fas fa-money-bill-wave text-purple-400"></i>
+                  </div>
+                  <div>
+                    <h3 class="font-semibold">Funding</h3>
+                    <p class="text-sm text-gray-400">
+                      <%= student.isParentFunded %>
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Main Dashboard Content -->
-      <div class="dashboard-grid">
-        <!-- Summary Section -->
-        <div class="grid-summary">
-          <div class="holographic-card p-6 mb-6">
-            <div class="flex justify-between items-center mb-6">
-              <h2
-                class="text-xl font-bold font-orbitron text-gold-primary tracking-wider"
-              >
-                📊 BUDGET OVERVIEW
-              </h2>
+      <!-- Finance Section -->
+      <div class="grid-finance">
+        <div class="holographic-card p-6 h-full">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold font-orbitron text-gold-primary tracking-wider">
+              💸 FINANCE SNAPSHOT
+            </h2>
+            <button class="text-gold-primary">
+              <i class="fas fa-ellipsis-h"></i>
+            </button>
+          </div>
+
+          <div class="flex flex-col items-center mb-8">
+            <div class="relative mb-6">
+              <div class="w-48 h-48 rounded-full border-8 border-gray-800 flex items-center justify-center">
+                <div class="w-40 h-40 rounded-full border-4 border-gold-primary/30 flex items-center justify-center">
+                  <div class="text-center">
+                    <div class="text-2xl font-bold text-gold-primary">
+                      ₹<%= remaining.toLocaleString('en-IN') %>
+                    </div>
+                    <div class="text-gray-400 text-sm">Available</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Spent Floating -->
+              <div
+                class="absolute top-0 right-0 w-20 h-20 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center floating-element">
+                <div class="text-center">
+                  <div class="text-xs text-blue-400">Spent</div>
+                  <div class="text-blue-400 font-bold">₹<%= totalSpent.toLocaleString('en-IN') %>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Saved Floating -->
+              <div
+                class="absolute bottom-0 left-0 w-20 h-20 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center floating-element"
+                style="animation-delay: 1.5s">
+                <div class="text-center">
+                  <div class="text-xs text-green-400">Saved</div>
+                  <div class="text-green-400 font-bold">₹<%= totalSaved.toLocaleString('en-IN') %>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="space-y-5">
-              <!-- Budget Category -->
-              <% if (student.customCategories && student.customCategories.length > 0) { %>
-                <% student.customCategories.forEach((cat) => { 
-                    const spent = cat.actualSpent || 0;
-                    const limit = cat.budgetLimit || 1; // prevent divide by zero
-                    const usage = Math.min((spent / limit) * 100, 100).toFixed(1);
-                %>
-                  <div class="mb-6">
-                    <div class="flex justify-between mb-2">
-                      <div class="flex items-center">
-                        <div class="w-8 h-8 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3">
-                          <i class="fas fa-book text-gold-primary"></i>
-                        </div>
-                        <h3 class="font-semibold"><%= cat.name %></h3>
-                      </div>
-                      <div class="text-sm">
-                        <span class="text-gold-primary">₹<%= spent.toLocaleString('en-IN') %></span>
-                        <span class="text-gray-500">/ ₹<%= limit.toLocaleString('en-IN') %></span>
-                      </div>
-                    </div>
-
-                    <div class="flex items-center">
-                      <div class="progress-bar flex-1 mr-3 bg-gray-800 h-2 rounded overflow-hidden">
-                        <div class="progress-bar-fill bg-gold-primary h-2" style="width: <%= usage %>%"></div>
-                      </div>
-                      <span class="text-sm text-yellow-500"><%= usage %>%</span>
-                    </div>
-
-                    <% if (usage >= 90) { %>
-                      <div class="mt-1 text-xs text-red-400 flex items-center">
-                        <i class="fas fa-exclamation-circle mr-1"></i>
-                        You've used <%= usage %>% of your "<%= cat.name %>" budget
-                      </div>
-                    <% } %>
-                  </div>
-                <% }) %>
-              <% } else { %>
-                <p class="text-sm text-gray-500 italic">No budget categories set up.</p>
-              <% } %>
-
-
-
-
-              <div class="pt-4">
-                <button
-                  id="open-modal"
-                  class="w-full py-3 rounded-xl border border-dashed border-gold-primary/40 flex items-center justify-center text-gold-primary hover:bg-gold-primary/10 transition"
-                  type="button"
-                >
-                  <i class="fas fa-plus mr-2"></i> Add New Category
-                </button>
+            <!-- Monthly Allowance and Progress Bar -->
+            <div class="text-center">
+              <p class="text-gray-400 mb-2">
+                Monthly Allowance:
+                <span class="text-gold-primary">₹<%= student.monthlyAllowance.toLocaleString('en-IN') %></span>
+              </p>
+              <div class="w-64 h-3 rounded-full bg-gray-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500" style="width: 100%"></div>
               </div>
             </div>
           </div>
 
-          <!-- Education Info -->
-          <div class="holographic-card p-6">
-            <h2
-              class="text-xl font-bold font-orbitron text-gold-primary tracking-wider mb-6"
-            >
-              🎓 EDUCATION PROFILE
-            </h2>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <div class="flex items-center mb-4">
-                  <div
-                    class="w-12 h-12 rounded-xl bg-gold-primary/10 flex items-center justify-center mr-3"
-                  >
-                    <i class="fas fa-university text-xl text-gold-primary"></i>
-                  </div>
-                  <div>
-                    <h3 class="font-bold"><%= student.institutionName %></h3>
-                    <p class="text-sm text-gray-400">
-                      Computer Science Engineering
-                    </p>
-                  </div>
-                </div>
-
-                <div
-                  class="bg-black/30 p-4 rounded-xl border border-gold-primary/20 mt-4"
-                >
-                  <div class="flex justify-between mb-2">
-                    <span class="text-gray-400">Semester Progress</span>
-                    <span class="text-gold-primary">75%</span>
-                  </div>
-                  <div class="progress-bar">
-                    <div class="progress-bar-fill" style="width: 75%"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div>
-                <div class="space-y-4">
-                  <div class="flex items-center">
-                    <div
-                      class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center mr-3"
-                    >
-                      <i class="fas fa-home text-blue-400"></i>
-                    </div>
-                    <div>
-                      <h3 class="font-semibold">Accommodation</h3>
-                      <p class="text-sm text-gray-400"><%= student.livingSituation %></p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center">
-                    <div
-                      class="w-10 h-10 rounded-full bg-green-500/10 flex items-center justify-center mr-3"
-                    >
-                      <i class="fas fa-graduation-cap text-green-400"></i>
-                    </div>
-                    <div>
-                      <h3 class="font-semibold">Level</h3>
-                      <p class="text-sm text-gray-400"><%= student.educationLevel %></p>
-                    </div>
-                  </div>
-
-                  <div class="flex items-center">
-                    <div
-                      class="w-10 h-10 rounded-full bg-purple-500/10 flex items-center justify-center mr-3"
-                    >
-                      <i class="fas fa-money-bill-wave text-purple-400"></i>
-                    </div>
-                    <div>
-                      <h3 class="font-semibold">Funding</h3>
-                      <p class="text-sm text-gray-400"><%= student.isParentFunded %></p>
-                    </div>
-                  </div>
-                </div>
-              </div>
+          <div class="bg-black/30 rounded-xl p-4 border border-gold-primary/20">
+            <div class="flex justify-between mb-3">
+              <div class="text-gray-400">Next Allowance:</div>
+              <div class="font-semibold">July 31, 2025</div>
+            </div>
+            <div class="flex justify-between">
+              <div class="text-gray-400">Funding Status:</div>
+              <div class="text-green-400 font-semibold">Confirmed</div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- Finance Section -->
-        <div class="grid-finance">
-          <div class="holographic-card p-6 h-full">
-            <div class="flex justify-between items-center mb-6">
-              <h2
-                class="text-xl font-bold font-orbitron text-gold-primary tracking-wider"
-              >
-                💸 FINANCE SNAPSHOT
-              </h2>
-              <button class="text-gold-primary">
-                <i class="fas fa-ellipsis-h"></i>
+      <!-- Goals Section -->
+      <div class="grid-goals">
+        <div class="holographic-card p-6">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold font-orbitron text-gold-primary tracking-wider">
+              🎯 FINANCIAL GOALS
+            </h2>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- Goal Card -->
+            <% if (student.financialGoals && student.financialGoals.length> 0) { %>
+              <% student.financialGoals.forEach((goal)=> {
+                const progress = goal.goalAmount > 0
+                ? Math.min((goal.savedAmount / goal.goalAmount) * 100, 100).toFixed(1)
+                : 0;
+                %>
+                <div
+                  class="bg-black/20 p-4 rounded-xl border border-gold-primary/20 hover:border-gold-primary/50 transition mb-4">
+                  <div class="flex items-start">
+                    <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mr-3">
+                      <i class="fas fa-laptop text-blue-400 text-xl"></i>
+                    </div>
+                    <div class="flex-1">
+                      <h3 class="font-bold mb-1">
+                        <%= goal.name %>
+                      </h3>
+                      <p class="text-sm text-gray-400 mb-2">
+                        <%= new Date(goal.targetDate).toDateString() %>
+                      </p>
+
+                      <div class="flex justify-between text-xs mb-2">
+                        <span>
+                          Saved:
+                          <span class="text-green-400">₹<%= goal.savedAmount.toLocaleString('en-IN') %></span>
+                        </span>
+                        <span>
+                          Goal:
+                          <span class="text-gold-primary">₹<%= goal.goalAmount.toLocaleString('en-IN') %></span>
+                        </span>
+                      </div>
+
+                      <div class="w-full bg-gray-800 h-2 rounded overflow-hidden mb-1">
+                        <div class="bg-gold-primary h-2" style="width: <%= progress %>%"></div>
+                      </div>
+
+                      <p class="text-xs text-gray-400 text-right">
+                        <%= progress %>% complete
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <% }) %>
+                  <% } else { %>
+                    <p class="text-sm text-gray-500 italic">No financial goals added yet.</p>
+                    <% } %>
+
+
+                      <!-- Add Goal Card -->
+                      <div id="open-goal-modal"
+                        class="bg-black/10 p-4 rounded-xl border-2 border-dashed border-gold-primary/30 flex flex-col items-center justify-center text-center hover:border-gold-primary/60 hover:bg-gold-primary/10 transition cursor-pointer">
+                        <div class="w-10 h-10 rounded-full bg-gold-primary/10 flex items-center justify-center mb-3">
+                          <i class="fas fa-plus text-gold-primary"></i>
+                        </div>
+                        <h3 class="font-bold text-gold-primary">Add New Goal</h3>
+                        <p class="text-xs text-gray-400 mt-1">Create a new financial target</p>
+                      </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Insights Section -->
+      <div class="grid-insights">
+        <div class="holographic-card p-6 h-full">
+          <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-bold font-orbitron text-gold-primary tracking-wider">
+              💡 AI INSIGHTS
+            </h2>
+            <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400">
+              <i class="fas fa-robot"></i>
+            </div>
+          </div>
+
+          <div class="space-y-4">
+            <!-- Insight Card -->
+            <div class="bg-gradient-to-r from-blue-900/30 to-blue-900/10 p-4 rounded-xl border border-blue-500/30">
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-lightbulb text-blue-400"></i>
+                </div>
+                <div>
+                  <p>
+                    "You can reach your Goa trip goal 2 weeks early if you
+                    save ₹500 more weekly."
+                  </p>
+                  <div class="flex items-center mt-2">
+                    <span class="text-xs bg-blue-500/20 px-2 py-1 rounded text-blue-400">Savings Tip</span>
+                    <span class="text-xs text-gray-500 ml-2">Just now</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Insight Card -->
+            <div
+              class="bg-gradient-to-r from-purple-900/30 to-purple-900/10 p-4 rounded-xl border border-purple-500/30">
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-chart-pie text-purple-400"></i>
+                </div>
+                <div>
+                  <p>
+                    "Your food expenses are 25% higher than campus average.
+                    Consider meal planning."
+                  </p>
+                  <div class="flex items-center mt-2">
+                    <span class="text-xs bg-purple-500/20 px-2 py-1 rounded text-purple-400">Spending Alert</span>
+                    <span class="text-xs text-gray-500 ml-2">3 hrs ago</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Insight Card -->
+            <div class="bg-gradient-to-r from-amber-900/30 to-amber-900/10 p-4 rounded-xl border border-amber-500/30">
+              <div class="flex items-start">
+                <div class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center mr-3 mt-1">
+                  <i class="fas fa-coins text-amber-400"></i>
+                </div>
+                <div>
+                  <p>
+                    "Based on your spending patterns, you could save
+                    ₹1,500/month by using public transport."
+                  </p>
+                  <div class="flex items-center mt-2">
+                    <span class="text-xs bg-amber-500/20 px-2 py-1 rounded text-amber-400">Opportunity</span>
+                    <span class="text-xs text-gray-500 ml-2">Yesterday</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6">
+            <h3 class="font-bold mb-3">Quick Actions</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <button class="futuristic-button py-2">
+                <i class="fas fa-file-invoice-dollar mr-2"></i> Generate
+                Report
+              </button>
+              <button class="futuristic-button py-2">
+                <i class="fas fa-sliders-h mr-2"></i> Adjust Budget
               </button>
             </div>
-
-            <div class="flex flex-col items-center mb-8">
-              <div class="relative mb-6">
-                <div class="w-48 h-48 rounded-full border-8 border-gray-800 flex items-center justify-center">
-                  <div class="w-40 h-40 rounded-full border-4 border-gold-primary/30 flex items-center justify-center">
-                    <div class="text-center">
-                      <div class="text-2xl font-bold text-gold-primary">
-                        ₹<%= remaining.toLocaleString('en-IN') %>
-                      </div>
-                      <div class="text-gray-400 text-sm">Available</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Spent Floating -->
-                <div
-                  class="absolute top-0 right-0 w-20 h-20 rounded-full bg-blue-500/10 border border-blue-500/30 flex items-center justify-center floating-element"
-                >
-                  <div class="text-center">
-                    <div class="text-xs text-blue-400">Spent</div>
-                    <div class="text-blue-400 font-bold">₹<%= totalSpent.toLocaleString('en-IN') %></div>
-                  </div>
-                </div>
-
-                <!-- Saved Floating -->
-                <div
-                  class="absolute bottom-0 left-0 w-20 h-20 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center floating-element"
-                  style="animation-delay: 1.5s"
-                >
-                  <div class="text-center">
-                    <div class="text-xs text-green-400">Saved</div>
-                    <div class="text-green-400 font-bold">₹<%= totalSaved.toLocaleString('en-IN') %></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Monthly Allowance and Progress Bar -->
-              <div class="text-center">
-                <p class="text-gray-400 mb-2">
-                  Monthly Allowance:
-                  <span class="text-gold-primary">₹<%= student.monthlyAllowance.toLocaleString('en-IN') %></span>
-                </p>
-                <div class="w-64 h-3 rounded-full bg-gray-800 overflow-hidden">
-                  <div
-                    class="h-full bg-gradient-to-r from-green-500 via-yellow-500 to-red-500"
-                    style="width: 100%"
-                  ></div>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="bg-black/30 rounded-xl p-4 border border-gold-primary/20"
-            >
-              <div class="flex justify-between mb-3">
-                <div class="text-gray-400">Next Allowance:</div>
-                <div class="font-semibold">July 31, 2025</div>
-              </div>
-              <div class="flex justify-between">
-                <div class="text-gray-400">Funding Status:</div>
-                <div class="text-green-400 font-semibold">Confirmed</div>
-              </div>
-            </div>
           </div>
-        </div>
-
-        <!-- Goals Section -->
-        <div class="grid-goals">
-          <div class="holographic-card p-6">
-            <div class="flex justify-between items-center mb-6">
-              <h2
-                class="text-xl font-bold font-orbitron text-gold-primary tracking-wider"
-              >
-                🎯 FINANCIAL GOALS
-              </h2>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <!-- Goal Card -->
-              <% if (student.financialGoals && student.financialGoals.length > 0) { %>
-                <% student.financialGoals.forEach((goal) => { 
-                    const progress = goal.goalAmount > 0
-                      ? Math.min((goal.savedAmount / goal.goalAmount) * 100, 100).toFixed(1)
-                      : 0;
-                %>
-                  <div class="bg-black/20 p-4 rounded-xl border border-gold-primary/20 hover:border-gold-primary/50 transition mb-4">
-                    <div class="flex items-start">
-                      <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mr-3">
-                        <i class="fas fa-laptop text-blue-400 text-xl"></i>
-                      </div>
-                      <div class="flex-1">
-                        <h3 class="font-bold mb-1"><%= goal.name %></h3>
-                        <p class="text-sm text-gray-400 mb-2">
-                          <%= new Date(goal.targetDate).toDateString() %>
-                        </p>
-
-                        <div class="flex justify-between text-xs mb-2">
-                          <span>
-                            Saved:
-                            <span class="text-green-400">₹<%= goal.savedAmount.toLocaleString('en-IN') %></span>
-                          </span>
-                          <span>
-                            Goal:
-                            <span class="text-gold-primary">₹<%= goal.goalAmount.toLocaleString('en-IN') %></span>
-                          </span>
-                        </div>
-
-                        <div class="w-full bg-gray-800 h-2 rounded overflow-hidden mb-1">
-                          <div
-                            class="bg-gold-primary h-2"
-                            style="width: <%= progress %>%"
-                          ></div>
-                        </div>
-
-                        <p class="text-xs text-gray-400 text-right">
-                          <%= progress %>% complete
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                <% }) %>
-              <% } else { %>
-                <p class="text-sm text-gray-500 italic">No financial goals added yet.</p>
-              <% } %>
-
-
-              <!-- Add Goal Card -->
-              <div
-                id="open-goal-modal"
-                class="bg-black/10 p-4 rounded-xl border-2 border-dashed border-gold-primary/30 flex flex-col items-center justify-center text-center hover:border-gold-primary/60 hover:bg-gold-primary/10 transition cursor-pointer"
-              >
-                <div class="w-10 h-10 rounded-full bg-gold-primary/10 flex items-center justify-center mb-3">
-                  <i class="fas fa-plus text-gold-primary"></i>
-                </div>
-                <h3 class="font-bold text-gold-primary">Add New Goal</h3>
-                <p class="text-xs text-gray-400 mt-1">Create a new financial target</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Insights Section -->
-        <div class="grid-insights">
-          <div class="holographic-card p-6 h-full">
-            <div class="flex justify-between items-center mb-6">
-              <h2
-                class="text-xl font-bold font-orbitron text-gold-primary tracking-wider"
-              >
-                💡 AI INSIGHTS
-              </h2>
-              <div
-                class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400"
-              >
-                <i class="fas fa-robot"></i>
-              </div>
-            </div>
-
-            <div class="space-y-4">
-              <!-- Insight Card -->
-              <div
-                class="bg-gradient-to-r from-blue-900/30 to-blue-900/10 p-4 rounded-xl border border-blue-500/30"
-              >
-                <div class="flex items-start">
-                  <div
-                    class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center mr-3 mt-1"
-                  >
-                    <i class="fas fa-lightbulb text-blue-400"></i>
-                  </div>
-                  <div>
-                    <p>
-                      "You can reach your Goa trip goal 2 weeks early if you
-                      save ₹500 more weekly."
-                    </p>
-                    <div class="flex items-center mt-2">
-                      <span
-                        class="text-xs bg-blue-500/20 px-2 py-1 rounded text-blue-400"
-                        >Savings Tip</span
-                      >
-                      <span class="text-xs text-gray-500 ml-2">Just now</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Insight Card -->
-              <div
-                class="bg-gradient-to-r from-purple-900/30 to-purple-900/10 p-4 rounded-xl border border-purple-500/30"
-              >
-                <div class="flex items-start">
-                  <div
-                    class="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center mr-3 mt-1"
-                  >
-                    <i class="fas fa-chart-pie text-purple-400"></i>
-                  </div>
-                  <div>
-                    <p>
-                      "Your food expenses are 25% higher than campus average.
-                      Consider meal planning."
-                    </p>
-                    <div class="flex items-center mt-2">
-                      <span
-                        class="text-xs bg-purple-500/20 px-2 py-1 rounded text-purple-400"
-                        >Spending Alert</span
-                      >
-                      <span class="text-xs text-gray-500 ml-2">3 hrs ago</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Insight Card -->
-              <div
-                class="bg-gradient-to-r from-amber-900/30 to-amber-900/10 p-4 rounded-xl border border-amber-500/30"
-              >
-                <div class="flex items-start">
-                  <div
-                    class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center mr-3 mt-1"
-                  >
-                    <i class="fas fa-coins text-amber-400"></i>
-                  </div>
-                  <div>
-                    <p>
-                      "Based on your spending patterns, you could save
-                      ₹1,500/month by using public transport."
-                    </p>
-                    <div class="flex items-center mt-2">
-                      <span
-                        class="text-xs bg-amber-500/20 px-2 py-1 rounded text-amber-400"
-                        >Opportunity</span
-                      >
-                      <span class="text-xs text-gray-500 ml-2">Yesterday</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="mt-6">
-              <h3 class="font-bold mb-3">Quick Actions</h3>
-              <div class="grid grid-cols-2 gap-3">
-                <button class="futuristic-button py-2">
-                  <i class="fas fa-file-invoice-dollar mr-2"></i> Generate
-                  Report
-                </button>
-                <button class="futuristic-button py-2">
-                  <i class="fas fa-sliders-h mr-2"></i> Adjust Budget
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer -->
-      <div class="mt-8 text-center text-gray-500 text-sm">
-        <p>Secure Futurism Dashboard v2.5 • Last updated: July 27, 2025</p>
-        <p class="mt-1">For assistance, contact: support@edufuture.tech</p>
-      </div>
-    </div>
-
-    <!-- Floating Elements -->
-    <div
-      class="floating-element absolute top-20 left-5 w-6 h-6 rounded-full bg-gold-primary/20 animate-pulse"
-      style="animation-delay: 0.5s"
-    ></div>
-    <div
-      class="floating-element absolute top-1/3 right-10 w-8 h-8 rounded-full bg-blue-500/20 animate-pulse"
-      style="animation-delay: 1s"
-    ></div>
-    <div
-      class="floating-element absolute bottom-40 left-1/4 w-5 h-5 rounded-full bg-purple-500/20 animate-pulse"
-      style="animation-delay: 1.5s"
-    ></div>
-    
-    <!-- Overlay -->
-    <div id="category-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center">
-      <div class="bg-[#1a1a1a] rounded-xl shadow-xl w-full max-w-md p-6 border border-gold-primary/20">
-        <h2 class="text-lg font-bold text-gold-primary mb-4">
-          Add Budget Category
-        </h2>
-
-        <div class="space-y-3">
-          <input type="text" id="modal-name" placeholder="Category Name"
-            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
-          <input type="number" id="modal-limit" placeholder="Budget Limit"
-            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
-          <input type="number" id="modal-spent" placeholder="Amount Spent"
-            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
-        </div>
-
-        <div class="flex justify-end mt-5 gap-2">
-          <button id="cancel-modal" class="px-4 py-2 text-sm rounded bg-gray-700 hover:bg-gray-600 text-white">
-            Cancel
-          </button>
-          <button id="confirm-add" class="px-4 py-2 text-sm rounded bg-gold-primary text-black font-bold hover:bg-yellow-400">
-            Add
-          </button>
         </div>
       </div>
     </div>
 
+    <!-- Footer -->
+    <div class="mt-8 text-center text-gray-500 text-sm">
+      <p>Secure Futurism Dashboard v2.5 • Last updated: July 27, 2025</p>
+      <p class="mt-1">For assistance, contact: support@edufuture.tech</p>
+    </div>
+  </div>
 
-    <!-- Add Goal Modal -->
-    <div id="goal-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center">
-      <div class="bg-[#1a1a1a] p-6 rounded-xl w-full max-w-md border border-gold-primary/30">
-        <h2 class="text-lg font-bold text-gold-primary mb-4">Add New Goal</h2>
+  <!-- Floating Elements -->
+  <div class="floating-element absolute top-20 left-5 w-6 h-6 rounded-full bg-gold-primary/20 animate-pulse"
+    style="animation-delay: 0.5s"></div>
+  <div class="floating-element absolute top-1/3 right-10 w-8 h-8 rounded-full bg-blue-500/20 animate-pulse"
+    style="animation-delay: 1s"></div>
+  <div class="floating-element absolute bottom-40 left-1/4 w-5 h-5 rounded-full bg-purple-500/20 animate-pulse"
+    style="animation-delay: 1.5s"></div>
 
-        <div class="space-y-3">
-          <input id="goal-name" type="text" placeholder="Goal Name"
-            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+  <!-- Overlay -->
+  <div id="category-modal"
+    class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+    <div class="bg-[#1a1a1a] rounded-xl shadow-xl w-full max-w-md p-6 border border-gold-primary/20">
+      <h2 class="text-lg font-bold text-gold-primary mb-4">
+        Add Budget Category
+      </h2>
 
-          <input id="goal-amount" type="number" placeholder="Goal Amount"
-            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+      <div class="space-y-3">
+        <input type="text" id="modal-name" placeholder="Category Name"
+          class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+        <input type="number" id="modal-limit" placeholder="Budget Limit"
+          class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+        <input type="number" id="modal-spent" placeholder="Amount Spent"
+          class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+      </div>
 
-          <input id="goal-saved" type="number" placeholder="Amount Saved"
-            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
-
-          <input id="goal-date" type="date"
-            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
-        </div>
-
-        <div class="flex justify-end mt-5 gap-2">
-          <button id="cancel-goal" class="px-4 py-2 text-sm rounded bg-gray-700 hover:bg-gray-600 text-white">
-            Cancel
-          </button>
-          <button id="confirm-goal" class="px-4 py-2 text-sm rounded bg-gold-primary text-black font-bold hover:bg-yellow-400">
-            Add Goal
-          </button>
-        </div>
+      <div class="flex justify-end mt-5 gap-2">
+        <button id="cancel-modal" class="px-4 py-2 text-sm rounded bg-gray-700 hover:bg-gray-600 text-white">
+          Cancel
+        </button>
+        <button id="confirm-add"
+          class="px-4 py-2 text-sm rounded bg-gold-primary text-black font-bold hover:bg-yellow-400">
+          Add
+        </button>
       </div>
     </div>
+  </div>
 
 
-  </body>
-  <script>
-    let categoryIndex = <%= student.customCategories.length %> || 0;
+  <!-- Add Goal Modal -->
+  <div id="goal-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center">
+    <div class="bg-[#1a1a1a] p-6 rounded-xl w-full max-w-md border border-gold-primary/30">
+      <h2 class="text-lg font-bold text-gold-primary mb-4">Add New Goal</h2>
 
-    const modal = document.getElementById("category-modal");
-    const openModalBtn = document.getElementById("open-modal");
-    const cancelBtn = document.getElementById("cancel-modal");
-    const confirmAddBtn = document.getElementById("confirm-add");
+      <div class="space-y-3">
+        <input id="goal-name" type="text" placeholder="Goal Name"
+          class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
 
-    const nameInput = document.getElementById("modal-name");
-    const limitInput = document.getElementById("modal-limit");
-    const spentInput = document.getElementById("modal-spent");
+        <input id="goal-amount" type="number" placeholder="Goal Amount"
+          class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
 
-    // Open modal
-    openModalBtn.addEventListener("click", () => {
-      modal.classList.remove("hidden");
-    });
+        <input id="goal-saved" type="number" placeholder="Amount Saved"
+          class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
 
-    // Cancel modal
-    cancelBtn.addEventListener("click", () => {
-      modal.classList.add("hidden");
-      nameInput.value = '';
-      limitInput.value = '';
-      spentInput.value = '';
-    });
+        <input id="goal-date" type="date"
+          class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+      </div>
 
-    // Add new category from modal
-    confirmAddBtn.addEventListener("click", () => {
-      const name = nameInput.value.trim();
-      const limit = parseFloat(limitInput.value);
-      const spent = parseFloat(spentInput.value);
+      <div class="flex justify-end mt-5 gap-2">
+        <button id="cancel-goal" class="px-4 py-2 text-sm rounded bg-gray-700 hover:bg-gray-600 text-white">
+          Cancel
+        </button>
+        <button id="confirm-goal"
+          class="px-4 py-2 text-sm rounded bg-gold-primary text-black font-bold hover:bg-yellow-400">
+          Add Goal
+        </button>
+      </div>
+    </div>
+  </div>
 
-      if (!name || isNaN(limit) || isNaN(spent)) {
-        alert("Please fill all fields correctly.");
-        return;
-      }
 
-      // Create a new category card (same UI structure)
-      const card = document.createElement('div');
-      const usage = Math.min((spent / limit) * 100, 100).toFixed(1);
-      card.className = "mb-6 budget-card";
+</body>
+<script>
+  let categoryIndex = <%= student.customCategories.length %> || 0;
 
-      card.innerHTML = `
+  const modal = document.getElementById("category-modal");
+  const openModalBtn = document.getElementById("open-modal");
+  const cancelBtn = document.getElementById("cancel-modal");
+  const confirmAddBtn = document.getElementById("confirm-add");
+
+  const nameInput = document.getElementById("modal-name");
+  const limitInput = document.getElementById("modal-limit");
+  const spentInput = document.getElementById("modal-spent");
+
+  // Open modal
+  openModalBtn.addEventListener("click", () => {
+    modal.classList.remove("hidden");
+  });
+
+  // Cancel modal
+  cancelBtn.addEventListener("click", () => {
+    modal.classList.add("hidden");
+    nameInput.value = '';
+    limitInput.value = '';
+    spentInput.value = '';
+  });
+
+  // Add new category from modal
+  confirmAddBtn.addEventListener("click", () => {
+    const name = nameInput.value.trim();
+    const limit = parseFloat(limitInput.value);
+    const spent = parseFloat(spentInput.value);
+
+    if (!name || isNaN(limit) || isNaN(spent)) {
+      alert("Please fill all fields correctly.");
+      return;
+    }
+
+    // Create a new category card (same UI structure)
+    const card = document.createElement('div');
+    const usage = Math.min((spent / limit) * 100, 100).toFixed(1);
+    card.className = "mb-6 budget-card";
+
+    card.innerHTML = `
         <div class="flex justify-between mb-2">
           <div class="flex items-center">
             <div class="w-8 h-8 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3">
@@ -766,109 +707,100 @@
         </div>
       `;
 
-      if (usage >= 90) {
-        card.querySelector('.warning-text').classList.remove('hidden');
-      }
+    if (usage >= 90) {
+      card.querySelector('.warning-text').classList.remove('hidden');
+    }
 
-      // Append to DOM
-      openModalBtn.parentElement.insertBefore(card, openModalBtn);
+    // Append to DOM
+    openModalBtn.parentElement.insertBefore(card, openModalBtn);
 
-      // Reset
-      modal.classList.add("hidden");
-      nameInput.value = '';
-      limitInput.value = '';
-      spentInput.value = '';
-      categoryIndex++;
-    });
+    // Reset
+    modal.classList.add("hidden");
+    nameInput.value = '';
+    limitInput.value = '';
+    spentInput.value = '';
+    categoryIndex++;
+  });
 
 
-    let goalIndex = <%= student.financialGoals.length %> || 0;
+  let goalIndex = <%= student.financialGoals.length %> || 0;
 
-    const goalModal = document.getElementById("goal-modal");
-    const openGoalBtn = document.getElementById("open-goal-modal");
-    const cancelGoalBtn = document.getElementById("cancel-goal");
-    const confirmGoalBtn = document.getElementById("confirm-goal");
+  const goalModal = document.getElementById("goal-modal");
+  const openGoalBtn = document.getElementById("open-goal-modal");
+  const cancelGoalBtn = document.getElementById("cancel-goal");
+  const confirmGoalBtn = document.getElementById("confirm-goal");
 
-    const nameField = document.getElementById("goal-name");
-    const amountField = document.getElementById("goal-amount");
-    const savedField = document.getElementById("goal-saved");
-    const dateField = document.getElementById("goal-date");
+  const nameField = document.getElementById("goal-name");
+  const amountField = document.getElementById("goal-amount");
+  const savedField = document.getElementById("goal-saved");
+  const dateField = document.getElementById("goal-date");
 
-    // Open modal
-    openGoalBtn.addEventListener("click", () => {
-      goalModal.classList.remove("hidden");
-    });
+  const goalsContainer = document.getElementById("goals-container");
 
-    // Cancel modal
-    cancelGoalBtn.addEventListener("click", () => {
-      goalModal.classList.add("hidden");
-      nameField.value = '';
-      amountField.value = '';
-      savedField.value = '';
-      dateField.value = '';
-    });
+  openGoalBtn.addEventListener("click", () => {
+    goalModal.classList.remove("hidden");
+  });
 
-    // Confirm & add goal
-    confirmGoalBtn.addEventListener("click", () => {
-      const name = nameField.value.trim();
-      const amount = parseFloat(amountField.value);
-      const saved = parseFloat(savedField.value);
-      const date = dateField.value;
+  cancelGoalBtn.addEventListener("click", () => {
+    goalModal.classList.add("hidden");
+    nameField.value = '';
+    amountField.value = '';
+    savedField.value = '';
+    dateField.value = '';
+  });
 
-      if (!name || isNaN(amount) || isNaN(saved) || !date) {
-        alert("Please fill all fields correctly.");
-        return;
-      }
+  confirmGoalBtn.addEventListener("click", () => {
+    const name = nameField.value.trim();
+    const amount = parseFloat(amountField.value);
+    const saved = parseFloat(savedField.value);
+    const date = dateField.value;
 
-      const progress = amount > 0 ? Math.min((saved / amount) * 100, 100).toFixed(1) : 0;
+    if (!name || isNaN(amount) || isNaN(saved) || !date) {
+      alert("Please fill all fields correctly.");
+      return;
+    }
 
-      // Create goal card
-      const goalCard = document.createElement('div');
-      goalCard.className = "bg-black/20 p-4 rounded-xl border border-gold-primary/20 hover:border-gold-primary/50 transition mb-4";
+    const progress = amount > 0 ? Math.min((saved / amount) * 100, 100).toFixed(1) : 0;
 
-      goalCard.innerHTML = `
+    const card = document.createElement("div");
+    card.className = "bg-black/20 p-4 rounded-xl border border-gold-primary/20 hover:border-gold-primary/50 transition mb-4";
+
+    card.innerHTML = `
+        <input type="hidden" name="financialGoals[${goalIndex}][name]" value="${name}">
+        <input type="hidden" name="financialGoals[${goalIndex}][goalAmount]" value="${amount}">
+        <input type="hidden" name="financialGoals[${goalIndex}][savedAmount]" value="${saved}">
+        <input type="hidden" name="financialGoals[${goalIndex}][targetDate]" value="${date}">
+
         <div class="flex items-start">
           <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mr-3">
             <i class="fas fa-laptop text-blue-400 text-xl"></i>
           </div>
           <div class="flex-1">
-            <input type="hidden" name="financialGoals[${goalIndex}][name]" value="${name}">
-            <input type="hidden" name="financialGoals[${goalIndex}][goalAmount]" value="${amount}">
-            <input type="hidden" name="financialGoals[${goalIndex}][savedAmount]" value="${saved}">
-            <input type="hidden" name="financialGoals[${goalIndex}][targetDate]" value="${date}">
-
             <h3 class="font-bold mb-1 text-white">${name}</h3>
             <p class="text-sm text-gray-400 mb-2">${new Date(date).toDateString()}</p>
-
             <div class="flex justify-between text-xs mb-2">
-              <span>
-                Saved: <span class="text-green-400">₹${saved.toLocaleString('en-IN')}</span>
-              </span>
-              <span>
-                Goal: <span class="text-gold-primary">₹${amount.toLocaleString('en-IN')}</span>
-              </span>
+              <span>Saved: <span class="text-green-400">₹${saved.toLocaleString('en-IN')}</span></span>
+              <span>Goal: <span class="text-gold-primary">₹${amount.toLocaleString('en-IN')}</span></span>
             </div>
-
             <div class="w-full bg-gray-800 h-2 rounded overflow-hidden mb-1">
               <div class="bg-gold-primary h-2" style="width: ${progress}%"></div>
             </div>
-
             <p class="text-xs text-gray-400 text-right">${progress}% complete</p>
           </div>
         </div>
       `;
 
-      // Insert card before "Add Goal" box
-      openGoalBtn.parentElement.insertBefore(goalCard, openGoalBtn);
+    goalsContainer.appendChild(card);
 
-      // Reset modal
-      goalModal.classList.add("hidden");
-      nameField.value = '';
-      amountField.value = '';
-      savedField.value = '';
-      dateField.value = '';
+    // Close modal and reset fields
+    goalModal.classList.add("hidden");
+    nameField.value = '';
+    amountField.value = '';
+    savedField.value = '';
+    dateField.value = '';
+    goalIndex++;
+  });
 
-      goalIndex++;
-    });
-  </script>
+</script>
+
 </html>
