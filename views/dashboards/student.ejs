@@ -254,9 +254,13 @@
               <% } %>
 
 
+
+
               <div class="pt-4">
                 <button
+                  id="open-modal"
                   class="w-full py-3 rounded-xl border border-dashed border-gold-primary/40 flex items-center justify-center text-gold-primary hover:bg-gold-primary/10 transition"
+                  type="button"
                 >
                   <i class="fas fa-plus mr-2"></i> Add New Category
                 </button>
@@ -485,17 +489,14 @@
 
               <!-- Add Goal Card -->
               <div
+                id="open-goal-modal"
                 class="bg-black/10 p-4 rounded-xl border-2 border-dashed border-gold-primary/30 flex flex-col items-center justify-center text-center hover:border-gold-primary/60 hover:bg-gold-primary/10 transition cursor-pointer"
               >
-                <div
-                  class="w-10 h-10 rounded-full bg-gold-primary/10 flex items-center justify-center mb-3"
-                >
+                <div class="w-10 h-10 rounded-full bg-gold-primary/10 flex items-center justify-center mb-3">
                   <i class="fas fa-plus text-gold-primary"></i>
                 </div>
                 <h3 class="font-bold text-gold-primary">Add New Goal</h3>
-                <p class="text-xs text-gray-400 mt-1">
-                  Create a new financial target
-                </p>
+                <p class="text-xs text-gray-400 mt-1">Create a new financial target</p>
               </div>
             </div>
           </div>
@@ -633,5 +634,241 @@
       class="floating-element absolute bottom-40 left-1/4 w-5 h-5 rounded-full bg-purple-500/20 animate-pulse"
       style="animation-delay: 1.5s"
     ></div>
+    
+    <!-- Overlay -->
+    <div id="category-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center">
+      <div class="bg-[#1a1a1a] rounded-xl shadow-xl w-full max-w-md p-6 border border-gold-primary/20">
+        <h2 class="text-lg font-bold text-gold-primary mb-4">
+          Add Budget Category
+        </h2>
+
+        <div class="space-y-3">
+          <input type="text" id="modal-name" placeholder="Category Name"
+            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+          <input type="number" id="modal-limit" placeholder="Budget Limit"
+            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+          <input type="number" id="modal-spent" placeholder="Amount Spent"
+            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+        </div>
+
+        <div class="flex justify-end mt-5 gap-2">
+          <button id="cancel-modal" class="px-4 py-2 text-sm rounded bg-gray-700 hover:bg-gray-600 text-white">
+            Cancel
+          </button>
+          <button id="confirm-add" class="px-4 py-2 text-sm rounded bg-gold-primary text-black font-bold hover:bg-yellow-400">
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- Add Goal Modal -->
+    <div id="goal-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden flex items-center justify-center">
+      <div class="bg-[#1a1a1a] p-6 rounded-xl w-full max-w-md border border-gold-primary/30">
+        <h2 class="text-lg font-bold text-gold-primary mb-4">Add New Goal</h2>
+
+        <div class="space-y-3">
+          <input id="goal-name" type="text" placeholder="Goal Name"
+            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+
+          <input id="goal-amount" type="number" placeholder="Goal Amount"
+            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+
+          <input id="goal-saved" type="number" placeholder="Amount Saved"
+            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+
+          <input id="goal-date" type="date"
+            class="w-full px-3 py-2 rounded bg-black/30 border border-gray-700 text-white placeholder-gray-500 focus:outline-none" />
+        </div>
+
+        <div class="flex justify-end mt-5 gap-2">
+          <button id="cancel-goal" class="px-4 py-2 text-sm rounded bg-gray-700 hover:bg-gray-600 text-white">
+            Cancel
+          </button>
+          <button id="confirm-goal" class="px-4 py-2 text-sm rounded bg-gold-primary text-black font-bold hover:bg-yellow-400">
+            Add Goal
+          </button>
+        </div>
+      </div>
+    </div>
+
+
   </body>
+  <script>
+    let categoryIndex = <%= student.customCategories.length %> || 0;
+
+    const modal = document.getElementById("category-modal");
+    const openModalBtn = document.getElementById("open-modal");
+    const cancelBtn = document.getElementById("cancel-modal");
+    const confirmAddBtn = document.getElementById("confirm-add");
+
+    const nameInput = document.getElementById("modal-name");
+    const limitInput = document.getElementById("modal-limit");
+    const spentInput = document.getElementById("modal-spent");
+
+    // Open modal
+    openModalBtn.addEventListener("click", () => {
+      modal.classList.remove("hidden");
+    });
+
+    // Cancel modal
+    cancelBtn.addEventListener("click", () => {
+      modal.classList.add("hidden");
+      nameInput.value = '';
+      limitInput.value = '';
+      spentInput.value = '';
+    });
+
+    // Add new category from modal
+    confirmAddBtn.addEventListener("click", () => {
+      const name = nameInput.value.trim();
+      const limit = parseFloat(limitInput.value);
+      const spent = parseFloat(spentInput.value);
+
+      if (!name || isNaN(limit) || isNaN(spent)) {
+        alert("Please fill all fields correctly.");
+        return;
+      }
+
+      // Create a new category card (same UI structure)
+      const card = document.createElement('div');
+      const usage = Math.min((spent / limit) * 100, 100).toFixed(1);
+      card.className = "mb-6 budget-card";
+
+      card.innerHTML = `
+        <div class="flex justify-between mb-2">
+          <div class="flex items-center">
+            <div class="w-8 h-8 rounded-full bg-gold-primary/10 flex items-center justify-center mr-3">
+              <i class="fas fa-book text-gold-primary"></i>
+            </div>
+            <input type="hidden" name="customCategories[${categoryIndex}][name]" value="${name}">
+            <h3 class="font-semibold text-white">${name}</h3>
+          </div>
+          <div class="text-sm">
+            <input type="hidden" name="customCategories[${categoryIndex}][budgetLimit]" value="${limit}">
+            <input type="hidden" name="customCategories[${categoryIndex}][actualSpent]" value="${spent}">
+            <span class="text-gold-primary">₹${spent.toLocaleString('en-IN')}</span>
+            <span class="text-gray-500">/ ₹${limit.toLocaleString('en-IN')}</span>
+          </div>
+        </div>
+
+        <div class="flex items-center">
+          <div class="progress-bar flex-1 mr-3 bg-gray-800 h-2 rounded overflow-hidden">
+            <div class="progress-bar-fill bg-gold-primary h-2" style="width: ${usage}%"></div>
+          </div>
+          <span class="text-sm text-yellow-500">${usage}%</span>
+        </div>
+
+        <div class="mt-1 text-xs text-red-400 flex items-center hidden warning-text">
+          <i class="fas fa-exclamation-circle mr-1"></i>
+          You've used ${usage}% of your "${name}" budget
+        </div>
+      `;
+
+      if (usage >= 90) {
+        card.querySelector('.warning-text').classList.remove('hidden');
+      }
+
+      // Append to DOM
+      openModalBtn.parentElement.insertBefore(card, openModalBtn);
+
+      // Reset
+      modal.classList.add("hidden");
+      nameInput.value = '';
+      limitInput.value = '';
+      spentInput.value = '';
+      categoryIndex++;
+    });
+
+
+    let goalIndex = <%= student.financialGoals.length %> || 0;
+
+    const goalModal = document.getElementById("goal-modal");
+    const openGoalBtn = document.getElementById("open-goal-modal");
+    const cancelGoalBtn = document.getElementById("cancel-goal");
+    const confirmGoalBtn = document.getElementById("confirm-goal");
+
+    const nameField = document.getElementById("goal-name");
+    const amountField = document.getElementById("goal-amount");
+    const savedField = document.getElementById("goal-saved");
+    const dateField = document.getElementById("goal-date");
+
+    // Open modal
+    openGoalBtn.addEventListener("click", () => {
+      goalModal.classList.remove("hidden");
+    });
+
+    // Cancel modal
+    cancelGoalBtn.addEventListener("click", () => {
+      goalModal.classList.add("hidden");
+      nameField.value = '';
+      amountField.value = '';
+      savedField.value = '';
+      dateField.value = '';
+    });
+
+    // Confirm & add goal
+    confirmGoalBtn.addEventListener("click", () => {
+      const name = nameField.value.trim();
+      const amount = parseFloat(amountField.value);
+      const saved = parseFloat(savedField.value);
+      const date = dateField.value;
+
+      if (!name || isNaN(amount) || isNaN(saved) || !date) {
+        alert("Please fill all fields correctly.");
+        return;
+      }
+
+      const progress = amount > 0 ? Math.min((saved / amount) * 100, 100).toFixed(1) : 0;
+
+      // Create goal card
+      const goalCard = document.createElement('div');
+      goalCard.className = "bg-black/20 p-4 rounded-xl border border-gold-primary/20 hover:border-gold-primary/50 transition mb-4";
+
+      goalCard.innerHTML = `
+        <div class="flex items-start">
+          <div class="w-12 h-12 rounded-lg bg-blue-500/10 flex items-center justify-center mr-3">
+            <i class="fas fa-laptop text-blue-400 text-xl"></i>
+          </div>
+          <div class="flex-1">
+            <input type="hidden" name="financialGoals[${goalIndex}][name]" value="${name}">
+            <input type="hidden" name="financialGoals[${goalIndex}][goalAmount]" value="${amount}">
+            <input type="hidden" name="financialGoals[${goalIndex}][savedAmount]" value="${saved}">
+            <input type="hidden" name="financialGoals[${goalIndex}][targetDate]" value="${date}">
+
+            <h3 class="font-bold mb-1 text-white">${name}</h3>
+            <p class="text-sm text-gray-400 mb-2">${new Date(date).toDateString()}</p>
+
+            <div class="flex justify-between text-xs mb-2">
+              <span>
+                Saved: <span class="text-green-400">₹${saved.toLocaleString('en-IN')}</span>
+              </span>
+              <span>
+                Goal: <span class="text-gold-primary">₹${amount.toLocaleString('en-IN')}</span>
+              </span>
+            </div>
+
+            <div class="w-full bg-gray-800 h-2 rounded overflow-hidden mb-1">
+              <div class="bg-gold-primary h-2" style="width: ${progress}%"></div>
+            </div>
+
+            <p class="text-xs text-gray-400 text-right">${progress}% complete</p>
+          </div>
+        </div>
+      `;
+
+      // Insert card before "Add Goal" box
+      openGoalBtn.parentElement.insertBefore(goalCard, openGoalBtn);
+
+      // Reset modal
+      goalModal.classList.add("hidden");
+      nameField.value = '';
+      amountField.value = '';
+      savedField.value = '';
+      dateField.value = '';
+
+      goalIndex++;
+    });
+  </script>
 </html>
