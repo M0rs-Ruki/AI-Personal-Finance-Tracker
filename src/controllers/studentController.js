@@ -65,10 +65,12 @@ const UpdateStudentPage = async (req, res) => {
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return res.status(400).json({ message: "Invalid user ID format" });
     }
+
     const student = await Student.findOne({ userId });
     if (!student) {
       return res.status(404).json({ message: "Student not found" });
     }
+
     const newGoals = req.body.financialGoals || [];
     const parsedGoals = Array.isArray(newGoals)
       ? newGoals.map((goal) => ({
@@ -88,8 +90,15 @@ const UpdateStudentPage = async (req, res) => {
         }))
       : [];
 
-    student.financialGoals = parsedGoals;
-    student.customCategories = parsedCategories;
+    // ✅ Append new items to existing arrays instead of overwriting
+    if (parsedGoals.length > 0) {
+      student.financialGoals.push(...parsedGoals);
+    }
+
+    if (parsedCategories.length > 0) {
+      student.customCategories.push(...parsedCategories);
+    }
+
     await student.save();
     res.redirect("/dashboard/student");
   } catch (err) {
@@ -97,5 +106,6 @@ const UpdateStudentPage = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
+
 
 export { StudentPage, UpdateStudentPage };

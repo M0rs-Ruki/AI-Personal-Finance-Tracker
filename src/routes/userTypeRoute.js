@@ -10,7 +10,7 @@ const router = express.Router();
 
 
 router.post('/student',isLoggedIn, StudentPage);
-router.post('/update-student',isLoggedIn, UpdateStudentPage);
+router.post('/update-student', UpdateStudentPage);
 
 router.post('/employed',isLoggedIn, EmployerPage);
 
