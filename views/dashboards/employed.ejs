@@ -25,7 +25,7 @@
             />
           </svg>
         </div>
-        <div class="logo-text">QuantumWealth</div>
+        <div class="logo-text">Wllcome Back <%= user.fullName %> !</div>
       </div>
       <div class="user-profile">
         <div class="avatar">
@@ -45,7 +45,7 @@
         </div>
       </div>
     </header>
-
+    <div style="margin-bottom: 40px;"></div>
     <div>
         <!-- Income Section -->
         <section class="section">
@@ -58,61 +58,67 @@
                 <div class="income-card">
                     <div class="income-card-header">
                         <div class="income-type">Primary Income</div>
-                        <div class="income-amount">₹785,000</div>
+                        <div class="income-amount"><%= employer.monthlySalary.toLocaleString('en-IN') %></div>
                     </div>
                     
                     <div class="income-details">
                         <div class="detail-item">
                             <span class="detail-label">Job Title</span>
-                            <span class="detail-value">Full Stack Dev</span>
+                            <span class="detail-value"><%= employer.jobTitle %></span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Employment Type</span>
-                            <span class="detail-value">Full-time</span>
+                            <span class="detail-value"><%= employer.employmentType %></span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Company</span>
-                            <span class="detail-value">WedPeace</span>
+                            <span class="detail-value"><%= employer.company %></span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Industry</span>
-                            <span class="detail-value">IT</span>
+                            <span class="detail-value"><%= employer.workIndustry %></span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Location</span>
-                            <span class="detail-value">Remote</span>
+                            <span class="detail-value"><%= employer.workLocation %></span>
                         </div>
                         <div class="detail-item">
                             <span class="detail-label">Pay Frequency</span>
-                            <span class="detail-value">Bi-weekly</span>
+                            <span class="detail-value"><%= employer.payFrequency %></span>
                         </div>
                     </div>
                 </div>
-                
                 <div class="income-card">
+                  <% let totalAdditionalIncome = 0; %>
+
+                  <% employer.additionalIncomeSources.forEach(function(source) { %>
+                    <% totalAdditionalIncome += source.amount; %>
                     <div class="income-card-header">
-                        <div class="income-type">Additional Income</div>
-                        <div class="income-amount">₹5,000</div>
+                      <div class="income-type">Additional Income</div>
+                      <div class="income-amount">₹<%= source.amount.toLocaleString('en-IN') %></div>
                     </div>
                     
                     <div class="income-details">
-                        <div class="detail-item">
-                            <span class="detail-label">Source</span>
-                            <span class="detail-value">Home</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Amount</span>
-                            <span class="detail-value">₹5,000</span>
-                        </div>
-                        <div class="detail-item">
-                            <span class="detail-label">Frequency</span>
-                            <span class="detail-value">Monthly</span>
-                        </div>
+                      <div class="detail-item">
+                        <span class="detail-label">Source</span>
+                        <span class="detail-value"><%= source.name %></span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="detail-label">Amount</span>
+                        <span class="detail-value">₹<%= source.amount.toLocaleString('en-IN') %></span>
+                      </div>
+                      <div class="detail-item">
+                        <span class="detail-label">Frequency</span>
+                        <span class="detail-value"><%= source.frequency %></span>
+                      </div>
                     </div>
+                  <% }); %>
                 </div>
             </div>
         </section>
     </div>
+
+    <div style="margin-bottom: 40px;"></div>
 
     <!-- AI Assistant Trigger -->
     <div class="ai-trigger">
