@@ -116,4 +116,4 @@ const logoutUser = async (req, res) => {
 };
 
 
-export { registerUser, loginUser, logoutUser, GuestUser };
+export { registerUser, loginUser, logoutUser };

@@ -3,817 +3,714 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Secure Futurism Dashboard</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>QuantumWealth | Financial Dashboard</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&family=Inter:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              dark: "#0F0F0F",
-              card: "#1A1A1A",
-              gold: "#FFD700",
-              "gold-light": "rgba(255, 215, 0, 0.1)",
-              "gold-border": "rgba(255, 215, 0, 0.3)",
-            },
-            fontFamily: {
-              montserrat: ["Montserrat", "sans-serif"],
-            },
-            boxShadow: {
-              "gold-glow": "0 4px 20px rgba(255, 215, 0, 0.3)",
-              "card-glow": "0 0 15px rgba(255, 215, 0, 0.2)",
-            },
-            animation: {
-              "pulse-gold":
-                "pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-              "slide-in": "slide-in 0.3s ease-out forwards",
-              "fade-in": "fade-in 0.5s ease-out forwards",
-              confetti: "confetti 1s ease forwards",
-            },
-            keyframes: {
-              "pulse-gold": {
-                "0%, 100%": { opacity: "1" },
-                "50%": { opacity: "0.7" },
-              },
-              "slide-in": {
-                "0%": { transform: "translateY(20px)", opacity: "0" },
-                "100%": { transform: "translateY(0)", opacity: "1" },
-              },
-              "fade-in": {
-                "0%": { opacity: "0" },
-                "100%": { opacity: "1" },
-              },
-              confetti: {
-                "0%": { transform: "translateY(0) rotate(0)", opacity: "1" },
-                "100%": {
-                  transform: "translateY(-100vh) rotate(360deg)",
-                  opacity: "0",
-                },
-              },
-            },
-          },
-        },
-      };
-    </script>
-    <style>
-      body {
-        background-color: #0f0f0f;
-        font-family: "Montserrat", sans-serif;
-        color: #f1f1f1;
-      }
-
-      .card {
-        background-color: #1a1a1a;
-        border: 1px solid rgba(255, 215, 0, 0.1);
-        transition: all 0.3s ease;
-      }
-
-      .card:hover {
-        border-color: rgba(255, 215, 0, 0.3);
-        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
-        transform: translateY(-4px);
-      }
-
-      .progress-bar {
-        height: 8px;
-        background: linear-gradient(90deg, #ffd700, #ffb700);
-        border-radius: 4px;
-      }
-
-      .progress-ring {
-        transform: rotate(-90deg);
-      }
-
-      .progress-ring-circle {
-        transition: stroke-dashoffset 0.5s ease;
-        stroke: #ffd700;
-      }
-
-      .confetti {
-        position: absolute;
-        width: 10px;
-        height: 10px;
-        background-color: #ffd700;
-        opacity: 0;
-        animation: confetti 1s ease forwards;
-      }
-
-      .gold-button {
-        background-color: #ffd700;
-        color: #0f0f0f;
-        transition: all 0.3s ease;
-      }
-
-      .gold-button:hover {
-        box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
-      }
-
-      .outline-button {
-        border: 1px solid rgba(255, 215, 0, 0.3);
-        transition: all 0.3s ease;
-      }
-
-      .outline-button:hover {
-        background-color: rgba(255, 215, 0, 0.1);
-      }
-
-      .delete-icon {
-        transition: all 0.3s ease;
-      }
-
-      .delete-icon:hover {
-        color: #ffd700;
-        transform: scale(1.2);
-        animation: pulse-gold 2s infinite;
-      }
-
-      .add-button {
-        transition: all 0.3s ease;
-      }
-
-      .add-button:hover {
-        background-color: rgba(255, 215, 0, 0.2);
-        animation: pulse-gold 2s infinite;
-      }
-
-      .slide-in-card {
-        animation: slide-in 0.5s ease-out forwards;
-        animation-delay: calc(var(--delay) * 0.1s);
-        opacity: 0;
-      }
-
-      .glow-border {
-        box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.3),
-          0 0 10px rgba(255, 215, 0, 0.2);
-      }
-
-      .section-title {
-        position: relative;
-        display: inline-block;
-        padding-bottom: 8px;
-      }
-
-      .section-title::after {
-        content: "";
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(90deg, #ffd700, transparent);
-      }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/styles/dashboard/employed.css" />
   </head>
-  <body class="min-h-screen bg-dark font-montserrat text-gray-100">
-    <!-- Top Navigation Bar -->
-    <header
-      class="sticky top-0 z-50 bg-dark border-b border-gold-border py-4 px-6 flex justify-between items-center"
-    >
-      <div class="flex items-center">
-        <div
-          class="w-10 h-10 rounded-full bg-gold flex items-center justify-center mr-3"
-        >
-          <span class="text-dark font-bold text-lg">SF</span>
+  <body>
+    <!-- Global Navigation -->
+    <header class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 2L15 9L22 9L16 14L18 22L12 17L6 22L8 14L2 9L9 9L12 2Z"
+              stroke="#0F0F0F"
+              stroke-width="2"
+            />
+          </svg>
         </div>
-        <h1 class="text-xl font-bold">Secure Futurism</h1>
+        <div class="logo-text">QuantumWealth</div>
       </div>
-
-      <div class="flex items-center">
-        <div class="mr-6 text-sm">
-          <span
-            >Welcome,
-            <span class="font-semibold text-gold">Full Stack Dev 🚀</span> at
-            WedPeace</span
-          >
+      <div class="user-profile">
+        <div class="avatar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
+              stroke="#FFD700"
+              stroke-width="1.5"
+            />
+            <path
+              d="M20 22C20 18.6863 16.4183 16 12 16C7.58172 16 4 18.6863 4 22"
+              stroke="#FFD700"
+              stroke-width="1.5"
+              stroke-linecap="round"
+            />
+          </svg>
         </div>
-        <button
-          class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gold-light transition-colors"
-        >
-          <i class="fas fa-cog text-gray-300 hover:text-gold"></i>
-        </button>
       </div>
     </header>
 
-    <main class="container mx-auto px-4 py-8">
-      <!-- Income & Employment Section -->
-      <section class="mb-12">
-        <h2 class="text-xl font-bold mb-6 text-gold section-title">
-          Income & Employment
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <!-- Job Summary Card -->
-          <div class="card rounded-2xl p-6">
-            <div class="flex items-center mb-4">
-              <div
-                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-briefcase text-gold"></i>
-              </div>
-              <h3 class="font-semibold">Job Summary</h3>
+    <div>
+        <!-- Income Section -->
+        <section class="section">
+            <div class="section-header">
+                <h2 class="section-title"><i class="fas fa-money-bill-wave"></i> Income Details</h2>
+                <a href="#" class="view-all">View All <i class="fas fa-chevron-right"></i></a>
             </div>
-            <div class="space-y-2 text-sm">
-              <p>
-                <span class="font-medium text-gold"
-                  >💼 Full Stack Dev (Full-Time)</span
-                >
-              </p>
-              <p>🏢 Company: WedPeace</p>
-              <p>🧑‍💻 Industry: IT | Location: Remote</p>
+            
+            <div class="income-grid">
+                <div class="income-card">
+                    <div class="income-card-header">
+                        <div class="income-type">Primary Income</div>
+                        <div class="income-amount">₹785,000</div>
+                    </div>
+                    
+                    <div class="income-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Job Title</span>
+                            <span class="detail-value">Full Stack Dev</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Employment Type</span>
+                            <span class="detail-value">Full-time</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Company</span>
+                            <span class="detail-value">WedPeace</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Industry</span>
+                            <span class="detail-value">IT</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Location</span>
+                            <span class="detail-value">Remote</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Pay Frequency</span>
+                            <span class="detail-value">Bi-weekly</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="income-card">
+                    <div class="income-card-header">
+                        <div class="income-type">Additional Income</div>
+                        <div class="income-amount">₹5,000</div>
+                    </div>
+                    
+                    <div class="income-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Source</span>
+                            <span class="detail-value">Home</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Amount</span>
+                            <span class="detail-value">₹5,000</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Frequency</span>
+                            <span class="detail-value">Monthly</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
+    </div>
+
+    <!-- AI Assistant Trigger -->
+    <div class="ai-trigger">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+        <path
+          d="M19 4H5C3.89543 4 3 4.89543 3 6V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V6C21 4.89543 20.1046 4 19 4Z"
+          stroke="#0F0F0F"
+          stroke-width="2"
+        />
+        <path d="M16 8H8V12H16V8Z" fill="#0F0F0F" />
+        <path
+          d="M10 15H14"
+          stroke="#0F0F0F"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+        <path
+          d="M12 13V17"
+          stroke="#0F0F0F"
+          stroke-width="2"
+          stroke-linecap="round"
+        />
+      </svg>
+    </div>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard">
+      <!-- Financial Summary Dashboard -->
+      <div class="summary-grid">
+        <div class="card summary-card">
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 1V23"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M17 5H9.5C8.57174 5 7.6815 5.36875 7.02513 6.02513C6.36875 6.6815 6 7.57174 6 8.5C6 9.42826 6.36875 10.3185 7.02513 10.9749C7.6815 11.6313 8.57174 12 9.5 12H14.5C15.4283 12 16.3185 12.3687 16.9749 13.0251C17.6313 13.6815 18 14.5717 18 15.5C18 16.4283 17.6313 17.3185 16.9749 17.9749C16.3185 18.6313 15.4283 19 14.5 19H6"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+            Income Hub
           </div>
-
-          <!-- Salary Overview Card -->
-          <div class="card rounded-2xl p-6">
-            <div class="flex items-center mb-4">
-              <div
-                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-coins text-gold"></i>
-              </div>
-              <h3 class="font-semibold">Salary Overview</h3>
-            </div>
-            <div class="space-y-2 text-sm">
-              <p>
-                <span class="font-medium text-gold"
-                  >💰 Monthly Salary: ₹7,85,000</span
-                >
-              </p>
-              <p>🕒 Paid: Bi-Weekly</p>
-            </div>
+          <div class="chart-container">
+            <canvas id="incomeChart" width="200" height="120"></canvas>
           </div>
-
-          <!-- Additional Income Card -->
-          <div class="card rounded-2xl p-6">
-            <div class="flex items-center mb-4">
-              <div
-                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-plus-circle text-gold"></i>
-              </div>
-              <h3 class="font-semibold">Additional Income</h3>
+          <div class="flex-center gap-6">
+            <div class="flex-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                  stroke="#FFD700"
+                  stroke-width="1.5"
+                />
+                <circle cx="12" cy="12" r="3" fill="#FFD700" />
+              </svg>
+              <span>Salary: ₹85,000</span>
             </div>
-            <div class="space-y-2 text-sm mb-4">
-              <p>🏠 Home Support: ₹5,000/month</p>
-            </div>
-            <button
-              class="add-button text-sm bg-gold-light text-gold py-2 px-4 rounded-full hover:bg-opacity-50 transition"
-            >
-              + Add Source
-            </button>
-          </div>
-
-          <!-- Bonuses Card -->
-          <div class="card rounded-2xl p-6">
-            <div class="flex items-center mb-4">
-              <div
-                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-gift text-gold"></i>
-              </div>
-              <h3 class="font-semibold">Bonuses</h3>
-            </div>
-            <div class="space-y-2 text-sm">
-              <p>🎯 Bonuses: ❌ Not included</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Fixed Expenses & Budgets Section -->
-      <section class="mb-12">
-        <h2 class="text-xl font-bold mb-6 text-gold section-title">
-          Fixed Expenses & Budgets
-        </h2>
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- Fixed Expenses Card -->
-          <div class="card rounded-2xl p-6">
-            <div class="flex items-center mb-4">
-              <div
-                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-plug text-gold"></i>
-              </div>
-              <h3 class="font-semibold text-gold uppercase">Fixed Expenses</h3>
-            </div>
-            <div class="space-y-4">
-              <div
-                class="flex justify-between items-center py-2 border-b border-gray-800"
-              >
-                <div>
-                  <p class="font-medium">🔌 Utilities</p>
-                  <p class="text-sm text-gray-400">Due Date: 22nd</p>
-                </div>
-                <div class="flex items-center">
-                  <span class="mr-4">₹8,000</span>
-                  <button
-                    class="delete-icon w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gold"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-              <div
-                class="flex justify-between items-center py-2 border-b border-gray-800"
-              >
-                <div>
-                  <p class="font-medium">🏠 Rent</p>
-                  <p class="text-sm text-gray-400">Due Date: 5th</p>
-                </div>
-                <div class="flex items-center">
-                  <span class="mr-4">₹35,000</span>
-                  <button
-                    class="delete-icon w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gold"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="flex justify-between items-center py-2">
-                <div>
-                  <p class="font-medium">📱 Internet</p>
-                  <p class="text-sm text-gray-400">Due Date: 15th</p>
-                </div>
-                <div class="flex items-center">
-                  <span class="mr-4">₹2,500</span>
-                  <button
-                    class="delete-icon w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gold"
-                  >
-                    <i class="fas fa-trash"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Budget Limits Card -->
-          <div class="card rounded-2xl p-6">
-            <div class="flex items-center mb-4">
-              <div
-                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-chart-pie text-gold"></i>
-              </div>
-              <h3 class="font-semibold">Budget Limits</h3>
-            </div>
-            <div class="space-y-6">
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="font-medium">🍱 Food Budget</span>
-                  <span>₹8,000</span>
-                </div>
-                <div class="w-full bg-gray-800 rounded-full h-2.5">
-                  <div
-                    class="progress-bar h-2.5 rounded-full"
-                    style="width: 65%"
-                  ></div>
-                </div>
-                <div class="text-right text-sm text-gray-400 mt-1">
-                  Used: ₹5,200
-                </div>
-              </div>
-
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="font-medium">🚗 Transportation</span>
-                  <span>₹15,000</span>
-                </div>
-                <div class="w-full bg-gray-800 rounded-full h-2.5">
-                  <div
-                    class="progress-bar h-2.5 rounded-full"
-                    style="width: 40%"
-                  ></div>
-                </div>
-                <div class="text-right text-sm text-gray-400 mt-1">
-                  Used: ₹6,000
-                </div>
-              </div>
-
-              <div>
-                <div class="flex justify-between mb-1">
-                  <span class="font-medium">🎮 Entertainment</span>
-                  <span>₹10,000</span>
-                </div>
-                <div class="w-full bg-gray-800 rounded-full h-2.5">
-                  <div
-                    class="progress-bar h-2.5 rounded-full"
-                    style="width: 25%"
-                  ></div>
-                </div>
-                <div class="text-right text-sm text-gray-400 mt-1">
-                  Used: ₹2,500
-                </div>
-              </div>
-
-              <button
-                class="add-button mt-4 w-full text-center py-3 rounded-xl border border-dashed border-gold-border text-gold hover:bg-gold-light transition"
-              >
-                + Add New Category
-              </button>
+            <div class="flex-center">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="9"
+                  stroke="#FFD700"
+                  stroke-width="1.5"
+                />
+                <circle cx="12" cy="12" r="3" fill="#FFD700" />
+              </svg>
+              <span>Freelance: ₹25,000</span>
             </div>
           </div>
         </div>
-      </section>
 
-      <!-- Financial Goals Section -->
-      <section class="mb-12">
-        <h2 class="text-xl font-bold mb-6 text-gold section-title">
-          Financial Goals
-        </h2>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <!-- Goal Card 1 -->
-          <div
-            class="card rounded-xl p-6 glow-border slide-in-card"
-            style="--delay: 1"
-          >
-            <div class="flex justify-between items-start mb-4">
-              <div class="flex items-center">
+        <div class="card summary-card">
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M17 9V7C17 5.89543 16.1046 5 15 5H5C3.89543 5 3 5.89543 3 7V13C3 14.1046 3.89543 15 5 15H15C16.1046 15 17 14.1046 17 13V11"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M8 12H12"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M20 9H18C16.8954 9 16 9.89543 16 11V15C16 16.1046 16.8954 17 18 17H20"
+                stroke="#FFD700"
+                stroke-width="2"
+              />
+              <path
+                d="M21 14H19"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+            </svg>
+            Expense Matrix
+          </div>
+          <div class="chart-container">
+            <canvas id="expenseChart" width="200" height="120"></canvas>
+          </div>
+          <div class="flex-center gap-6">
+            <div class="flex-center">
+              <div
+                style="
+                  width: 10px;
+                  height: 10px;
+                  background: #4caf50;
+                  border-radius: 2px;
+                "
+              ></div>
+              <span>Fixed: ₹45,000</span>
+            </div>
+            <div class="flex-center">
+              <div
+                style="
+                  width: 10px;
+                  height: 10px;
+                  background: #f44336;
+                  border-radius: 2px;
+                "
+              ></div>
+              <span>Variable: ₹32,000</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card summary-card">
+          <div class="section-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M12 2V6"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M12 18V22"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M5 12H1"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M23 12H19"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M6 6L3 3"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M21 21L18 18"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M18 6L21 3"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <path
+                d="M3 21L6 18"
+                stroke="#FFD700"
+                stroke-width="2"
+                stroke-linecap="round"
+              />
+              <circle cx="12" cy="12" r="4" stroke="#FFD700" stroke-width="2" />
+            </svg>
+            Net Worth
+          </div>
+          <div class="chart-container flex-center">
+            <div class="text-gold" style="font-size: 22px; font-weight: 700">
+              ₹1,245,800
+            </div>
+          </div>
+          <div class="flex-center" style="justify-content: space-between">
+            <div style="font-size: 13px">
+              <div>Assets: <span class="text-gold">₹1,780,000</span></div>
+              <div>Liabilities: <span class="text-gold">₹534,200</span></div>
+            </div>
+            <div class="text-gold" style="font-size: 13px; font-weight: 500">
+              ↑ 8.2%
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Financial Goals Tracker -->
+      <div class="card goals-section">
+        <div class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+              stroke="#FFD700"
+              stroke-width="2"
+            />
+            <path
+              d="M12 6V12L16 14"
+              stroke="#FFD700"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          Goals Tracker
+        </div>
+        <div class="goals-grid">
+          <div class="goal-card">
+            <div class="progress-ring">
+              <svg width="50" height="50" viewBox="0 0 50 50">
+                <circle class="progress-ring-bg" cx="25" cy="25" r="22" />
+                <circle
+                  class="progress-ring-fill"
+                  cx="25"
+                  cy="25"
+                  r="22"
+                  stroke-dasharray="138.23"
+                  stroke-dashoffset="69.115"
+                />
+              </svg>
+              <div class="progress-text">50%</div>
+            </div>
+            <div class="goal-info">
+              <div class="goal-title">MacBook Pro M3</div>
+              <div class="goal-meta">
+                <div class="goal-tag">MEDIUM</div>
+                <div>Target: ₹1,50,000</div>
+              </div>
+              <div class="text-gold" style="font-size: 12px; margin-top: 4px">
+                Dec 2025 • 5 months left
+              </div>
+            </div>
+          </div>
+          <div class="goal-card">
+            <div class="progress-ring">
+              <svg width="50" height="50" viewBox="0 0 50 50">
+                <circle class="progress-ring-bg" cx="25" cy="25" r="22" />
+                <circle
+                  class="progress-ring-fill"
+                  cx="25"
+                  cy="25"
+                  r="22"
+                  stroke-dasharray="138.23"
+                  stroke-dashoffset="96.76"
+                />
+              </svg>
+              <div class="progress-text">30%</div>
+            </div>
+            <div class="goal-info">
+              <div class="goal-title">Emergency Fund</div>
+              <div class="goal-meta">
+                <div class="goal-tag">HIGH</div>
+                <div>Target: ₹300,000</div>
+              </div>
+              <div class="text-gold" style="font-size: 12px; margin-top: 4px">
+                Jun 2026 • 11 months left
+              </div>
+            </div>
+          </div>
+          <div class="goal-card">
+            <div class="progress-ring">
+              <svg width="50" height="50" viewBox="0 0 50 50">
+                <circle class="progress-ring-bg" cx="25" cy="25" r="22" />
+                <circle
+                  class="progress-ring-fill"
+                  cx="25"
+                  cy="25"
+                  r="22"
+                  stroke-dasharray="138.23"
+                  stroke-doffset="124.4"
+                />
+              </svg>
+              <div class="progress-text">10%</div>
+            </div>
+            <div class="goal-info">
+              <div class="goal-title">Europe Trip</div>
+              <div class="goal-meta">
+                <div class="goal-tag">LOW</div>
+                <div>Target: ₹500,000</div>
+              </div>
+              <div class="text-gold" style="font-size: 12px; margin-top: 4px">
+                Dec 2026 • 17 months left
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="add-goal">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 5V19"
+              stroke="#0F0F0F"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M5 12H19"
+              stroke="#0F0F0F"
+              stroke-width="2"
+              stroke-linecap="round"
+            />
+          </svg>
+          New Goal
+        </div>
+      </div>
+
+      <!-- AI Insights Hub -->
+      <div class="card ai-insights">
+        <div class="ai-header">Quantum Insights</div>
+        <div class="ai-modules">
+          <div class="ai-card">
+            <div class="ai-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                />
+                <path
+                  d="M12 8V12"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M12 16H12.01"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+              Cash Flow Optimization
+            </div>
+            <div class="ai-card-content">
+              Allocate <span class="text-gold">₹7,740/month</span> for Laptop
+              Goal by Dec 2025. Shift dining budget from ₹12,000 to ₹8,000 to
+              free up ₹4,000 monthly.
+            </div>
+            <div class="ai-action">
+              Apply Strategy
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 12H19"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M12 5L19 12L12 19"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
+            </div>
+          </div>
+          <div class="ai-card">
+            <div class="ai-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M21 16V8.00002C20.9996 7.6493 20.9071 7.30483 20.7315 7.00119C20.556 6.69754 20.3037 6.44539 20 6.27002L13 2.27002C12.696 2.09449 12.3511 2.00208 12 2.00208C11.6489 2.00208 11.304 2.09449 11 2.27002L4 6.27002C3.69626 6.44539 3.44398 6.69754 3.26846 7.00119C3.09294 7.30483 3.00036 7.6493 3 8.00002V16C3.00036 16.3508 3.09294 16.6952 3.26846 16.9989C3.44398 17.3025 3.69626 17.5547 4 17.73L11 21.73C11.304 21.9056 11.6489 21.998 12 21.998C12.3511 21.998 12.696 21.9056 13 21.73L20 17.73C20.3037 17.5547 20.556 17.3025 20.7315 16.9989C20.9071 16.6952 20.9996 16.3508 21 16Z"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M3.27002 6.95996L12 12.01L20.73 6.95996"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 22.08V12"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Investment Matchmaker
+            </div>
+            <div class="ai-card-content">
+              "Real Estate + Crypto portfolio matches
+              <span class="text-gold">MEDIUM risk</span> profile. Recommended
+              allocation: Real Estate 60%, Crypto 40%."
+            </div>
+            <div class="ai-card-content mt-12">
+              <div class="flex-center" style="gap: 10px">
                 <div
-                  class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-3"
-                >
-                  <i class="fas fa-laptop text-gold"></i>
-                </div>
-                <h3 class="font-semibold">New Laptop</h3>
+                  style="
+                    width: 8px;
+                    height: 8px;
+                    background: #4caf50;
+                    border-radius: 50%;
+                  "
+                ></div>
+                <div>Real Estate: 60%</div>
               </div>
-              <span
-                class="px-3 py-1 bg-gold-light text-gold rounded-full text-xs"
-                >Medium</span
-              >
-            </div>
-            <div class="space-y-3 text-sm">
-              <p>🎯 Target: ₹85,000</p>
-              <p>📅 Deadline: 23 June 2026</p>
-              <p>💼 Priority: Medium</p>
-              <p class="pt-2">📈 Saved: ₹8,000</p>
-
-              <div class="flex items-center mt-4">
-                <div class="relative w-16 h-16 mr-4">
-                  <svg class="progress-ring w-16 h-16" viewBox="0 0 42 42">
-                    <circle
-                      class="text-gray-700"
-                      stroke-width="4"
-                      stroke="currentColor"
-                      fill="transparent"
-                      r="16"
-                      cx="21"
-                      cy="21"
-                    />
-                    <circle
-                      class="progress-ring-circle"
-                      stroke-width="4"
-                      stroke-dasharray="100"
-                      stroke-dashoffset="91"
-                      stroke-linecap="round"
-                      fill="transparent"
-                      r="16"
-                      cx="21"
-                      cy="21"
-                    />
-                  </svg>
-                  <div
-                    class="absolute inset-0 flex items-center justify-center text-xs font-bold"
-                  >
-                    9%
-                  </div>
-                </div>
-                <div>
-                  <div class="w-24 bg-gray-700 h-2 rounded-full">
-                    <div
-                      class="bg-gold h-2 rounded-full"
-                      style="width: 9%"
-                    ></div>
-                  </div>
-                  <p class="text-xs mt-1">₹8,000 / ₹85,000</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Goal Card 2 -->
-          <div
-            class="card rounded-xl p-6 glow-border slide-in-card"
-            style="--delay: 2"
-          >
-            <div class="flex justify-between items-start mb-4">
-              <div class="flex items-center">
+              <div class="flex-center" style="gap: 10px; margin-top: 6px">
                 <div
-                  class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-3"
-                >
-                  <i class="fas fa-car text-gold"></i>
-                </div>
-                <h3 class="font-semibold">New Car</h3>
-              </div>
-              <span
-                class="px-3 py-1 bg-gold-light text-gold rounded-full text-xs"
-                >High</span
-              >
-            </div>
-            <div class="space-y-3 text-sm">
-              <p>🎯 Target: ₹8,50,000</p>
-              <p>📅 Deadline: 15 Dec 2027</p>
-              <p>💼 Priority: High</p>
-              <p class="pt-2">📈 Saved: ₹2,10,000</p>
-
-              <div class="flex items-center mt-4">
-                <div class="relative w-16 h-16 mr-4">
-                  <svg class="progress-ring w-16 h-16" viewBox="0 0 42 42">
-                    <circle
-                      class="text-gray-700"
-                      stroke-width="4"
-                      stroke="currentColor"
-                      fill="transparent"
-                      r="16"
-                      cx="21"
-                      cy="21"
-                    />
-                    <circle
-                      class="progress-ring-circle"
-                      stroke-width="4"
-                      stroke-dasharray="100"
-                      stroke-dashoffset="75"
-                      stroke-linecap="round"
-                      fill="transparent"
-                      r="16"
-                      cx="21"
-                      cy="21"
-                    />
-                  </svg>
-                  <div
-                    class="absolute inset-0 flex items-center justify-center text-xs font-bold"
-                  >
-                    25%
-                  </div>
-                </div>
-                <div>
-                  <div class="w-24 bg-gray-700 h-2 rounded-full">
-                    <div
-                      class="bg-gold h-2 rounded-full"
-                      style="width: 25%"
-                    ></div>
-                  </div>
-                  <p class="text-xs mt-1">₹2,10,000 / ₹8,50,000</p>
-                </div>
+                  style="
+                    width: 8px;
+                    height: 8px;
+                    background: #ffc107;
+                    border-radius: 50%;
+                  "
+                ></div>
+                <div>Crypto Assets: 40%</div>
               </div>
             </div>
           </div>
-
-          <!-- Goal Card 3 -->
-          <div
-            class="card rounded-xl p-6 glow-border slide-in-card"
-            style="--delay: 3"
-          >
-            <div class="flex justify-between items-start mb-4">
-              <div class="flex items-center">
-                <div
-                  class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-3"
-                >
-                  <i class="fas fa-home text-gold"></i>
-                </div>
-                <h3 class="font-semibold">Down Payment</h3>
-              </div>
-              <span
-                class="px-3 py-1 bg-gold-light text-gold rounded-full text-xs"
-                >High</span
-              >
+          <div class="ai-card">
+            <div class="ai-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M20 12V22H4V12"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M22 7H2V12H22V7Z"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 22V7"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 7H16.5C17.163 7 17.7989 6.73661 18.2678 6.26777C18.7366 5.79893 19 5.16304 19 4.5C19 3.83696 18.7366 3.20107 18.2678 2.73223C17.7989 2.26339 17.163 2 16.5 2C14.5 2 14 4 12 4C10 4 9.5 2 7.5 2C6.83696 2 6.20107 2.26339 5.73223 2.73223C5.26339 3.20107 5 3.83696 5 4.5C5 5.16304 5.26339 5.79893 5.73223 6.26777C6.20107 6.73661 6.83696 7 7.5 7H12Z"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Threat Monitor
             </div>
-            <div class="space-y-3 text-sm">
-              <p>🎯 Target: ₹25,00,000</p>
-              <p>📅 Deadline: 31 Dec 2029</p>
-              <p>💼 Priority: High</p>
-              <p class="pt-2">📈 Saved: ₹3,50,000</p>
-
-              <div class="flex items-center mt-4">
-                <div class="relative w-16 h-16 mr-4">
-                  <svg class="progress-ring w-16 h-16" viewBox="0 0 42 42">
-                    <circle
-                      class="text-gray-700"
-                      stroke-width="4"
-                      stroke="currentColor"
-                      fill="transparent"
-                      r="16"
-                      cx="21"
-                      cy="21"
-                    />
-                    <circle
-                      class="progress-ring-circle"
-                      stroke-width="4"
-                      stroke-dasharray="100"
-                      stroke-dashoffset="86"
-                      stroke-linecap="round"
-                      fill="transparent"
-                      r="16"
-                      cx="21"
-                      cy="21"
-                    />
-                  </svg>
-                  <div
-                    class="absolute inset-0 flex items-center justify-center text-xs font-bold"
-                  >
-                    14%
-                  </div>
-                </div>
-                <div>
-                  <div class="w-24 bg-gray-700 h-2 rounded-full">
-                    <div
-                      class="bg-gold h-2 rounded-full"
-                      style="width: 14%"
-                    ></div>
-                  </div>
-                  <p class="text-xs mt-1">₹3,50,000 / ₹25,00,000</p>
-                </div>
+            <div class="ai-card-content">
+              <div class="flex-center" style="gap: 6px; color: #ffab00">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 9V11M12 15H12.01M5 20H19C19.5304 20 20.0391 19.7893 20.4142 19.4142C20.7893 19.0391 21 18.5304 21 18V6C21 5.46957 20.7893 4.96086 20.4142 4.58579C20.0391 4.21071 19.5304 4 19 4H5C4.46957 4 3.96086 4.21071 3.58579 4.58579C3.21071 4.96086 3 5.46957 3 6V18C3 18.5304 3.21071 19.0391 3.58579 19.4142C3.96086 19.7893 4.46957 20 5 20Z"
+                    stroke="#FFAB00"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Food budget at 90% - reduce dining out
               </div>
+            </div>
+            <div class="ai-card-content mt-12">
+              <div class="flex-center" style="gap: 6px; color: #f44336">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path
+                    d="M12 14V16M12 8V12M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20Z"
+                    stroke="#F44336"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                  />
+                </svg>
+                Emergency fund below recommended level
+              </div>
+            </div>
+          </div>
+          <div class="ai-card">
+            <div class="ai-card-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M20 21V19C20 17.9391 19.5786 16.9217 18.8284 16.1716C18.0783 15.4214 17.0609 15 16 15H8C6.93913 15 5.92172 15.4214 5.17157 16.1716C4.42143 16.9217 4 17.9391 4 19V21"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+                <path
+                  d="M12 11C14.2091 11 16 9.20914 16 7C16 4.79086 14.2091 3 12 3C9.79086 3 8 4.79086 8 7C8 9.20914 9.79086 11 12 11Z"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              Legacy Planning
+            </div>
+            <div class="ai-card-content">
+              Based on your family structure, consider establishing a trust fund
+              for your children's education. Projected need: ₹1.2M over 15
+              years.
+            </div>
+            <div class="ai-action mt-12">
+              Explore Options
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path
+                  d="M5 12H19"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+                <path
+                  d="M12 5L19 12L12 19"
+                  stroke="#FFD700"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                />
+              </svg>
             </div>
           </div>
         </div>
-      </section>
+      </div>
 
-      <!-- Investment Preferences Section -->
-      <section class="mb-12">
-        <h2 class="text-xl font-bold mb-6 text-gold section-title">
-          Investment Preferences
-        </h2>
-        <div class="card rounded-2xl p-6 max-w-3xl">
-          <div class="flex items-center justify-between mb-4 cursor-pointer">
-            <div class="flex items-center">
-              <div
-                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
-              >
-                <i class="fas fa-chart-line text-gold"></i>
-              </div>
-              <h3 class="font-semibold">Investment Profile</h3>
-            </div>
-            <i
-              class="fas fa-chevron-down text-gold transition-transform transform"
-            ></i>
+      <!-- Investment Preferences Panel -->
+      <div class="card investment-panel">
+        <div class="section-title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 2L15 9L22 9L16 14L18 22L12 17L6 22L8 14L2 9L9 9L12 2Z"
+              stroke="#FFD700"
+              stroke-width="2"
+            />
+          </svg>
+          Investment Profile
+        </div>
+        <div>
+          <div>Risk Tolerance</div>
+          <div class="risk-slider">
+            <div class="risk-track"></div>
+            <div class="risk-dot"></div>
           </div>
-
-          <div class="mt-6 space-y-4">
-            <div class="flex items-center">
-              <span class="w-32 font-medium">🪙 Risk Tolerance:</span>
-              <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
-                >Medium</span
-              >
-            </div>
-
-            <div>
-              <span class="w-32 font-medium">📦 Interested In:</span>
-              <div class="mt-2 flex flex-wrap gap-2">
-                <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
-                  >🏠 Real Estate</span
-                >
-                <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
-                  >🪙 Crypto</span
-                >
-                <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
-                  >💼 Stocks</span
-                >
-              </div>
-            </div>
-
-            <div class="flex items-center">
-              <span class="w-32 font-medium">📚 Experience Level:</span>
-              <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
-                >Advanced</span
-              >
-            </div>
-
-            <div
-              class="mt-6 p-4 bg-gold-light rounded-xl border border-gold-border"
-            >
-              <div class="flex items-start">
-                <i class="fas fa-lightbulb text-gold mt-1 mr-3"></i>
-                <div>
-                  <p class="font-medium text-gold mb-1">Investment Tip</p>
-                  <p class="text-sm">
-                    "🧠 Try diversifying into index funds to balance your
-                    portfolio risk."
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div class="risk-labels">
+            <div>Low</div>
+            <div>Medium</div>
+            <div>High</div>
           </div>
         </div>
-      </section>
-
-      <!-- Smart Advisor & Daily Summary -->
-      <section class="mb-12">
-        <h2 class="text-xl font-bold mb-6 text-gold section-title">
-          Daily Summary
-        </h2>
-        <div class="card rounded-2xl p-6">
-          <div class="flex flex-col md:flex-row justify-between">
-            <div class="mb-6 md:mb-0 md:w-2/3">
-              <h3 class="font-semibold text-lg mb-4 flex items-center">
-                <i class="fas fa-brain text-gold mr-2"></i> Smart Advisor
-              </h3>
-
-              <div class="space-y-4">
-                <div class="flex items-start">
-                  <i class="fas fa-info-circle text-gold mt-1 mr-3"></i>
-                  <div>
-                    <p class="font-medium mb-1">Today's Spending</p>
-                    <p>
-                      You've spent <span class="text-gold">₹2,850</span> today.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="flex items-start">
-                  <i class="fas fa-wallet text-gold mt-1 mr-3"></i>
-                  <div>
-                    <p class="font-medium mb-1">Weekly Budget</p>
-                    <p>
-                      Remaining: <span class="text-gold">₹15,150</span> for this
-                      week.
-                    </p>
-                  </div>
-                </div>
-
-                <div class="flex items-start">
-                  <i class="fas fa-lightbulb text-gold mt-1 mr-3"></i>
-                  <div>
-                    <p class="font-medium mb-1">Financial Tip</p>
-                    <p>
-                      "Allocate bonuses to your high-priority goals to
-                      accelerate your progress."
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="flex flex-col justify-center space-y-4">
-              <button
-                class="gold-button px-6 py-3 rounded-full font-semibold flex items-center justify-center"
-              >
-                <i class="fas fa-plus mr-2"></i> Add Expense
-              </button>
-              <button
-                class="outline-button px-6 py-3 rounded-full text-gold flex items-center justify-center"
-              >
-                <i class="fas fa-chart-bar mr-2"></i> View Reports
-              </button>
-            </div>
-          </div>
+        <div class="asset-chart">
+          <canvas id="assetChart" height="180"></canvas>
         </div>
-      </section>
-    </main>
+        <div class="badge">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path
+              d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
+              stroke="#FFD700"
+              stroke-width="2"
+            />
+            <path
+              d="M8 12L11 15L16 9"
+              stroke="#FFD700"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          Advanced Trader
+        </div>
+      </div>
 
-    <!-- Confetti effect container -->
-    <div
-      id="confetti-container"
-      class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden"
-    ></div>
+      <!-- Predictive Controls -->
+      <div class="predictive-controls">
+        <div class="toggle-group">
+          <div class="toggle-btn">Daily</div>
+          <div class="toggle-btn active">Weekly</div>
+          <div class="toggle-btn">Monthly</div>
+        </div>
+        <div class="simulator-btn">Run Projection</div>
+      </div>
+    </div>
 
-    <script>
-      // Simple animation for the progress rings
-      document.querySelectorAll('.progress-ring-circle').forEach(circle => {
-          const radius = circle.r.baseVal.value;
-          const circumference = radius * 2 * Math.PI;
-
-          circle.style.strokeDasharray = `${circumference} ${circumference}`;
-          circle.style.strokeDashoffset = circumference;
-
-          const offset = circumference - (parseInt(circle.parentElement.nextElementSibling.querySelector('.text-xs').textContent) / 100 * circumference;
-          circle.style.strokeDashoffset = offset;
-      });
-
-      // Create confetti effect
-      function createConfetti() {
-          const container = document.getElementById('confetti-container');
-          container.classList.remove('hidden');
-
-          for (let i = 0; i < 100; i++) {
-              const confetti = document.createElement('div');
-              confetti.className = 'confetti';
-              confetti.style.left = `${Math.random() * 100}vw`;
-              confetti.style.animationDelay = `${Math.random() * 1}s`;
-              confetti.style.backgroundColor = `hsl(${Math.random() * 60 + 30}, 100%, 50%)`;
-              container.appendChild(confetti);
-
-              // Remove confetti after animation
-              setTimeout(() => {
-                  confetti.remove();
-              }, 1000);
-          }
-
-          setTimeout(() => {
-              container.classList.add('hidden');
-              container.innerHTML = '';
-          }, 1500);
-      }
-
-      // Simulate goal completion for demo
-      setTimeout(() => {
-          createConfetti();
-      }, 3000);
-    </script>
+    <script src="/scripts/dashboards/employed.js"></script>
   </body>
 </html>
