@@ -1,9 +1,11 @@
 
 import express from "express";
 import {log} from 'console';
-import { EmployerPage, UnEmployedPage, RetiredPage } from "../controllers/userAuthController.js";
+import { RetiredPage } from "../controllers/retiredController.js";
 import isLoggedIn from "../middlewares/isLoggedInMiddleware.js";
 import { StudentPage, UpdateStudentPage } from "../controllers/studentController.js";
+import { EmployerPage } from "../controllers/employedController.js";
+import { UnEmployedPage } from "../controllers/unemployedController.js";
 
 
 const router = express.Router();
@@ -12,7 +14,7 @@ const router = express.Router();
 router.post('/student',isLoggedIn, StudentPage);
 router.post('/update-student', UpdateStudentPage);
 
-router.post('/employed',isLoggedIn, EmployerPage);
+router.post('/employed',isLoggedIn, EmployerPage );
 
 router.post('/unemployed',isLoggedIn, UnEmployedPage);
 

@@ -107,5 +107,23 @@ const UpdateStudentPage = async (req, res) => {
   }
 };
 
+const StudentDashboard = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id);
+    if (!user) {
+      return res.status(404).send("User not found");
+    }
 
-export { StudentPage, UpdateStudentPage };
+    const student = await Student.findOne({ userId: user._id });
+    if (!student) {
+      return res.status(404).send("Student profile not found");
+    }
+
+    res.render("dashboards/student", { user, student });
+  } catch (err) {
+    console.error("Error in StudentDashboard:", err);
+    res.status(500).send("Something went wrong.");
+  }
+};
+
+export { StudentPage, UpdateStudentPage, StudentDashboard };

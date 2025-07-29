@@ -1,7 +1,8 @@
 
 import express from "express";
 import {log} from 'console';
-import { registerUser, loginUser, logoutUser, GuestUser } from "../controllers/authController.js";
+import { registerUser, loginUser, logoutUser } from "../controllers/authController.js";
+import { GuestUser } from "../controllers/guestController.js";
 
 const router = express.Router();
 

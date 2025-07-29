@@ -1,12 +1,819 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Hello <%= user.fullName %> </h1>
-    <h1>my Monthly Salary is <%= employer.monthlySalary %></h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Secure Futurism Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              dark: "#0F0F0F",
+              card: "#1A1A1A",
+              gold: "#FFD700",
+              "gold-light": "rgba(255, 215, 0, 0.1)",
+              "gold-border": "rgba(255, 215, 0, 0.3)",
+            },
+            fontFamily: {
+              montserrat: ["Montserrat", "sans-serif"],
+            },
+            boxShadow: {
+              "gold-glow": "0 4px 20px rgba(255, 215, 0, 0.3)",
+              "card-glow": "0 0 15px rgba(255, 215, 0, 0.2)",
+            },
+            animation: {
+              "pulse-gold":
+                "pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+              "slide-in": "slide-in 0.3s ease-out forwards",
+              "fade-in": "fade-in 0.5s ease-out forwards",
+              confetti: "confetti 1s ease forwards",
+            },
+            keyframes: {
+              "pulse-gold": {
+                "0%, 100%": { opacity: "1" },
+                "50%": { opacity: "0.7" },
+              },
+              "slide-in": {
+                "0%": { transform: "translateY(20px)", opacity: "0" },
+                "100%": { transform: "translateY(0)", opacity: "1" },
+              },
+              "fade-in": {
+                "0%": { opacity: "0" },
+                "100%": { opacity: "1" },
+              },
+              confetti: {
+                "0%": { transform: "translateY(0) rotate(0)", opacity: "1" },
+                "100%": {
+                  transform: "translateY(-100vh) rotate(360deg)",
+                  opacity: "0",
+                },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #0f0f0f;
+        font-family: "Montserrat", sans-serif;
+        color: #f1f1f1;
+      }
+
+      .card {
+        background-color: #1a1a1a;
+        border: 1px solid rgba(255, 215, 0, 0.1);
+        transition: all 0.3s ease;
+      }
+
+      .card:hover {
+        border-color: rgba(255, 215, 0, 0.3);
+        box-shadow: 0 0 15px rgba(255, 215, 0, 0.2);
+        transform: translateY(-4px);
+      }
+
+      .progress-bar {
+        height: 8px;
+        background: linear-gradient(90deg, #ffd700, #ffb700);
+        border-radius: 4px;
+      }
+
+      .progress-ring {
+        transform: rotate(-90deg);
+      }
+
+      .progress-ring-circle {
+        transition: stroke-dashoffset 0.5s ease;
+        stroke: #ffd700;
+      }
+
+      .confetti {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        background-color: #ffd700;
+        opacity: 0;
+        animation: confetti 1s ease forwards;
+      }
+
+      .gold-button {
+        background-color: #ffd700;
+        color: #0f0f0f;
+        transition: all 0.3s ease;
+      }
+
+      .gold-button:hover {
+        box-shadow: 0 4px 20px rgba(255, 215, 0, 0.3);
+      }
+
+      .outline-button {
+        border: 1px solid rgba(255, 215, 0, 0.3);
+        transition: all 0.3s ease;
+      }
+
+      .outline-button:hover {
+        background-color: rgba(255, 215, 0, 0.1);
+      }
+
+      .delete-icon {
+        transition: all 0.3s ease;
+      }
+
+      .delete-icon:hover {
+        color: #ffd700;
+        transform: scale(1.2);
+        animation: pulse-gold 2s infinite;
+      }
+
+      .add-button {
+        transition: all 0.3s ease;
+      }
+
+      .add-button:hover {
+        background-color: rgba(255, 215, 0, 0.2);
+        animation: pulse-gold 2s infinite;
+      }
+
+      .slide-in-card {
+        animation: slide-in 0.5s ease-out forwards;
+        animation-delay: calc(var(--delay) * 0.1s);
+        opacity: 0;
+      }
+
+      .glow-border {
+        box-shadow: 0 0 0 1px rgba(255, 215, 0, 0.3),
+          0 0 10px rgba(255, 215, 0, 0.2);
+      }
+
+      .section-title {
+        position: relative;
+        display: inline-block;
+        padding-bottom: 8px;
+      }
+
+      .section-title::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, #ffd700, transparent);
+      }
+    </style>
+  </head>
+  <body class="min-h-screen bg-dark font-montserrat text-gray-100">
+    <!-- Top Navigation Bar -->
+    <header
+      class="sticky top-0 z-50 bg-dark border-b border-gold-border py-4 px-6 flex justify-between items-center"
+    >
+      <div class="flex items-center">
+        <div
+          class="w-10 h-10 rounded-full bg-gold flex items-center justify-center mr-3"
+        >
+          <span class="text-dark font-bold text-lg">SF</span>
+        </div>
+        <h1 class="text-xl font-bold">Secure Futurism</h1>
+      </div>
+
+      <div class="flex items-center">
+        <div class="mr-6 text-sm">
+          <span
+            >Welcome,
+            <span class="font-semibold text-gold">Full Stack Dev 🚀</span> at
+            WedPeace</span
+          >
+        </div>
+        <button
+          class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-gold-light transition-colors"
+        >
+          <i class="fas fa-cog text-gray-300 hover:text-gold"></i>
+        </button>
+      </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-8">
+      <!-- Income & Employment Section -->
+      <section class="mb-12">
+        <h2 class="text-xl font-bold mb-6 text-gold section-title">
+          Income & Employment
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Job Summary Card -->
+          <div class="card rounded-2xl p-6">
+            <div class="flex items-center mb-4">
+              <div
+                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-briefcase text-gold"></i>
+              </div>
+              <h3 class="font-semibold">Job Summary</h3>
+            </div>
+            <div class="space-y-2 text-sm">
+              <p>
+                <span class="font-medium text-gold"
+                  >💼 Full Stack Dev (Full-Time)</span
+                >
+              </p>
+              <p>🏢 Company: WedPeace</p>
+              <p>🧑‍💻 Industry: IT | Location: Remote</p>
+            </div>
+          </div>
+
+          <!-- Salary Overview Card -->
+          <div class="card rounded-2xl p-6">
+            <div class="flex items-center mb-4">
+              <div
+                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-coins text-gold"></i>
+              </div>
+              <h3 class="font-semibold">Salary Overview</h3>
+            </div>
+            <div class="space-y-2 text-sm">
+              <p>
+                <span class="font-medium text-gold"
+                  >💰 Monthly Salary: ₹7,85,000</span
+                >
+              </p>
+              <p>🕒 Paid: Bi-Weekly</p>
+            </div>
+          </div>
+
+          <!-- Additional Income Card -->
+          <div class="card rounded-2xl p-6">
+            <div class="flex items-center mb-4">
+              <div
+                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-plus-circle text-gold"></i>
+              </div>
+              <h3 class="font-semibold">Additional Income</h3>
+            </div>
+            <div class="space-y-2 text-sm mb-4">
+              <p>🏠 Home Support: ₹5,000/month</p>
+            </div>
+            <button
+              class="add-button text-sm bg-gold-light text-gold py-2 px-4 rounded-full hover:bg-opacity-50 transition"
+            >
+              + Add Source
+            </button>
+          </div>
+
+          <!-- Bonuses Card -->
+          <div class="card rounded-2xl p-6">
+            <div class="flex items-center mb-4">
+              <div
+                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-gift text-gold"></i>
+              </div>
+              <h3 class="font-semibold">Bonuses</h3>
+            </div>
+            <div class="space-y-2 text-sm">
+              <p>🎯 Bonuses: ❌ Not included</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fixed Expenses & Budgets Section -->
+      <section class="mb-12">
+        <h2 class="text-xl font-bold mb-6 text-gold section-title">
+          Fixed Expenses & Budgets
+        </h2>
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Fixed Expenses Card -->
+          <div class="card rounded-2xl p-6">
+            <div class="flex items-center mb-4">
+              <div
+                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-plug text-gold"></i>
+              </div>
+              <h3 class="font-semibold text-gold uppercase">Fixed Expenses</h3>
+            </div>
+            <div class="space-y-4">
+              <div
+                class="flex justify-between items-center py-2 border-b border-gray-800"
+              >
+                <div>
+                  <p class="font-medium">🔌 Utilities</p>
+                  <p class="text-sm text-gray-400">Due Date: 22nd</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="mr-4">₹8,000</span>
+                  <button
+                    class="delete-icon w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gold"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <div
+                class="flex justify-between items-center py-2 border-b border-gray-800"
+              >
+                <div>
+                  <p class="font-medium">🏠 Rent</p>
+                  <p class="text-sm text-gray-400">Due Date: 5th</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="mr-4">₹35,000</span>
+                  <button
+                    class="delete-icon w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gold"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="flex justify-between items-center py-2">
+                <div>
+                  <p class="font-medium">📱 Internet</p>
+                  <p class="text-sm text-gray-400">Due Date: 15th</p>
+                </div>
+                <div class="flex items-center">
+                  <span class="mr-4">₹2,500</span>
+                  <button
+                    class="delete-icon w-8 h-8 rounded-full flex items-center justify-center text-gray-400 hover:text-gold"
+                  >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Budget Limits Card -->
+          <div class="card rounded-2xl p-6">
+            <div class="flex items-center mb-4">
+              <div
+                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-chart-pie text-gold"></i>
+              </div>
+              <h3 class="font-semibold">Budget Limits</h3>
+            </div>
+            <div class="space-y-6">
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="font-medium">🍱 Food Budget</span>
+                  <span>₹8,000</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2.5">
+                  <div
+                    class="progress-bar h-2.5 rounded-full"
+                    style="width: 65%"
+                  ></div>
+                </div>
+                <div class="text-right text-sm text-gray-400 mt-1">
+                  Used: ₹5,200
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="font-medium">🚗 Transportation</span>
+                  <span>₹15,000</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2.5">
+                  <div
+                    class="progress-bar h-2.5 rounded-full"
+                    style="width: 40%"
+                  ></div>
+                </div>
+                <div class="text-right text-sm text-gray-400 mt-1">
+                  Used: ₹6,000
+                </div>
+              </div>
+
+              <div>
+                <div class="flex justify-between mb-1">
+                  <span class="font-medium">🎮 Entertainment</span>
+                  <span>₹10,000</span>
+                </div>
+                <div class="w-full bg-gray-800 rounded-full h-2.5">
+                  <div
+                    class="progress-bar h-2.5 rounded-full"
+                    style="width: 25%"
+                  ></div>
+                </div>
+                <div class="text-right text-sm text-gray-400 mt-1">
+                  Used: ₹2,500
+                </div>
+              </div>
+
+              <button
+                class="add-button mt-4 w-full text-center py-3 rounded-xl border border-dashed border-gold-border text-gold hover:bg-gold-light transition"
+              >
+                + Add New Category
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Financial Goals Section -->
+      <section class="mb-12">
+        <h2 class="text-xl font-bold mb-6 text-gold section-title">
+          Financial Goals
+        </h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <!-- Goal Card 1 -->
+          <div
+            class="card rounded-xl p-6 glow-border slide-in-card"
+            style="--delay: 1"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex items-center">
+                <div
+                  class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-laptop text-gold"></i>
+                </div>
+                <h3 class="font-semibold">New Laptop</h3>
+              </div>
+              <span
+                class="px-3 py-1 bg-gold-light text-gold rounded-full text-xs"
+                >Medium</span
+              >
+            </div>
+            <div class="space-y-3 text-sm">
+              <p>🎯 Target: ₹85,000</p>
+              <p>📅 Deadline: 23 June 2026</p>
+              <p>💼 Priority: Medium</p>
+              <p class="pt-2">📈 Saved: ₹8,000</p>
+
+              <div class="flex items-center mt-4">
+                <div class="relative w-16 h-16 mr-4">
+                  <svg class="progress-ring w-16 h-16" viewBox="0 0 42 42">
+                    <circle
+                      class="text-gray-700"
+                      stroke-width="4"
+                      stroke="currentColor"
+                      fill="transparent"
+                      r="16"
+                      cx="21"
+                      cy="21"
+                    />
+                    <circle
+                      class="progress-ring-circle"
+                      stroke-width="4"
+                      stroke-dasharray="100"
+                      stroke-dashoffset="91"
+                      stroke-linecap="round"
+                      fill="transparent"
+                      r="16"
+                      cx="21"
+                      cy="21"
+                    />
+                  </svg>
+                  <div
+                    class="absolute inset-0 flex items-center justify-center text-xs font-bold"
+                  >
+                    9%
+                  </div>
+                </div>
+                <div>
+                  <div class="w-24 bg-gray-700 h-2 rounded-full">
+                    <div
+                      class="bg-gold h-2 rounded-full"
+                      style="width: 9%"
+                    ></div>
+                  </div>
+                  <p class="text-xs mt-1">₹8,000 / ₹85,000</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Goal Card 2 -->
+          <div
+            class="card rounded-xl p-6 glow-border slide-in-card"
+            style="--delay: 2"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex items-center">
+                <div
+                  class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-car text-gold"></i>
+                </div>
+                <h3 class="font-semibold">New Car</h3>
+              </div>
+              <span
+                class="px-3 py-1 bg-gold-light text-gold rounded-full text-xs"
+                >High</span
+              >
+            </div>
+            <div class="space-y-3 text-sm">
+              <p>🎯 Target: ₹8,50,000</p>
+              <p>📅 Deadline: 15 Dec 2027</p>
+              <p>💼 Priority: High</p>
+              <p class="pt-2">📈 Saved: ₹2,10,000</p>
+
+              <div class="flex items-center mt-4">
+                <div class="relative w-16 h-16 mr-4">
+                  <svg class="progress-ring w-16 h-16" viewBox="0 0 42 42">
+                    <circle
+                      class="text-gray-700"
+                      stroke-width="4"
+                      stroke="currentColor"
+                      fill="transparent"
+                      r="16"
+                      cx="21"
+                      cy="21"
+                    />
+                    <circle
+                      class="progress-ring-circle"
+                      stroke-width="4"
+                      stroke-dasharray="100"
+                      stroke-dashoffset="75"
+                      stroke-linecap="round"
+                      fill="transparent"
+                      r="16"
+                      cx="21"
+                      cy="21"
+                    />
+                  </svg>
+                  <div
+                    class="absolute inset-0 flex items-center justify-center text-xs font-bold"
+                  >
+                    25%
+                  </div>
+                </div>
+                <div>
+                  <div class="w-24 bg-gray-700 h-2 rounded-full">
+                    <div
+                      class="bg-gold h-2 rounded-full"
+                      style="width: 25%"
+                    ></div>
+                  </div>
+                  <p class="text-xs mt-1">₹2,10,000 / ₹8,50,000</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Goal Card 3 -->
+          <div
+            class="card rounded-xl p-6 glow-border slide-in-card"
+            style="--delay: 3"
+          >
+            <div class="flex justify-between items-start mb-4">
+              <div class="flex items-center">
+                <div
+                  class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-3"
+                >
+                  <i class="fas fa-home text-gold"></i>
+                </div>
+                <h3 class="font-semibold">Down Payment</h3>
+              </div>
+              <span
+                class="px-3 py-1 bg-gold-light text-gold rounded-full text-xs"
+                >High</span
+              >
+            </div>
+            <div class="space-y-3 text-sm">
+              <p>🎯 Target: ₹25,00,000</p>
+              <p>📅 Deadline: 31 Dec 2029</p>
+              <p>💼 Priority: High</p>
+              <p class="pt-2">📈 Saved: ₹3,50,000</p>
+
+              <div class="flex items-center mt-4">
+                <div class="relative w-16 h-16 mr-4">
+                  <svg class="progress-ring w-16 h-16" viewBox="0 0 42 42">
+                    <circle
+                      class="text-gray-700"
+                      stroke-width="4"
+                      stroke="currentColor"
+                      fill="transparent"
+                      r="16"
+                      cx="21"
+                      cy="21"
+                    />
+                    <circle
+                      class="progress-ring-circle"
+                      stroke-width="4"
+                      stroke-dasharray="100"
+                      stroke-dashoffset="86"
+                      stroke-linecap="round"
+                      fill="transparent"
+                      r="16"
+                      cx="21"
+                      cy="21"
+                    />
+                  </svg>
+                  <div
+                    class="absolute inset-0 flex items-center justify-center text-xs font-bold"
+                  >
+                    14%
+                  </div>
+                </div>
+                <div>
+                  <div class="w-24 bg-gray-700 h-2 rounded-full">
+                    <div
+                      class="bg-gold h-2 rounded-full"
+                      style="width: 14%"
+                    ></div>
+                  </div>
+                  <p class="text-xs mt-1">₹3,50,000 / ₹25,00,000</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Investment Preferences Section -->
+      <section class="mb-12">
+        <h2 class="text-xl font-bold mb-6 text-gold section-title">
+          Investment Preferences
+        </h2>
+        <div class="card rounded-2xl p-6 max-w-3xl">
+          <div class="flex items-center justify-between mb-4 cursor-pointer">
+            <div class="flex items-center">
+              <div
+                class="w-12 h-12 rounded-full bg-gold-light flex items-center justify-center mr-3"
+              >
+                <i class="fas fa-chart-line text-gold"></i>
+              </div>
+              <h3 class="font-semibold">Investment Profile</h3>
+            </div>
+            <i
+              class="fas fa-chevron-down text-gold transition-transform transform"
+            ></i>
+          </div>
+
+          <div class="mt-6 space-y-4">
+            <div class="flex items-center">
+              <span class="w-32 font-medium">🪙 Risk Tolerance:</span>
+              <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
+                >Medium</span
+              >
+            </div>
+
+            <div>
+              <span class="w-32 font-medium">📦 Interested In:</span>
+              <div class="mt-2 flex flex-wrap gap-2">
+                <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
+                  >🏠 Real Estate</span
+                >
+                <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
+                  >🪙 Crypto</span
+                >
+                <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
+                  >💼 Stocks</span
+                >
+              </div>
+            </div>
+
+            <div class="flex items-center">
+              <span class="w-32 font-medium">📚 Experience Level:</span>
+              <span class="px-3 py-1 bg-gold-light text-gold rounded-full"
+                >Advanced</span
+              >
+            </div>
+
+            <div
+              class="mt-6 p-4 bg-gold-light rounded-xl border border-gold-border"
+            >
+              <div class="flex items-start">
+                <i class="fas fa-lightbulb text-gold mt-1 mr-3"></i>
+                <div>
+                  <p class="font-medium text-gold mb-1">Investment Tip</p>
+                  <p class="text-sm">
+                    "🧠 Try diversifying into index funds to balance your
+                    portfolio risk."
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Smart Advisor & Daily Summary -->
+      <section class="mb-12">
+        <h2 class="text-xl font-bold mb-6 text-gold section-title">
+          Daily Summary
+        </h2>
+        <div class="card rounded-2xl p-6">
+          <div class="flex flex-col md:flex-row justify-between">
+            <div class="mb-6 md:mb-0 md:w-2/3">
+              <h3 class="font-semibold text-lg mb-4 flex items-center">
+                <i class="fas fa-brain text-gold mr-2"></i> Smart Advisor
+              </h3>
+
+              <div class="space-y-4">
+                <div class="flex items-start">
+                  <i class="fas fa-info-circle text-gold mt-1 mr-3"></i>
+                  <div>
+                    <p class="font-medium mb-1">Today's Spending</p>
+                    <p>
+                      You've spent <span class="text-gold">₹2,850</span> today.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <i class="fas fa-wallet text-gold mt-1 mr-3"></i>
+                  <div>
+                    <p class="font-medium mb-1">Weekly Budget</p>
+                    <p>
+                      Remaining: <span class="text-gold">₹15,150</span> for this
+                      week.
+                    </p>
+                  </div>
+                </div>
+
+                <div class="flex items-start">
+                  <i class="fas fa-lightbulb text-gold mt-1 mr-3"></i>
+                  <div>
+                    <p class="font-medium mb-1">Financial Tip</p>
+                    <p>
+                      "Allocate bonuses to your high-priority goals to
+                      accelerate your progress."
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex flex-col justify-center space-y-4">
+              <button
+                class="gold-button px-6 py-3 rounded-full font-semibold flex items-center justify-center"
+              >
+                <i class="fas fa-plus mr-2"></i> Add Expense
+              </button>
+              <button
+                class="outline-button px-6 py-3 rounded-full text-gold flex items-center justify-center"
+              >
+                <i class="fas fa-chart-bar mr-2"></i> View Reports
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Confetti effect container -->
+    <div
+      id="confetti-container"
+      class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden"
+    ></div>
+
+    <script>
+      // Simple animation for the progress rings
+      document.querySelectorAll('.progress-ring-circle').forEach(circle => {
+          const radius = circle.r.baseVal.value;
+          const circumference = radius * 2 * Math.PI;
+
+          circle.style.strokeDasharray = `${circumference} ${circumference}`;
+          circle.style.strokeDashoffset = circumference;
+
+          const offset = circumference - (parseInt(circle.parentElement.nextElementSibling.querySelector('.text-xs').textContent) / 100 * circumference;
+          circle.style.strokeDashoffset = offset;
+      });
+
+      // Create confetti effect
+      function createConfetti() {
+          const container = document.getElementById('confetti-container');
+          container.classList.remove('hidden');
+
+          for (let i = 0; i < 100; i++) {
+              const confetti = document.createElement('div');
+              confetti.className = 'confetti';
+              confetti.style.left = `${Math.random() * 100}vw`;
+              confetti.style.animationDelay = `${Math.random() * 1}s`;
+              confetti.style.backgroundColor = `hsl(${Math.random() * 60 + 30}, 100%, 50%)`;
+              container.appendChild(confetti);
+
+              // Remove confetti after animation
+              setTimeout(() => {
+                  confetti.remove();
+              }, 1000);
+          }
+
+          setTimeout(() => {
+              container.classList.add('hidden');
+              container.innerHTML = '';
+          }, 1500);
+      }
+
+      // Simulate goal completion for demo
+      setTimeout(() => {
+          createConfetti();
+      }, 3000);
+    </script>
+  </body>
 </html>

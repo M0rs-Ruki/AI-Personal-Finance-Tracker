@@ -1,8 +1,7 @@
 import User from "../models/userModels.js";
-import { count, log } from "console";
+import { log } from "console";
 import generateToken from "../utils/generateTokenUtlis.js";
 import { hashPassword, comparePassword } from "../utils/bcryptPasswordUtlis.js";
-import Guest from "../models/guestModels.js";
 
 const registerUser = async (req, res) => {
   try {
@@ -63,37 +62,6 @@ const registerUser = async (req, res) => {
     return res.status(500).json({
       message: "An error occurred while registering the user.",
     });
-  }
-};
-
-const GuestUser = async (req, res) => {
-  try {
-    // Create a new guest user
-    const randomId = Date.now();
-    const newGuestUser = new Guest({
-        fullName: 'Guest User',
-        email: `guest${randomId}@user.com`,
-        password: 'guestpassword',
-        phoneNumber: '1234567890',
-        currency: 'INR',
-        userType: 'guest',
-    })
-
-    await newGuestUser.save();
-
-    const token = generateToken(newGuestUser);
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      maxAge: 24 * 60 * 60 * 1000,
-    });
-    const userId = newGuestUser._id;
-    res.render('userType/guest', { userId })
-    // log(userId)
-
-  } catch (err) {
-    console.error('Error creating guest user:', err);
-    res.status(500).json({ message: 'Error creating guest user' });
   }
 };
 

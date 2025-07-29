@@ -1,83 +1,38 @@
-import User from "../models/userModels.js";
-import Student from "../models/studentModels.js";
-import Employer from "../models/employedModels.js";
-import UnEmployed from "../models/unemployedModels.js";
-import Retired from "../models/retiredModels.js";
+
 import GuestModel from "../models/guestUserModels.js";
 import mongoose from "mongoose";
 import Guest from "../models/guestModels.js";
-
+import generateToken from "../utils/generateTokenUtlis.js";
 import { log } from "console";
 
-const StudentDashboard = async (req, res) => {
+const GuestUser = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
+    // Create a new guest user
+    const randomId = Date.now();
+    const newGuestUser = new Guest({
+        fullName: 'Guest User',
+        email: `guest${randomId}@user.com`,
+        password: 'guestpassword',
+        phoneNumber: '1234567890',
+        currency: 'INR',
+        userType: 'guest',
+    })
 
-    const student = await Student.findOne({ userId: user._id });
-    if (!student) {
-      return res.status(404).send("Student profile not found");
-    }
+    await newGuestUser.save();
 
-    res.render("dashboards/student", { user, student });
+    const token = generateToken(newGuestUser);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 24 * 60 * 60 * 1000,
+    });
+    const userId = newGuestUser._id;
+    res.render('userType/guest', { userId })
+    // log(userId)
+
   } catch (err) {
-    console.error("Error in StudentDashboard:", err);
-    res.status(500).send("Something went wrong.");
-  }
-};
-
-const EmployerDashboard = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-    const employer = await Employer.findOne({ userId: user._id });
-    if (!employer) {
-      return res.status(404).send("Employer profile not found");
-    }
-
-    res.render("dashboards/employed", { user, employer });
-  } catch (err) {
-    console.error("Error In EmployerDashboard:", err);
-    res.status(500).send("Something went wrong.");
-  }
-};
-
-const UnEmployedDashboard = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-    const unemployed = await UnEmployed.findOne({ userId: user._id });
-    if (!unemployed) {
-      return res.status(404).send("UnEmployed profile not found");
-    }
-    res.render("dashboards/unemployed", { user, unemployed });
-  } catch (err) {
-    console.error("Error In UnEmployerDashboard:", err);
-    res.status(500).send("Something went wrong.");
-  }
-};
-
-const RetiredDashboard = async (req, res) => {
-  try {
-    const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
-
-    const retired = await Retired.findOne({ userId: user._id });
-    if (!retired) {
-      return res.status(404).send("Retired profile not found");
-    }
-    res.render("dashboards/retired", { user, retired });
-  } catch (err) {
-    console.error("Error in RetiredDashboard:", err);
-    res.status(500).send("Something went wrong.");
+    console.error('Error creating guest user:', err);
+    res.status(500).json({ message: 'Error creating guest user' });
   }
 };
 
@@ -155,10 +110,4 @@ const GuestUserDashboard = async (req, res) => {
   }
 };
 
-export {
-  StudentDashboard,
-  EmployerDashboard,
-  UnEmployedDashboard,
-  RetiredDashboard,
-  GuestUserDashboard,
-};
+export { GuestUserDashboard, GuestUser };
