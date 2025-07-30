@@ -48,18 +48,54 @@
                 <span>Settings</span>
             </div>
         </div>-->
+        <%
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        const income = unemployed.currentIncome.toLocaleString('en-IN');
+        const incomeSources = unemployed.incomeSources;
+        <!-- // Calculate total monthly expenses from regularExpenses -->
+        const totalExpenses = unemployed.regularExpenses.reduce((sum, expense) => {
+            return sum + (expense.frequency === 'monthly' ? expense.amount : 0);
+        }, 0);
+
+        const incomeCoverage = totalExpenses > 0
+            ? Math.min(100, Math.round((unemployed.currentIncome / totalExpenses) * 100))
+            : 0;
+
+        const savings = unemployed.savingsDetails?.amount || 0;
+        const emergencyFund = unemployed.savingsDetails?.emergencyFund || 0;
+
+        <!-- // Find emergency fund goal from financialGoals -->
+        const emergencyGoal = unemployed.financialGoals.find(goal => goal.type === 'emergency-fund');
+        const emergencyGoalTarget = emergencyGoal?.targetAmount || 1; // prevent divide by zero
+        const emergencyProgress = Math.round((emergencyFund / emergencyGoalTarget) * 100);
+        const runwayMonths = unemployed.savingsDetails?.monthsCovered || 0;
+        const runwayPercent = Math.min(100, Math.round((runwayMonths / 6) * 100)); // Assuming 6 months is the upper goal
+        let runwayStatus = 'Critical';
+        if (runwayMonths >= 3 && runwayMonths < 6) {
+            runwayStatus = 'Stable';
+        } else if (runwayMonths >= 6) {
+            runwayStatus = 'Secure';
+        }
+
+        const jobSearchDetails = unemployed.jobSearchDetails;
         
+        %>
         <!-- Main Content -->
         <div class="main-content">
             <div class="header">
                 <div class="user-info">
                     <div class="user-avatar">JS</div>
                     <div>
-                        <h2>Hello, John</h2>
+                        <h2>Hello, <%= user.fullName %></h2>
                         <div class="user-status">Actively Seeking Employment</div>
                     </div>
                 </div>
-                <div class="date-display">Wednesday, July 30, 2025</div>
+                <div class="date-display"><%= currentDate %> </div>
             </div>
             
             <!-- Stats Overview -->
@@ -71,12 +107,13 @@
                             <span>Monthly Income</span>
                         </div>
                     </div>
-                    <div class="stat-value">₹5,000</div>
-                    <div class="stat-label">From 2 sources</div>
+                    <div class="stat-value">₹<%= income %></div>
+                    <div class="stat-label">From <%= incomeSources.length %> income source<%= incomeSources.length > 1 ? 's' : '' %></div>
+
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 40%"></div>
+                        <div class="progress-fill" style="width: <%= incomeCoverage %>%"></div>
                     </div>
-                    <div class="stat-label">40% of required expenses</div>
+                    <div class="stat-label"><%= incomeCoverage %>% of required expenses</div>
                 </div>
                 
                 <div class="card">
@@ -86,12 +123,13 @@
                             <span>Savings</span>
                         </div>
                     </div>
-                    <div class="stat-value">₹15,000</div>
-                    <div class="stat-label">Emergency fund: ₹10,000</div>
+                    <div class="stat-value">₹<%= savings.toLocaleString('en-IN') %></div>
+                    <div class="stat-label">Emergency fund: ₹<%= emergencyFund.toLocaleString('en-IN') %></div>
+
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 50%"></div>
+                        <div class="progress-fill" style="width: <%= emergencyProgress %>%"></div>
                     </div>
-                    <div class="stat-label">50% of your emergency fund goal</div>
+                    <div class="stat-label"><%= emergencyProgress %>% of your emergency fund goal</div>
                 </div>
                 
                 <div class="card">
@@ -101,12 +139,13 @@
                             <span>Financial Runway</span>
                         </div>
                     </div>
-                    <div class="stat-value">1.4 Months</div>
+                    <div class="stat-value"><%= runwayMonths %> Month<%= runwayMonths !== 1 ? 's' : '' %></div>
                     <div class="stat-label">Based on current savings & expenses</div>
+
                     <div class="progress-bar">
-                        <div class="progress-fill" style="width: 15%"></div>
+                        <div class="progress-fill" style="width: <%= runwayPercent %>%"></div>
                     </div>
-                    <div class="stat-label">Critical: Target 3-6 months</div>
+                    <div class="stat-label"><%= runwayStatus %>: Target 3–6 months</div>
                 </div>
             </div>
             
@@ -114,51 +153,46 @@
             <div class="grid-2col">
                 <!-- Left Column -->
                 <div>
+                    <%  
+                    const industries = jobSearchDetails?.industriesTargeted || [];
+                    const skills = jobSearchDetails?.skillsDevelopment || [];
+                    %>
+
                     <!-- Job Search Card -->
                     <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <i class="fas fa-briefcase"></i>
-                                <span>Job Search Progress</span>
-                            </div>
-                            <div class="card-actions">
-                                <button class="btn">View Details</button>
-                            </div>
+                    <div class="card-header">
+                        <div class="card-title">
+                        <i class="fas fa-briefcase"></i>
+                        <span>Job Search Progress</span>
                         </div>
-                        
-                        <div class="job-search-stats">
-                            <div class="stat-box">
-                                <div class="stat-box-value">5</div>
-                                <div class="stat-box-label">Applications/Week</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-box-value">₹3,000</div>
-                                <div class="stat-box-label">Job Search Budget</div>
-                            </div>
-                            <div class="stat-box">
-                                <div class="stat-box-value">2</div>
-                                <div class="stat-box-label">Industries Targeted</div>
-                            </div>
-                        </div>
-                        
-                        <div class="stat-label" style="margin-top: 20px;">Skills Development</div>
-                        <div style="display: flex; gap: 8px; margin-top: 12px;">
-                            <span class="badge badge-warning">JavaScript</span>
-                            <span class="badge badge-warning">React</span>
-                            <span class="badge badge-warning">Marketing</span>
-                        </div>
-                        
-                        <div class="stat-label" style="margin-top: 20px;">Suggestions</div>
-                        <div class="resource-card">
-                            <div class="resource-icon">
-                                <i class="fas fa-book"></i>
-                            </div>
-                            <div>
-                                <div>Free JavaScript Certification Course</div>
-                                <div style="font-size: 13px; color: var(--text-secondary);">Complete by Oct 2025 to enhance your skills</div>
-                            </div>
+                        <div class="card-actions">
+                        <button class="btn">View Details</button>
                         </div>
                     </div>
+
+                    <div class="job-search-stats">
+                        <div class="stat-box">
+                        <div class="stat-box-value"><%= jobSearchDetails.applicationsPerWeek %></div>
+                        <div class="stat-box-label">Applications/Week</div>
+                        </div>
+                        <div class="stat-box">
+                        <div class="stat-box-value">₹<%= jobSearchDetails.jobSearchBudget.toLocaleString('en-IN') %></div>
+                        <div class="stat-box-label">Job Search Budget</div>
+                        </div>
+                        <div class="stat-box">
+                        <div class="stat-box-value"><%= industries.length %></div>
+                        <div class="stat-box-label">Industries Targeted</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-label" style="margin-top: 20px;">Skills Development</div>
+                    <div style="display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;">
+                        <% skills.forEach(skill => { %>
+                        <span class="badge badge-warning"><%= skill %></span>
+                        <% }); %>
+                    </div>
+                    </div>
+
                     <div style="height: 20px;"></div>
                     <!-- Income Sources Card -->
                     <div class="card">
