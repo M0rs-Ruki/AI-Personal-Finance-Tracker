@@ -17,6 +17,7 @@
   --border-radius: 16px;
   --text-muted: #999999;
   --font-primary: 'Montserrat', sans-serif;
+  --grid-line: rgba(255, 255, 255, 0.02);
 }
 
 
@@ -32,6 +33,10 @@ body {
     color: var(--text-light);
     min-height: 100vh;
     overflow-x: hidden;
+    background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+    background-size: 30px 30px;
 }
 
 /* Global Navigation */

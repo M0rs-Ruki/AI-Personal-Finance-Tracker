@@ -11,6 +11,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="/styles/dashboard/employed.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   </head>
   <body>
     <!-- Global Navigation -->
@@ -275,11 +276,9 @@
         <div class="card summary-card">
           <div class="section-title">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-              <path d="M17 9V7C17 5.89543 16.1046 5 15 5H5C3.89543 5 3 5.89543 3 7V13C3 14.1046 3.89543 15 5 15H15C16.1046 15 17 14.1046 17 13V11"
-                    stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
+              <path d="M17 9V7C17 5.89543 16.1046 5 15 5H5C3.89543 5 3 5.89543 3 7V13C3 14.1046 3.89543 15 5 15H15C16.1046 15 17 14.1046 17 13V11" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
               <path d="M8 12H12" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
-              <path d="M20 9H18C16.8954 9 16 9.89543 16 11V15C16 16.1046 16.8954 17 18 17H20"
-                    stroke="#FFD700" stroke-width="2"/>
+              <path d="M20 9H18C16.8954 9 16 9.89543 16 11V15C16 16.1046 16.8954 17 18 17H20" stroke="#FFD700" stroke-width="2"/>
               <path d="M21 14H19" stroke="#FFD700" stroke-width="2" stroke-linecap="round"/>
             </svg>
             Expense Matrix
@@ -289,47 +288,17 @@
             <canvas id="expenseChart" width="200" height="120"></canvas>
           </div>
 
-          <div class="flex-center gap-6">
-            <div class="flex-center">
+          <div class="flex-center gap-6 mt-4">
+            <div class="flex-center gap-2">
               <div style="width: 10px; height: 10px; background: #4caf50; border-radius: 2px;"></div>
               <span>Fixed: ₹<%= totalFixed.toLocaleString('en-IN') %></span>
             </div>
-            <div class="flex-center">
+            <div class="flex-center gap-2">
               <div style="width: 10px; height: 10px; background: #f44336; border-radius: 2px;"></div>
               <span>Variable: ₹<%= totalVariable.toLocaleString('en-IN') %></span>
             </div>
           </div>
         </div>
-
-        <!-- Include Chart.js only once in your layout or before this script -->
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-        <script>
-          const ctx = document.getElementById('expenseChart').getContext('2d');
-          const expenseChart = new Chart(ctx, {
-            type: 'doughnut',
-            data: {
-              labels: ['Fixed', 'Variable'],
-              datasets: [{
-                data: [<%= totalFixed %>, <%= totalVariable %>],
-                backgroundColor: ['#4caf50', '#f44336'],
-                borderColor: '#0f0f0f',
-                borderWidth: 2
-              }]
-            },
-            options: {
-              cutout: '70%',
-              plugins: {
-                legend: { display: false },
-                tooltip: {
-                  callbacks: {
-                    label: ctx => `${ctx.label}: ₹${ctx.raw.toLocaleString('en-IN')}`
-                  }
-                }
-              }
-            }
-          });
-        </script>
 
 
         <div class="card summary-card">
@@ -424,85 +393,42 @@
           Goals Tracker
         </div>
         <div class="goals-grid">
-          <div class="goal-card">
-            <div class="progress-ring">
-              <svg width="50" height="50" viewBox="0 0 50 50">
-                <circle class="progress-ring-bg" cx="25" cy="25" r="22" />
-                <circle
-                  class="progress-ring-fill"
-                  cx="25"
-                  cy="25"
-                  r="22"
-                  stroke-dasharray="138.23"
-                  stroke-dashoffset="69.115"
-                />
-              </svg>
-              <div class="progress-text">50%</div>
-            </div>
-            <div class="goal-info">
-              <div class="goal-title">MacBook Pro M3</div>
-              <div class="goal-meta">
-                <div class="goal-tag">MEDIUM</div>
-                <div>Target: ₹1,50,000</div>
+          <% employer.financialGoals.forEach(goal => {
+            const progressPercent = Math.min(100, Math.round((goal.currentProgress / goal.targetAmount) * 100));
+            const radius = 22;
+            const circumference = 2 * Math.PI * radius;
+            const offset = circumference - (progressPercent / 100) * circumference;
+          %>
+
+            <div class="goal-card">
+              <div class="progress-ring">
+                <svg width="50" height="50" viewBox="0 0 50 50">
+                  <circle class="progress-ring-bg" cx="25" cy="25" r="<%= radius %>" />
+                  <circle
+                    class="progress-ring-fill"
+                    cx="25"
+                    cy="25"
+                    r="<%= radius %>"
+                    stroke-dasharray="<%= circumference.toFixed(2) %>"
+                    stroke-dashoffset="<%= offset.toFixed(2) %>"
+                  />
+                </svg>
+                <div class="progress-text"><%= progressPercent %>%</div>
               </div>
-              <div class="text-gold" style="font-size: 12px; margin-top: 4px">
-                Dec 2025 • 5 months left
-              </div>
-            </div>
-          </div>
-          <div class="goal-card">
-            <div class="progress-ring">
-              <svg width="50" height="50" viewBox="0 0 50 50">
-                <circle class="progress-ring-bg" cx="25" cy="25" r="22" />
-                <circle
-                  class="progress-ring-fill"
-                  cx="25"
-                  cy="25"
-                  r="22"
-                  stroke-dasharray="138.23"
-                  stroke-dashoffset="96.76"
-                />
-              </svg>
-              <div class="progress-text">30%</div>
-            </div>
-            <div class="goal-info">
-              <div class="goal-title">Emergency Fund</div>
-              <div class="goal-meta">
-                <div class="goal-tag">HIGH</div>
-                <div>Target: ₹300,000</div>
-              </div>
-              <div class="text-gold" style="font-size: 12px; margin-top: 4px">
-                Jun 2026 • 11 months left
+              <div class="goal-info">
+                <div class="goal-title"><%= goal.name %></div>
+                <div class="goal-meta">
+                  <div class="goal-tag"><%= goal.priority.toUpperCase() %></div>
+                  <div>Target: ₹<%= goal.targetAmount.toLocaleString('en-IN') %></div>
+                </div>
+                <div class="text-gold" style="font-size: 12px; margin-top: 4px">
+                  <%= new Date(goal.targetDate).toDateString() %>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="goal-card">
-            <div class="progress-ring">
-              <svg width="50" height="50" viewBox="0 0 50 50">
-                <circle class="progress-ring-bg" cx="25" cy="25" r="22" />
-                <circle
-                  class="progress-ring-fill"
-                  cx="25"
-                  cy="25"
-                  r="22"
-                  stroke-dasharray="138.23"
-                  stroke-doffset="124.4"
-                />
-              </svg>
-              <div class="progress-text">10%</div>
-            </div>
-            <div class="goal-info">
-              <div class="goal-title">Europe Trip</div>
-              <div class="goal-meta">
-                <div class="goal-tag">LOW</div>
-                <div>Target: ₹500,000</div>
-              </div>
-              <div class="text-gold" style="font-size: 12px; margin-top: 4px">
-                Dec 2026 • 17 months left
-              </div>
-            </div>
-          </div>
+          <% }); %>
         </div>
+
         <div class="add-goal">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
             <path
@@ -524,7 +450,7 @@
 
       <!-- AI Insights Hub -->
       <div class="card ai-insights">
-        <div class="ai-header">Quantum Insights</div>
+        <div class="ai-header"> Inside From Ai </div>
         <div class="ai-modules">
           <div class="ai-card">
             <div class="ai-card-title">
@@ -740,19 +666,16 @@
       <div class="card investment-panel">
         <div class="section-title">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M12 2L15 9L22 9L16 14L18 22L12 17L6 22L8 14L2 9L9 9L12 2Z"
-              stroke="#FFD700"
-              stroke-width="2"
-            />
+            <path d="M12 2L15 9L22 9L16 14L18 22L12 17L6 22L8 14L2 9L9 9L12 2Z" stroke="#FFD700" stroke-width="2" />
           </svg>
           Investment Profile
         </div>
+
         <div>
           <div>Risk Tolerance</div>
           <div class="risk-slider">
             <div class="risk-track"></div>
-            <div class="risk-dot"></div>
+            <div class="risk-dot <%= employer.investmentPreferences.riskTolerance %>"></div>
           </div>
           <div class="risk-labels">
             <div>Low</div>
@@ -760,39 +683,167 @@
             <div>High</div>
           </div>
         </div>
+
         <div class="asset-chart">
           <canvas id="assetChart" height="180"></canvas>
         </div>
+
         <div class="badge">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-              stroke="#FFD700"
-              stroke-width="2"
-            />
-            <path
-              d="M8 12L11 15L16 9"
-              stroke="#FFD700"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#FFD700" stroke-width="2" />
+            <path d="M8 12L11 15L16 9" stroke="#FFD700" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          Advanced Trader
+          <%= employer.investmentPreferences.experienceLevel === "beginner" ? "New Investor" : employer.investmentPreferences.experienceLevel === "intermediate" ? "Smart Trader" : "Advanced Trader" %>
         </div>
       </div>
 
       <!-- Predictive Controls -->
-      <div class="predictive-controls">
+      <!-- <div class="predictive-controls">
         <div class="toggle-group">
-          <div class="toggle-btn">Daily</div>
-          <div class="toggle-btn active">Weekly</div>
-          <div class="toggle-btn">Monthly</div>
+          <% const frequencies = ['daily', 'weekly', 'monthly']; %>
+          <% frequencies.forEach(freq => { %>
+            <div class="toggle-btn <%= employer.summaryFrequency === freq ? 'active' : '' %>">
+              <%= freq.charAt(0).toUpperCase() + freq.slice(1) %>
+            </div>
+          <% }) %>
         </div>
         <div class="simulator-btn">Run Projection</div>
-      </div>
+      </div> -->
     </div>
 
-    <script src="/scripts/dashboards/employed.js"></script>
+
+    <script>
+        // Initialize charts
+        document.addEventListener('DOMContentLoaded', function() {
+            // Income Chart
+            const incomeCtx = document.getElementById('incomeChart').getContext('2d');
+            new Chart(incomeCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Income',
+                        data: [85000, 92000, 105000, 98000, 110000, 95000],
+                        backgroundColor: '#FFD700',
+                        borderRadius: 5,
+                        borderSkipped: false,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#999', font: { size: 10 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#999', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+
+
+            const expenseCtx = document.getElementById('expenseChart').getContext('2d');
+            new Chart(expenseCtx, {
+              type: 'doughnut',
+              data: {
+                labels: ['Fixed', 'Variable'],
+                datasets: [{
+                  data: [<%= totalFixed %>, <%= totalVariable %>],
+                  backgroundColor: ['#4CAF50', '#F44336'],
+                  borderWidth: 0
+                }]
+              },
+              options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '60%',
+                plugins: {
+                  legend: { display: false }
+                }
+              }
+            });
+
+
+
+            // Asset Distribution Chart
+            const assetCtx = document.getElementById('assetChart').getContext('2d');
+            new Chart(assetCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Real Estate', 'Crypto', 'Stocks', 'Bonds', 'Cash'],
+                    datasets: [{
+                        data: [60, 25, 8, 5, 2],
+                        backgroundColor: [
+                            '#4CAF50',
+                            '#FFC107',
+                            '#2196F3',
+                            '#9C27B0',
+                            '#FF9800'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { 
+                            position: 'right',
+                            labels: {
+                                color: '#E0E0E0',
+                                padding: 10,
+                                font: {
+                                    size: 10
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Interactive elements
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            document.querySelector('.simulator-btn').addEventListener('click', function() {
+                this.innerHTML = 'Running Simulation...';
+                setTimeout(() => {
+                    this.innerHTML = 'Projection Complete!';
+                    this.style.background = 'linear-gradient(90deg, #00C853, #4CAF50)';
+                    setTimeout(() => {
+                        this.innerHTML = 'Run Projection';
+                        this.style.background = 'linear-gradient(90deg, var(--gold-accent), #FFAA00)';
+                    }, 2000);
+                }, 1500);
+            });
+
+            document.querySelectorAll('.ai-action').forEach(action => {
+                action.addEventListener('click', function() {
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<span>✓ Applied</span>';
+                    this.style.background = 'rgba(0, 200, 83, 0.2)';
+                    this.style.color = '#00C853';
+                    
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.style.background = 'var(--gold-accent-10)';
+                        this.style.color = 'var(--gold-accent)';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
   </body>
 </html>

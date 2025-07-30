@@ -127,3 +127,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+
+const ctx = document.getElementById('expenseChart').getContext('2d');
+const expenseChart = new Chart(ctx, {
+type: 'doughnut',
+data: {
+    labels: ['Fixed', 'Variable'],
+    datasets: [{
+    data: [<%= totalFixed %>, <%= totalVariable %>],
+    backgroundColor: ['#4caf50', '#f44336'],
+    borderColor: '#0f0f0f',
+    borderWidth: 2
+    }]
+},
+options: {
+    cutout: '70%',
+    plugins: {
+    legend: { display: false },
+    tooltip: {
+        callbacks: {
+        label: ctx => `${ctx.label}: ₹${ctx.raw.toLocaleString('en-IN')}`
+        }
+    }
+    }
+}
+});
