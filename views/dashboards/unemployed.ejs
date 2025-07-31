@@ -89,7 +89,7 @@
         <div class="main-content">
             <div class="header">
                 <div class="user-info">
-                    <div class="user-avatar">JS</div>
+                    <div class="user-avatar"><%= user.fullName.charAt(0) %></div>
                     <div>
                         <h2>Hello, <%= user.fullName %></h2>
                         <div class="user-status">Actively Seeking Employment</div>
@@ -621,7 +621,7 @@
         </div>
         <div class="notification-content">
             Remember to apply to 5 jobs this week and update your LinkedIn profile. 
-            You have ₹3,000 allocated for job search activities.
+            You have ₹<%= jobSearchDetails.jobSearchBudget.toLocaleString('en-IN') %>  allocated for job search activities.
         </div>
     </div>
 
