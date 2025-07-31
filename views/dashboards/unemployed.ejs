@@ -193,6 +193,14 @@
                     </div>
                     </div>
 
+                    <%
+                    function capitalize(str) {
+                    if (str.length === 0) {
+                        return ""; // Handle empty strings
+                    }
+                    return str.charAt(0).toUpperCase() + str.slice(1);
+                    }
+                    %>
                     <div style="height: 20px;"></div>
                     <!-- Income Sources Card -->
                     <div class="card">
@@ -203,27 +211,23 @@
                             </div>
                         </div>
                         
-                        <div class="income-source">
-                            <div>
-                                <div>Freelance Writing</div>
-                                <div style="font-size: 13px; color: var(--text-secondary);">Occasional freelance writing</div>
+                        <% incomeSources.forEach(source => { %>
+                            <div class="income-source">
+                                <div>
+                                    <div><%= capitalize(source.sourceType) %></div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        <%= capitalize(source.description) %>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div>₹<%= source.amount.toLocaleString('en-IN') %></div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        <%= capitalize(source.frequency) %>
+                                    </div>
+                                </div>
                             </div>
-                            <div style="text-align: right;">
-                                <div>₹2,500</div>
-                                <div style="font-size: 13px; color: var(--text-secondary);">Monthly</div>
-                            </div>
-                        </div>
+                        <% }) %>
                         
-                        <div class="income-source">
-                            <div>
-                                <div>Family Support</div>
-                                <div style="font-size: 13px; color: var(--text-secondary);">Monthly support from parents</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div>₹2,000</div>
-                                <div style="font-size: 13px; color: var(--text-secondary);">Monthly</div>
-                            </div>
-                        </div>
                         
                         <div style="background: rgba(255, 171, 0, 0.1); padding: 16px; border-radius: 12px; margin-top: 20px;">
                             <div style="display: flex; gap: 12px; align-items: flex-start;">
@@ -236,6 +240,7 @@
                         </div>
                     </div>
                     <div style="height: 20px;"></div>
+
                     <!-- AI Insights Hub -->
                     <div class="card ai-insights">
                         <div class="ai-header">
@@ -470,48 +475,26 @@
                                 <button class="btn">Manage Budget</button>
                             </div>
                         </div>
-                        
-                        <div class="expense-category">
-                            <div class="expense-icon">
-                                <i class="fas fa-home"></i>
+                        <%
+                        const Expenses = unemployed.regularExpenses;
+                        %>
+                        <% Expenses.forEach(expense => { %>
+                            <div class="expense-category">
+                                <div class="expense-icon">
+                                    <i class="fas fa-home"></i> <!-- You can make icon dynamic if needed -->
+                                </div>
+                                <div style="flex: 1;">
+                                    <div><%= capitalize(expense.category) %></div>
+                                    <div style="font-size: 13px; color: var(--text-secondary);">
+                                        <%= expense.category === 'Rent' || expense.category === 'Housing' ? 'Housing expense' : 'General expense' %>
+                                    </div>
+                                </div>
+                                <div style="text-align: right;">
+                                    <div>₹<%= expense.amount.toLocaleString('en-IN') %></div>
+                                    <div class="expense-essential"><%= expense.essential ? 'Essential' : 'Non-Essential' %></div>
+                                </div>
                             </div>
-                            <div style="flex: 1;">
-                                <div>Rent</div>
-                                <div style="font-size: 13px; color: var(--text-secondary);">Housing expense</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div>₹8,000</div>
-                                <div class="expense-essential">Essential</div>
-                            </div>
-                        </div>
-                        
-                        <div class="expense-category">
-                            <div class="expense-icon">
-                                <i class="fas fa-wifi"></i>
-                            </div>
-                            <div style="flex: 1;">
-                                <div>Internet</div>
-                                <div style="font-size: 13px; color: var(--text-secondary);">Monthly subscription</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div>₹1,000</div>
-                                <div class="expense-essential">Essential</div>
-                            </div>
-                        </div>
-                        
-                        <div class="expense-category">
-                            <div class="expense-icon">
-                                <i class="fas fa-gamepad"></i>
-                            </div>
-                            <div style="flex: 1;">
-                                <div>Entertainment</div>
-                                <div style="font-size: 13px; color: var(--text-secondary);">Streaming & leisure</div>
-                            </div>
-                            <div style="text-align: right;">
-                                <div>₹2,000</div>
-                                <div style="font-size: 12px; padding: 2px 8px; background: rgba(255, 82, 82, 0.1); border-radius: 4px; color: var(--danger);">Non-Essential</div>
-                            </div>
-                        </div>
+                        <% }); %>
                         
                         <div style="background: rgba(255, 82, 82, 0.1); padding: 16px; border-radius: 12px; margin-top: 20px;">
                             <div style="display: flex; gap: 12px; align-items: flex-start;">
@@ -524,54 +507,68 @@
                         </div>
                     </div>
                     <div style="height: 20px;"></div>
+
+                    <%
+                    const financialGoals = unemployed.financialGoals || [];
+
+                    function calculateMonthlySaving(goal) {
+                        const now = new Date();
+                        const targetDate = new Date(goal.targetDate);
+                        const monthsLeft = Math.max(1, (targetDate.getFullYear() - now.getFullYear()) * 12 + (targetDate.getMonth() - now.getMonth()));
+                        const remainingAmount = goal.targetAmount * (1 - (goal.progress / 100));
+                        return Math.round(remainingAmount / monthsLeft);
+                    }
+                    %>
+
                     <!-- Financial Goals Card -->
                     <div class="card">
-                        <div class="card-header">
-                            <div class="card-title">
-                                <i class="fas fa-bullseye"></i>
-                                <span>Financial Goals</span>
-                            </div>
-                        </div>
-                        
-                        <div class="goal-card">
-                            <div class="goal-header">
-                                <div class="goal-title">Upskill for better job</div>
-                                <span class="badge badge-critical">High Priority</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                                <div style="font-size: 14px; color: var(--text-secondary);">₹10,000 by Dec 2025</div>
-                                <div style="font-weight: 600;">25%</div>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 25%"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="goal-card">
-                            <div class="goal-header">
-                                <div class="goal-title">Emergency Fund</div>
-                                <span class="badge badge-critical">Critical</span>
-                            </div>
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                                <div style="font-size: 14px; color: var(--text-secondary);">₹20,000 by Jun 2026</div>
-                                <div style="font-weight: 600;">50%</div>
-                            </div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" style="width: 50%"></div>
-                            </div>
-                        </div>
-                        
-                        <div style="margin-top: 20px; background: rgba(0, 200, 83, 0.1); padding: 16px; border-radius: 12px;">
-                            <div style="display: flex; gap: 12px; align-items: flex-start;">
-                                <i class="fas fa-lightbulb" style="color: var(--success); font-size: 20px;"></i>
-                                <div>
-                                    <div style="font-weight: 600; margin-bottom: 8px;">Savings Tip</div>
-                                    <div style="font-size: 14px;">Save ₹1,500/month to hit your upskill goal by December 2025.</div>
-                                </div>
-                            </div>
+                    <div class="card-header">
+                        <div class="card-title">
+                        <i class="fas fa-bullseye"></i>
+                        <span>Financial Goals</span>
                         </div>
                     </div>
+
+                    <% financialGoals.forEach(goal => { 
+                        const tipAmount = calculateMonthlySaving(goal);
+                    %>
+                        <div class="goal-card">
+                        <div class="goal-header">
+                            <div class="goal-title"><%= capitalize(goal.name) %></div>
+                            <span class="badge badge-<%= goal.priority === 'critical' ? 'critical' : 'warning' %>">
+                            <%= capitalize(goal.priority) %>
+                            </span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                            <div style="font-size: 14px; color: var(--text-secondary);">
+                            ₹<%= goal.targetAmount.toLocaleString('en-IN') %> by 
+                            <%= new Date(goal.targetDate).toLocaleDateString('en-IN') %>
+                            </div>
+                            <div style="font-weight: 600;"><%= goal.progress %>%</div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: <%= goal.progress %>%"></div>
+                        </div>
+
+                        <!-- Savings Tip -->
+                        <div style="margin-top: 20px; background: rgba(0, 200, 83, 0.1); padding: 16px; border-radius: 12px;">
+                            <div style="display: flex; gap: 12px; align-items: flex-start;">
+                            <i class="fas fa-lightbulb" style="color: var(--success); font-size: 20px;"></i>
+                            <div>
+                                <div style="font-weight: 600; margin-bottom: 8px;">Savings Tip</div>
+                                <div style="font-size: 14px;">
+                                Save ₹<%= tipAmount.toLocaleString('en-IN') %>/month to hit your "<%= capitalize(goal.name) %>" goal by 
+                                <%= new Date(goal.targetDate).toLocaleDateString('en-IN', { month: 'long', year: 'numeric' }) %>.
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                        </div>
+                    <% }); %>
+                    </div>
+
                     <div style="height: 20px;"></div>
+
                     <!-- Support Resources Card -->
                     <div class="card">
                         <div class="card-header">
