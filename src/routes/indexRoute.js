@@ -21,5 +21,9 @@ router.get('/features', (req, res) => {
     res.render('features');
 })
 
+router.get('/contact', (req, res) => {
+    res.render('contact');
+})
+
 
 export default router;

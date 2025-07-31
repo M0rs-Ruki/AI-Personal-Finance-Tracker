@@ -3,10 +3,682 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>RukiAI | Financial Intelligence Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'dark-bg': '#0F0F0F',
+                        'gold-accent': '#FFD700',
+                        'gold-light': 'rgba(255, 215, 0, 0.3)',
+                        'gold-dark': '#D4AF37',
+                        'card-bg': '#1A1A1A',
+                        'input-bg': '#222222'
+                    },
+                    fontFamily: {
+                        'montserrat': ['Montserrat', 'sans-serif'],
+                        'roboto': ['Roboto', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'gold-glow': '0 0 15px rgba(255, 215, 0, 0.5)',
+                        'gold-glow-sm': '0 0 8px rgba(255, 215, 0, 0.3)',
+                        'card': '0 4px 20px rgba(0, 0, 0, 0.5)'
+                    },
+                    animation: {
+                        'pulse-gold': 'pulse-gold 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'confetti': 'confetti 5s ease-out'
+                    },
+                    keyframes: {
+                        'pulse-gold': {
+                            '0%, 100%': { 'box-shadow': '0 0 0 0 rgba(255, 215, 0, 0.7)' },
+                            '50%': { 'box-shadow': '0 0 0 10px rgba(255, 215, 0, 0)' }
+                        },
+                        'confetti': {
+                            '0%': { transform: 'translateY(0) rotate(0)', opacity: '1' },
+                            '100%': { transform: 'translateY(100vh) rotate(720deg)', opacity: '0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #0F0F0F;
+            color: #e0e0e0;
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .gold-heading {
+            font-family: 'Montserrat', sans-serif;
+            color: #FFD700;
+            position: relative;
+            padding-bottom: 8px;
+        }
+        
+        .gold-heading:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, #FFD700, rgba(255, 215, 0, 0.3));
+        }
+        
+        .card {
+            background-color: #1A1A1A;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6), 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, #FFD700, #D4AF37);
+            color: #0F0F0F;
+            border-radius: 999px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-gold:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.4);
+        }
+        
+        .input-field {
+            background-color: #222222;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .input-field:focus {
+            border-color: #FFD700;
+            box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.3);
+            outline: none;
+        }
+        
+        .progress-bar {
+            height: 10px;
+            border-radius: 5px;
+            background-color: #333333;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #D4AF37, #FFD700);
+            border-radius: 5px;
+        }
+        
+        .ai-advice-bubble {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 16px 16px 16px 0;
+            position: relative;
+        }
+        
+        .ai-advice-bubble:before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: rgba(26, 26, 26, 0.8) transparent transparent;
+        }
+        
+        .ai-advice-bubble:after {
+            content: '';
+            position: absolute;
+            bottom: -11px;
+            left: 19px;
+            border-width: 11px 11px 0;
+            border-style: solid;
+            border-color: rgba(255, 215, 0, 0.3) transparent transparent;
+        }
+        
+        .gold-icon {
+            color: #FFD700;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .glowing-border {
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #FFD700;
+            animation: confetti 5s ease-out;
+        }
+        
+        .health-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        .health-good {
+            background-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+        
+        .health-warning {
+            background-color: #FFC107;
+            box-shadow: 0 0 8px rgba(255, 193, 7, 0.5);
+        }
+        
+        .health-critical {
+            background-color: #F44336;
+            box-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+        }
+        
+        .tab-active {
+            border-bottom: 2px solid #FFD700;
+            color: #FFD700;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+    </style>
 </head>
-<body>
-    <h1>Hello <%= user.fullName %> </h1>
-    <h1>my retirement Account Withdrawals type is  <%= retired.retirementAccountWithdrawals[0].type %></h1>
+<body class="bg-dark-bg min-h-screen">
+    <!-- Header Section -->
+    <header class="border-b border-gold-accent/20">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 bg-gold-accent rounded-full flex items-center justify-center">
+                    <i class="fas fa-coins text-dark-bg text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-montserrat font-bold text-gold-accent">Ruki<span class="text-white">AI</span></h1>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <button class="text-gold-accent/80 hover:text-gold-accent transition">
+                    <i class="fas fa-bell text-xl"></i>
+                </button>
+                <div class="flex items-center space-x-2">
+                    <div class="w-9 h-9 rounded-full bg-gold-light flex items-center justify-center">
+                        <span class="text-gold-accent font-semibold">U</span>
+                    </div>
+                    <span class="text-white font-medium">User_123</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Dashboard -->
+    <main class="container mx-auto px-4 py-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column: Financial Overview -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- Dashboard Header -->
+                <div class="flex justify-between items-center">
+                    <h2 class="text-2xl font-montserrat font-semibold text-white">Financial Dashboard</h2>
+                    <div class="flex space-x-3">
+                        <button class="px-4 py-2 bg-card-bg rounded-lg text-gold-accent border border-gold-light hover:bg-gold-light/10 transition">
+                            <i class="fas fa-sync-alt mr-2"></i>Refresh Data
+                        </button>
+                        <button class="px-4 py-2 btn-gold font-montserrat font-semibold">
+                            <i class="fas fa-download mr-2"></i>Export Report
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Financial Health Summary -->
+                <div class="card p-6">
+                    <h3 class="gold-heading text-xl mb-6">Financial Health Summary</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                        <div class="p-4 bg-input-bg rounded-lg">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-gold-accent/80 text-sm">Net Worth</p>
+                                    <p class="text-2xl font-bold text-white mt-1">₹1,245,680</p>
+                                </div>
+                                <div class="health-indicator health-good"></div>
+                            </div>
+                            <p class="text-green-500 text-sm mt-2"><i class="fas fa-arrow-up mr-1"></i>12.4% from last month</p>
+                        </div>
+                        
+                        <div class="p-4 bg-input-bg rounded-lg">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-gold-accent/80 text-sm">Monthly Expenses</p>
+                                    <p class="text-2xl font-bold text-white mt-1">₹42,500</p>
+                                </div>
+                                <div class="health-indicator health-warning"></div>
+                            </div>
+                            <p class="text-yellow-500 text-sm mt-2"><i class="fas fa-exclamation-triangle mr-1"></i>5.2% above target</p>
+                        </div>
+                        
+                        <div class="p-4 bg-input-bg rounded-lg">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-gold-accent/80 text-sm">Savings Rate</p>
+                                    <p class="text-2xl font-bold text-white mt-1">22%</p>
+                                </div>
+                                <div class="health-indicator health-good"></div>
+                            </div>
+                            <p class="text-green-500 text-sm mt-2"><i class="fas fa-check-circle mr-1"></i>On track for goals</p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <h4 class="text-gold-accent font-semibold mb-3">Financial Distribution</h4>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-gold-accent mr-2"></div>
+                                <span class="text-sm">Retirement Funds</span>
+                            </div>
+                            <span class="text-sm font-medium">₹824,500 (66%)</span>
+                        </div>
+                        <div class="h-2 bg-gray-700 rounded-full mb-4">
+                            <div class="h-full rounded-full bg-gold-accent" style="width: 66%"></div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
+                                <span class="text-sm">Liquid Assets</span>
+                            </div>
+                            <span class="text-sm font-medium">₹245,300 (20%)</span>
+                        </div>
+                        <div class="h-2 bg-gray-700 rounded-full mb-4">
+                            <div class="h-full rounded-full bg-blue-500" style="width: 20%"></div>
+                        </div>
+                        
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center">
+                                <div class="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
+                                <span class="text-sm">Real Estate</span>
+                            </div>
+                            <span class="text-sm font-medium">₹175,880 (14%)</span>
+                        </div>
+                        <div class="h-2 bg-gray-700 rounded-full">
+                            <div class="h-full rounded-full bg-purple-500" style="width: 14%"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Savings Goals Progress -->
+                <div class="card p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h3 class="gold-heading text-xl">Savings Goals</h3>
+                        <button class="text-gold-accent hover:text-gold-dark">
+                            <i class="fas fa-plus-circle mr-1"></i> Add Goal
+                        </button>
+                    </div>
+                    
+                    <div class="space-y-5">
+                        <!-- Goal 1 -->
+                        <div class="p-4 bg-input-bg rounded-lg border border-gold-light/20">
+                            <div class="flex justify-between mb-2">
+                                <h4 class="font-semibold text-gold-accent flex items-center">
+                                    <i class="fas fa-plane mr-2"></i> Europe Trip
+                                </h4>
+                                <span class="bg-green-900/30 text-green-400 px-2 py-1 rounded text-xs">
+                                    <i class="fas fa-check-circle mr-1"></i>Completed
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>₹2424 of ₹535</span>
+                                <span>453%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <div class="mt-3 text-xs text-gray-400">
+                                <i class="fas fa-lightbulb text-gold-accent mr-1"></i>
+                                You've exceeded this goal! Consider reallocating funds to other goals.
+                            </div>
+                        </div>
+                        
+                        <!-- Goal 2 -->
+                        <div class="p-4 bg-input-bg rounded-lg border border-gold-light/20">
+                            <div class="flex justify-between mb-2">
+                                <h4 class="font-semibold text-gold-accent flex items-center">
+                                    <i class="fas fa-paw mr-2"></i> Dog
+                                </h4>
+                                <span class="bg-green-900/30 text-green-400 px-2 py-1 rounded text-xs">
+                                    <i class="fas fa-check-circle mr-1"></i>Completed
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>₹41,141 of ₹2,524</span>
+                                <span>1629%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 100%"></div>
+                            </div>
+                            <div class="mt-3 text-xs text-gray-400">
+                                <i class="fas fa-lightbulb text-gold-accent mr-1"></i>
+                                You have more than enough saved for this goal.
+                            </div>
+                        </div>
+                        
+                        <!-- Goal 3 -->
+                        <div class="p-4 bg-input-bg rounded-lg border border-gold-light/20">
+                            <div class="flex justify-between mb-2">
+                                <h4 class="font-semibold text-gold-accent flex items-center">
+                                    <i class="fas fa-question-circle mr-2"></i> gsafdgs
+                                </h4>
+                                <span class="bg-yellow-900/30 text-yellow-400 px-2 py-1 rounded text-xs">
+                                    <i class="fas fa-exclamation-triangle mr-1"></i>Needs attention
+                                </span>
+                            </div>
+                            <div class="flex justify-between text-sm mb-2">
+                                <span>₹1,414 of ₹5,241,471</span>
+                                <span>0.03%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 0.03%"></div>
+                            </div>
+                            <div class="mt-3 text-xs text-gray-400">
+                                <i class="fas fa-lightbulb text-gold-accent mr-1"></i>
+                                This goal seems unrealistic. Consider revising the target amount.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Column: AI Insights and Input -->
+            <div class="space-y-8">
+                <!-- AI Insights -->
+                <div class="card p-6">
+                    <div class="flex items-center mb-6">
+                        <div class="w-12 h-12 rounded-full bg-gradient-to-br from-gold-accent to-gold-dark flex items-center justify-center mr-3 pulse">
+                            <i class="fas fa-robot text-xl text-dark-bg"></i>
+                        </div>
+                        <div>
+                            <h3 class="gold-heading text-xl">RukiAI Insights</h3>
+                            <p class="text-sm text-gray-400">Personalized financial advice</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <div class="ai-advice-bubble p-4">
+                            <div class="flex items-start">
+                                <div class="gold-icon mr-3">
+                                    <i class="fas fa-coins"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gold-accent">Retirement Planning</h4>
+                                    <p class="mt-1 text-sm">Your retirement savings are on track, but consider increasing your EPF contributions by 5% to meet your long-term goals more comfortably.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-advice-bubble p-4">
+                            <div class="flex items-start">
+                                <div class="gold-icon mr-3">
+                                    <i class="fas fa-piggy-bank"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gold-accent">Savings Allocation</h4>
+                                    <p class="mt-1 text-sm">You've significantly exceeded your "Europe Trip" and "Dog" goals. Reallocate ₹40,000 from these goals to boost your emergency fund.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-advice-bubble p-4">
+                            <div class="flex items-start">
+                                <div class="gold-icon mr-3">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gold-accent">Investment Opportunity</h4>
+                                    <p class="mt-1 text-sm">Based on your risk profile, consider diversifying 15% of your portfolio into emerging market funds for higher growth potential.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-advice-bubble p-4">
+                            <div class="flex items-start">
+                                <div class="gold-icon mr-3">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gold-accent">Insurance Review</h4>
+                                    <p class="mt-1 text-sm">Your healthcare coverage seems adequate, but review your property insurance to ensure it matches your current asset values.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-4 border-t border-gold-light/10">
+                        <div class="flex">
+                            <input type="text" placeholder="Ask RukiAI a question..." class="flex-grow input-field px-4 py-2">
+                            <button class="ml-2 btn-gold px-4 py-2 font-semibold">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Quick Data Input -->
+                <div class="card p-6">
+                    <h3 class="gold-heading text-xl mb-6">Update Financial Data</h3>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gold-accent/80 text-sm mb-1">Monthly Income</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gold-accent">₹</span>
+                                <input type="number" value="125000" class="input-field w-full pl-8 pr-4 py-2">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gold-accent/80 text-sm mb-1">Monthly Expenses</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gold-accent">₹</span>
+                                <input type="number" value="42500" class="input-field w-full pl-8 pr-4 py-2">
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <label class="block text-gold-accent/80 text-sm mb-1">Retirement Savings</label>
+                            <div class="relative">
+                                <span class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gold-accent">₹</span>
+                                <input type="number" value="824500" class="input-field w-full pl-8 pr-4 py-2">
+                            </div>
+                        </div>
+                        
+                        <div class="pt-2">
+                            <button class="w-full btn-gold py-3 font-semibold">
+                                <i class="fas fa-sync-alt mr-2"></i>Update & Analyze
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Financial Health Score -->
+                <div class="card p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="gold-heading text-xl">Financial Health Score</h3>
+                        <span class="text-xs bg-gold-light/20 text-gold-accent px-2 py-1 rounded">Updated Today</span>
+                    </div>
+                    
+                    <div class="flex flex-col items-center py-4">
+                        <div class="relative">
+                            <!-- Score circle -->
+                            <svg width="180" height="180" viewBox="0 0 180 180" class="transform -rotate-90">
+                                <!-- Background circle -->
+                                <circle cx="90" cy="90" r="70" stroke="#333" stroke-width="12" fill="none" />
+                                <!-- Progress circle -->
+                                <circle cx="90" cy="90" r="70" stroke="url(#gradient)" stroke-width="12" fill="none" 
+                                        stroke-linecap="round" stroke-dasharray="440" stroke-dashoffset="132" />
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#D4AF37" />
+                                        <stop offset="100%" stop-color="#FFD700" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            
+                            <!-- Score value -->
+                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
+                                <span class="text-4xl font-bold text-gold-accent">82</span>
+                                <span class="block text-sm text-gray-400">out of 100</span>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 text-center">
+                            <h4 class="text-lg font-semibold text-green-400 flex items-center justify-center">
+                                <i class="fas fa-check-circle mr-2"></i>Good Financial Health
+                            </h4>
+                            <p class="mt-2 text-sm text-gray-400 max-w-xs">
+                                You're managing your finances well, but there are opportunities to optimize further.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <div class="card p-6 mt-8">
+            <h3 class="gold-heading text-xl mb-6">Recent Financial Activity</h3>
+            
+            <div class="overflow-x-auto">
+                <table class="w-full">
+                    <thead>
+                        <tr class="border-b border-gold-light/20">
+                            <th class="text-left py-3 text-gold-accent/80 font-semibold">Date</th>
+                            <th class="text-left py-3 text-gold-accent/80 font-semibold">Transaction</th>
+                            <th class="text-left py-3 text-gold-accent/80 font-semibold">Category</th>
+                            <th class="text-left py-3 text-gold-accent/80 font-semibold">Amount</th>
+                            <th class="text-left py-3 text-gold-accent/80 font-semibold">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border-b border-gold-light/10 hover:bg-input-bg">
+                            <td class="py-3">Jul 30, 2025</td>
+                            <td class="py-3">Salary Deposit</td>
+                            <td class="py-3"><span class="bg-blue-900/30 text-blue-300 px-2 py-1 rounded text-xs">Income</span></td>
+                            <td class="py-3 text-green-400">₹125,000</td>
+                            <td class="py-3"><i class="fas fa-check-circle text-green-500"></i></td>
+                        </tr>
+                        <tr class="border-b border-gold-light/10 hover:bg-input-bg">
+                            <td class="py-3">Jul 28, 2025</td>
+                            <td class="py-3">EPF Contribution</td>
+                            <td class="py-3"><span class="bg-amber-900/30 text-amber-300 px-2 py-1 rounded text-xs">Retirement</span></td>
+                            <td class="py-3 text-red-400">-₹12,500</td>
+                            <td class="py-3"><i class="fas fa-check-circle text-green-500"></i></td>
+                        </tr>
+                        <tr class="border-b border-gold-light/10 hover:bg-input-bg">
+                            <td class="py-3">Jul 25, 2025</td>
+                            <td class="py-3">Property Insurance</td>
+                            <td class="py-3"><span class="bg-purple-900/30 text-purple-300 px-2 py-1 rounded text-xs">Insurance</span></td>
+                            <td class="py-3 text-red-400">-₹3,200</td>
+                            <td class="py-3"><i class="fas fa-check-circle text-green-500"></i></td>
+                        </tr>
+                        <tr class="border-b border-gold-light/10 hover:bg-input-bg">
+                            <td class="py-3">Jul 22, 2025</td>
+                            <td class="py-3">Stock Investment</td>
+                            <td class="py-3"><span class="bg-green-900/30 text-green-300 px-2 py-1 rounded text-xs">Investment</span></td>
+                            <td class="py-3 text-red-400">-₹25,000</td>
+                            <td class="py-3"><i class="fas fa-check-circle text-green-500"></i></td>
+                        </tr>
+                        <tr class="hover:bg-input-bg">
+                            <td class="py-3">Jul 20, 2025</td>
+                            <td class="py-3">NPS Withdrawal</td>
+                            <td class="py-3"><span class="bg-amber-900/30 text-amber-300 px-2 py-1 rounded text-xs">Retirement</span></td>
+                            <td class="py-3 text-green-400">₹15,000</td>
+                            <td class="py-3"><i class="fas fa-check-circle text-green-500"></i></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-gold-accent/10 mt-12 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="w-8 h-8 bg-gold-accent rounded-full flex items-center justify-center mr-2">
+                        <i class="fas fa-coins text-dark-bg"></i>
+                    </div>
+                    <h2 class="text-xl font-montserrat font-bold text-gold-accent">Ruki<span class="text-white">AI</span></h2>
+                </div>
+                
+                <div class="text-center text-sm text-gray-500">
+                    <p>Secure Futurism Financial Dashboard</p>
+                    <p class="mt-1">© 2025 RukiAI. All rights reserved. Your financial security is our priority.</p>
+                </div>
+                
+                <div class="flex space-x-4 mt-4 md:mt-0">
+                    <a href="#" class="text-gray-500 hover:text-gold-accent transition">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-gold-accent transition">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-500 hover:text-gold-accent transition">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Confetti effect container -->
+    <div id="confetti-container" class="fixed inset-0 pointer-events-none z-50 overflow-hidden hidden"></div>
+
+    <script>
+        // Simulate confetti effect on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const confettiContainer = document.getElementById('confetti-container');
+            confettiContainer.classList.remove('hidden');
+            
+            // Create confetti pieces
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.backgroundColor = ['#FFD700', '#D4AF37', '#FFFFFF', '#FFA500'][Math.floor(Math.random() * 4)];
+                confettiContainer.appendChild(confetti);
+            }
+            
+            // Remove confetti after animation
+            setTimeout(() => {
+                confettiContainer.classList.add('hidden');
+                confettiContainer.innerHTML = '';
+            }, 5000);
+        });
+    </script>
 </body>
 </html>
