@@ -18,7 +18,7 @@ const RetiredPage = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    log(req.body.savingsGoals);
+    // log(req.body.savingsGoals);
 
     const newRetired = new Retired({
       userId,
