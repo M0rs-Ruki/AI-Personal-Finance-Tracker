@@ -348,30 +348,16 @@
 
             <!-- Expense Details -->
             <div class="card p-6">
-              <h2 class="text-xl font-bold gold-accent mb-6 section-title">
-                Monthly Expenses
-              </h2>
+              <h2 class="text-xl font-bold gold-accent mb-6 section-title">Monthly Expenses</h2>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <!-- Housing -->
                 <div class="p-4 bg-dark-card rounded-lg">
                   <div class="flex items-center mb-3">
-                    <div
-                      class="w-8 h-8 rounded-full bg-gold-light flex items-center justify-center mr-3"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 text-gold"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-                        />
+                    <div class="w-8 h-8 rounded-full bg-gold-light flex items-center justify-center mr-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                       </svg>
                     </div>
                     <div class="font-medium">Housing</div>
@@ -379,20 +365,22 @@
                   <div class="space-y-2">
                     <div class="flex justify-between text-sm">
                       <span>Mortgage/Rent</span>
-                      <span>₹4,500</span>
+                      <span>₹<%= retired.housing.mortgageOrRent.toLocaleString('en-IN') %></span>
                     </div>
                     <div class="flex justify-between text-sm">
                       <span>Insurance</span>
-                      <span>₹10,000</span>
+                      <span>₹<%= retired.housing.insurance.toLocaleString('en-IN') %></span>
                     </div>
                     <div class="flex justify-between text-sm">
                       <span>Maintenance</span>
-                      <span>₹8,000</span>
+                      <span>₹<%= retired.housing.maintenance.toLocaleString('en-IN') %></span>
                     </div>
                     <div class="holographic-line"></div>
                     <div class="flex justify-between font-medium">
                       <span>Total</span>
-                      <span class="text-rose-400">₹22,500</span>
+                      <span class="text-rose-400">
+                        ₹<%= (retired.housing.mortgageOrRent + retired.housing.insurance + retired.housing.maintenance).toLocaleString('en-IN') %>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -400,22 +388,10 @@
                 <!-- Healthcare -->
                 <div class="p-4 bg-dark-card rounded-lg">
                   <div class="flex items-center mb-3">
-                    <div
-                      class="w-8 h-8 rounded-full bg-gold-light flex items-center justify-center mr-3"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 text-gold"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                        />
+                    <div class="w-8 h-8 rounded-full bg-gold-light flex items-center justify-center mr-3">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                       </svg>
                     </div>
                     <div class="font-medium">Healthcare</div>
@@ -423,63 +399,49 @@
                   <div class="space-y-2">
                     <div class="flex justify-between text-sm">
                       <span>Monthly Premium</span>
-                      <span>₹1,000</span>
+                      <span>₹<%= retired.healthcare.monthlyPremium.toLocaleString('en-IN') %></span>
                     </div>
                     <div class="flex justify-between text-sm">
                       <span>Out-of-Pocket</span>
-                      <span>₹450</span>
+                      <span>₹<%= retired.healthcare.outOfPocket.toLocaleString('en-IN') %></span>
                     </div>
                     <div class="holographic-line"></div>
                     <div class="flex justify-between font-medium">
                       <span>Total</span>
-                      <span class="text-rose-400">₹1,450</span>
+                      <span class="text-rose-400">
+                        ₹<%= (retired.healthcare.monthlyPremium + retired.healthcare.outOfPocket).toLocaleString('en-IN') %>
+                      </span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Other Expenses -->
-                <div class="p-4 bg-dark-card rounded-lg md:col-span-2">
-                  <div class="flex items-center mb-3">
-                    <div
-                      class="w-8 h-8 rounded-full bg-gold-light flex items-center justify-center mr-3"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-5 w-5 text-gold"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-                        />
-                      </svg>
+                <% if (retired.otherExpenses && retired.otherExpenses.length > 0) { %>
+                  <% retired.otherExpenses.forEach(expense => { %>
+                    <div class="p-4 bg-dark-card rounded-lg">
+                      <div class="flex items-center mb-3">
+                        <div class="w-8 h-8 rounded-full bg-gold-light flex items-center justify-center mr-3">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 12h6m-3-3v6m9 4a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <div class="font-medium"><%= expense.name.charAt(0).toUpperCase() + expense.name.slice(1) %></div>
+                      </div>
+                      <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                          <span>Frequency</span>
+                          <span><%= expense.frequency.charAt(0).toUpperCase() + expense.frequency.slice(1) %></span>
+                        </div>
+                        <div class="holographic-line"></div>
+                        <div class="flex justify-between font-medium">
+                          <span>Total</span>
+                          <span class="text-rose-400">₹<%= expense.amount.toLocaleString('en-IN') %></span>
+                        </div>
+                      </div>
                     </div>
-                    <div class="font-medium">Other Expenses</div>
-                  </div>
-                  <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="flex justify-between text-sm">
-                      <span>Groceries</span>
-                      <span>₹8,000</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                      <span>Car</span>
-                      <span>₹2,400</span>
-                    </div>
-                    <div class="flex justify-between text-sm">
-                      <span>Utilities</span>
-                      <span>₹15,000</span>
-                    </div>
-                  </div>
-                  <div class="holographic-line mt-4"></div>
-                  <div class="flex justify-between font-medium mt-2">
-                    <span>Total</span>
-                    <span class="text-rose-400">₹19,400</span>
-                  </div>
-                </div>
+                  <% }) %>
+                <% } %>
               </div>
             </div>
           </div>
@@ -579,44 +541,43 @@
 
               <div class="space-y-4">
                 <!-- Retirement Accounts -->
-                <div>
-                  <div class="font-medium mb-2">Retirement Accounts</div>
-                  <div class="p-4 bg-dark-card rounded-lg">
-                    <div class="flex justify-between items-center">
-                      <div class="text-sm">EPF (Employee Provident Fund)</div>
-                      <div class="text-gold font-medium">₹15,000</div>
-                    </div>
+                <% if (retired.retirementAccounts && retired.retirementAccounts.length > 0) { %>
+                  <div>
+                    <div class="font-medium mb-2">Retirement Accounts</div>
+                    <% retired.retirementAccounts.forEach(account => { %>
+                      <div class="p-4 bg-dark-card rounded-lg mb-2">
+                        <div class="flex justify-between items-center">
+                          <div class="text-sm"><%= account.type %></div>
+                          <div class="text-gold font-medium">₹<%= account.currentValue.toLocaleString('en-IN') %></div>
+                        </div>
+                      </div>
+                    <% }) %>
                   </div>
-                </div>
+                <% } %>
 
                 <!-- Other Assets -->
-                <div>
-                  <div class="font-medium mb-2">Other Assets</div>
-                  <div class="space-y-3">
-                    <div
-                      class="flex justify-between p-4 bg-dark-card rounded-lg"
-                    >
-                      <div class="text-sm">Property</div>
-                      <div class="text-gold font-medium">₹250,000</div>
-                    </div>
-                    <div
-                      class="flex justify-between p-4 bg-dark-card rounded-lg"
-                    >
-                      <div class="text-sm">Savings Account</div>
-                      <div class="text-gold font-medium">₹1,500,000</div>
+                <% if (retired.otherAssets && retired.otherAssets.length > 0) { %>
+                  <div>
+                    <div class="font-medium mb-2">Other Assets</div>
+                    <div class="space-y-3">
+                      <% retired.otherAssets.forEach(asset => { %>
+                        <div class="flex justify-between p-4 bg-dark-card rounded-lg">
+                          <div class="text-sm"><%= asset.type.charAt(0).toUpperCase() + asset.type.slice(1) %></div>
+                          <div class="text-gold font-medium">₹<%= asset.estimatedValue.toLocaleString('en-IN') %></div>
+                        </div>
+                      <% }) %>
                     </div>
                   </div>
-                </div>
+                <% } %>
 
                 <!-- Total Assets -->
-                <div
-                  class="mt-6 p-4 bg-gradient-to-r from-dark-card to-gold-light rounded-lg"
-                >
+                <div class="mt-6 p-4 bg-gradient-to-r from-dark-card to-gold-light rounded-lg">
                   <div class="text-sm">Total Assets Value</div>
-                  <div class="text-2xl font-bold gold-accent">₹1,765,000</div>
+                  <div class="text-2xl font-bold gold-accent">₹<%= totalAssets.toLocaleString('en-IN') %></div>
                 </div>
               </div>
             </div>
+
 
             <!-- Savings Goals -->
             <div class="card p-6">
