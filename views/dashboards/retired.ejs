@@ -581,40 +581,30 @@
 
             <!-- Savings Goals -->
             <div class="card p-6">
-              <h2 class="text-xl font-bold gold-accent mb-6 section-title">
-                Savings Goals
-              </h2>
+              <h2 class="text-xl font-bold gold-accent mb-6 section-title">Savings Goals</h2>
 
               <div class="space-y-6">
-                <!-- Europe Trip -->
-                <div>
-                  <div class="flex justify-between mb-2">
-                    <div class="font-medium">Europe Trip</div>
-                    <div class="text-sm gold-accent">45%</div>
-                  </div>
-                  <div class="progress-bar">
-                    <div class="progress-fill" style="width: 45%"></div>
-                  </div>
-                  <div class="flex justify-between text-sm text-gray-400 mt-1">
-                    <span>₹45,000 saved</span>
-                    <span>₹150,000 target</span>
-                  </div>
-                </div>
-
-                <!-- Laptop -->
-                <div>
-                  <div class="flex justify-between mb-2">
-                    <div class="font-medium">New Laptop</div>
-                    <div class="text-sm gold-accent">63%</div>
-                  </div>
-                  <div class="progress-bar">
-                    <div class="progress-fill" style="width: 63%"></div>
-                  </div>
-                  <div class="flex justify-between text-sm text-gray-400 mt-1">
-                    <span>₹75,000 saved</span>
-                    <span>₹120,000 target</span>
-                  </div>
-                </div>
+                <% if (retired.savingsGoals && retired.savingsGoals.length > 0) { %>
+                  <% retired.savingsGoals.forEach(goal => {
+                    const percentage = Math.min(Math.round((goal.currentAmount / goal.targetAmount) * 100), 100);
+                  %>
+                    <div>
+                      <div class="flex justify-between mb-2">
+                        <div class="font-medium"><%= goal.name.charAt(0).toUpperCase() + goal.name.slice(1) %></div>
+                        <div class="text-sm gold-accent"><%= percentage %>%</div>
+                      </div>
+                      <div class="progress-bar">
+                        <div class="progress-fill" style="width: <%= percentage %>%"></div>
+                      </div>
+                      <div class="flex justify-between text-sm text-gray-400 mt-1">
+                        <span>₹<%= goal.currentAmount.toLocaleString('en-IN') %> saved</span>
+                        <span>₹<%= goal.targetAmount.toLocaleString('en-IN') %> target</span>
+                      </div>
+                    </div>
+                  <% }) %>
+                <% } else { %>
+                  <div class="text-sm text-gray-400">No savings goals added yet.</div>
+                <% } %>
 
                 <button
                   class="gold-button w-full py-3 font-bold mt-4 flex items-center justify-center"
@@ -638,6 +628,7 @@
               </div>
             </div>
 
+
             <!-- Legacy Planning -->
             <div class="card p-6">
               <h2 class="text-xl font-bold gold-accent mb-6 section-title">
@@ -650,24 +641,30 @@
                 </div>
 
                 <div class="space-y-3">
-                  <div class="beneficiary-card p-4 rounded-lg">
-                    <div class="font-medium">Mors Ruki</div>
-                    <div class="text-sm text-gray-400">Friend - 45%</div>
-                  </div>
-
-                  <div class="beneficiary-card p-4 rounded-lg">
-                    <div class="font-medium">Anup Pradhan</div>
-                    <div class="text-sm text-gray-400">Friend - 45%</div>
-                  </div>
+                  <% 
+                    let totalAllocated = 0;
+                    retired.legacyPlanning.beneficiaries.forEach(b => {
+                      totalAllocated += b.percentage;
+                  %>
+                    <div class="beneficiary-card p-4 rounded-lg">
+                      <div class="font-medium"><%= b.name %></div>
+                      <div class="text-sm text-gray-400"><%= b.relationship %> - <%= b.percentage %>%</div>
+                    </div>
+                  <% }) %>
                 </div>
 
-                <div class="text-xs text-gray-500 mt-4">
-                  10% of your estate is currently unallocated. Consider updating
-                  your beneficiaries.
-                </div>
+                <% if (totalAllocated < 100) { %>
+                  <div class="text-xs text-gray-500 mt-4">
+                    <%= 100 - totalAllocated %>% of your estate is currently unallocated. Consider updating your beneficiaries.
+                  </div>
+                <% } else if (totalAllocated > 100) { %>
+                  <div class="text-xs text-red-500 mt-4">
+                    Warning: Beneficiary percentages exceed 100%.
+                  </div>
+                <% } %>
               </div>
             </div>
-          </div>
+
         </div>
       </main>
 
