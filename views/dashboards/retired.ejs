@@ -85,12 +85,12 @@
               <div
                 class="w-10 h-10 rounded-full bg-gradient-to-br from-gold to-gold-dark flex items-center justify-center font-bold text-dark"
               >
-                U
+                <%= user.fullName.charAt(0) %>
               </div>
             </div>
             <div>
-              <div class="text-sm font-medium">User Profile</div>
-              <div class="text-xs text-gray-400">Premium Member</div>
+              <div class="text-sm font-medium"><%= user.fullName %></div>
+              <div class="text-xs text-gray-400">Wellcome Back!</div>
             </div>
           </div>
         </div>
@@ -114,222 +114,235 @@
                 </div>
               </div>
 
+              <%
+                // Total Income
+                const pensionIncome = retired.pension.amount;
+
+                const otherIncome = retired.otherIncomeSources.reduce((sum, src) => {
+                  return sum + (src.frequency === 'monthly' ? src.amount : 0);
+                }, 0);
+
+                const retirementWithdrawals = retired.retirementAccountWithdrawals.reduce((sum, acc) => {
+                  return sum + acc.monthlyAmount;
+                }, 0);
+
+                const totalIncome = pensionIncome + otherIncome + retirementWithdrawals;
+
+                // Total Expenses
+                const housingExpenses = retired.housing.mortgageOrRent + retired.housing.insurance + retired.housing.maintenance;
+                const healthcareExpenses = retired.healthcare.monthlyPremium + retired.healthcare.outOfPocket;
+
+                const otherExpenses = retired.otherExpenses.reduce((sum, exp) => {
+                  return sum + (exp.frequency === 'monthly' ? exp.amount : 0);
+                }, 0);
+
+                const totalExpenses = housingExpenses + healthcareExpenses + otherExpenses;
+
+                // Net Cash Flow
+                const netCashFlow = totalIncome - totalExpenses;
+                const isPositive = netCashFlow >= 0;
+                const healthPercentage = totalIncome > 0
+                  ? Math.round((netCashFlow / totalIncome) * 100)
+                  : 0;
+
+                let healthLabel = 'Poor';
+                if (healthPercentage >= 75) {
+                  healthLabel = 'Excellent';
+                } else if (healthPercentage >= 50) {
+                  healthLabel = 'Good';
+                } else if (healthPercentage >= 25) {
+                  healthLabel = 'Fair';
+                }
+              %>
+
               <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
                 <div class="stat-card p-4">
                   <div class="text-gray-400 text-sm">Total Income</div>
-                  <div class="text-2xl font-bold gold-accent">₹78,000</div>
+                  <div class="text-2xl font-bold gold-accent">
+                    ₹<%= totalIncome.toLocaleString('en-IN') %>
+                  </div>
                   <div class="text-xs text-gray-500 mt-1">Monthly</div>
                 </div>
                 <div class="stat-card p-4">
                   <div class="text-gray-400 text-sm">Total Expenses</div>
-                  <div class="text-2xl font-bold text-rose-400">₹43,350</div>
+                  <div class="text-2xl font-bold text-rose-400">
+                    ₹<%= totalExpenses.toLocaleString('en-IN') %>
+                  </div>
                   <div class="text-xs text-gray-500 mt-1">Monthly</div>
                 </div>
                 <div class="stat-card p-4">
                   <div class="text-gray-400 text-sm">Net Cash Flow</div>
-                  <div class="text-2xl font-bold text-emerald-400">₹34,650</div>
-                  <div class="text-xs text-gray-500 mt-1">Positive</div>
+                  <div class="text-2xl font-bold <%= isPositive ? 'text-emerald-400' : 'text-rose-400' %>">
+                    ₹<%= netCashFlow.toLocaleString('en-IN') %>
+                  </div>
+                  <div class="text-xs text-gray-500 mt-1">
+                    <%= isPositive ? 'Positive' : 'Negative' %>
+                  </div>
                 </div>
               </div>
+
 
               <div class="holographic-line"></div>
 
               <div class="mt-6">
                 <div class="flex justify-between mb-2">
                   <span class="text-sm">Financial Health</span>
-                  <span class="text-sm gold-accent font-bold">Good</span>
+                  <span class="text-sm gold-accent font-bold"><%= healthLabel %></span>
                 </div>
                 <div class="w-full bg-gray-800 rounded-full h-2.5">
                   <div
                     class="bg-gradient-to-r from-emerald-500 to-gold h-2.5 rounded-full"
-                    style="width: 75%"
+                    style="width: <%= Math.min(healthPercentage, 100) %>%"
                   ></div>
                 </div>
               </div>
 
+
               <div class="holographic-line"></div>
 
+              <%
+                const retirementTotal = retired.retirementAccounts.reduce((sum, acc) => sum + acc.currentValue, 0);
+
+                // Group and sum all otherAssets by type
+                const assetGroups = {};
+
+                retired.otherAssets.forEach(asset => {
+                  if (!assetGroups[asset.type]) {
+                    assetGroups[asset.type] = 0;
+                  }
+                  assetGroups[asset.type] += asset.estimatedValue;
+                });
+
+                const totalOtherAssets = Object.values(assetGroups).reduce((a, b) => a + b, 0);
+                const totalAssets = retirementTotal + totalOtherAssets;
+
+                const percent = (value) => totalAssets > 0 ? Math.round((value / totalAssets) * 100) : 0;
+              %>
+
+
               <div class="mt-6">
-                <h4 class="text-gold-accent font-semibold mb-3">
-                  Financial Distribution
-                </h4>
+                <h4 class="text-gold-accent font-semibold mb-3">Financial Distribution</h4>
+
+                <!-- Retirement Funds -->
                 <div class="flex items-center justify-between mb-2">
                   <div class="flex items-center">
                     <div class="w-3 h-3 rounded-full bg-gold-accent mr-2"></div>
                     <span class="text-sm">Retirement Funds</span>
                   </div>
-                  <span class="text-sm font-medium">₹824,500 (66%)</span>
+                  <span class="text-sm font-medium">
+                    ₹<%= retirementTotal.toLocaleString('en-IN') %> (<%= percent(retirementTotal) %>%)
+                  </span>
                 </div>
                 <div class="h-2 bg-gray-700 rounded-full mb-4">
-                  <div
-                    class="h-full rounded-full bg-gold-accent"
-                    style="width: 66%"
-                  ></div>
+                  <div class="h-full rounded-full bg-gold-accent" style="width: <%= percent(retirementTotal) %>%"></div>
                 </div>
 
-                <div class="flex items-center justify-between mb-2">
-                  <div class="flex items-center">
-                    <div class="w-3 h-3 rounded-full bg-blue-500 mr-2"></div>
-                    <span class="text-sm">Liquid Assets</span>
+                <!-- Loop through dynamic otherAssets -->
+                <% 
+                  const colorPalette = ['bg-blue-500', 'bg-purple-500', 'bg-emerald-400', 'bg-pink-500', 'bg-indigo-500'];
+                  let colorIndex = 0;
+                %>
+                <% for (const [type, value] of Object.entries(assetGroups)) { %>
+                  <% const colorClass = colorPalette[colorIndex % colorPalette.length]; colorIndex++; %>
+                  <div class="flex items-center justify-between mb-2">
+                    <div class="flex items-center">
+                      <div class="w-3 h-3 rounded-full <%= colorClass %> mr-2"></div>
+                      <span class="text-sm"><%= type.charAt(0).toUpperCase() + type.slice(1) %></span>
+                    </div>
+                    <span class="text-sm font-medium">
+                      ₹<%= value.toLocaleString('en-IN') %> (<%= percent(value) %>%)
+                    </span>
                   </div>
-                  <span class="text-sm font-medium">₹245,300 (20%)</span>
-                </div>
-                <div class="h-2 bg-gray-700 rounded-full mb-4">
-                  <div
-                    class="h-full rounded-full bg-blue-500"
-                    style="width: 20%"
-                  ></div>
-                </div>
-
-                <div class="flex items-center justify-between mb-2">
-                  <div class="flex items-center">
-                    <div class="w-3 h-3 rounded-full bg-purple-500 mr-2"></div>
-                    <span class="text-sm">Real Estate</span>
+                  <div class="h-2 bg-gray-700 rounded-full mb-4">
+                    <div class="h-full rounded-full <%= colorClass %>" style="width: <%= percent(value) %>%"></div>
                   </div>
-                  <span class="text-sm font-medium">₹175,880 (14%)</span>
-                </div>
-                <div class="h-2 bg-gray-700 rounded-full">
-                  <div
-                    class="h-full rounded-full bg-purple-500"
-                    style="width: 14%"
-                  ></div>
-                </div>
+                <% } %>
               </div>
             </div>
 
+            <%
+              function capitalize(str) {
+                if (!str || str.length === 0) return "";
+                return str.charAt(0).toUpperCase() + str.slice(1);
+              }
+            %>
+
             <!-- Income Details -->
             <div class="card p-6">
-              <h2 class="text-xl font-bold gold-accent mb-6 section-title">
-                Income Sources
-              </h2>
+              <h2 class="text-xl font-bold gold-accent mb-6 section-title">Income Sources</h2>
 
               <div class="space-y-4">
                 <!-- Pension -->
-                <div
-                  class="flex justify-between items-center p-4 bg-dark-card rounded-lg"
-                >
+                <div class="flex justify-between items-center p-4 bg-dark-card rounded-lg">
                   <div class="flex items-center">
-                    <div
-                      class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-4"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 text-gold"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
+                    <div class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-4">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                     </div>
                     <div>
                       <div class="font-medium">Pension</div>
                       <div class="text-sm text-gray-400">
-                        Not currently receiving
+                        <%= retired.pension.receives ? "Currently receiving" : "Not currently receiving" %>
                       </div>
                     </div>
                   </div>
                   <div class="text-right">
-                    <div class="text-lg gold-accent">₹45,000</div>
-                    <div class="text-sm text-gray-400">Monthly (potential)</div>
+                    <div class="text-lg gold-accent">₹<%= pensionIncome.toLocaleString('en-IN') %></div>
+                    <div class="text-sm text-gray-400"><%= capitalize(retired.pension.frequency) %></div>
                   </div>
                 </div>
 
                 <!-- Other Income -->
-                <div class="p-4 bg-dark-card rounded-lg">
-                  <div class="font-medium mb-3">Other Income</div>
-                  <div class="space-y-3">
-                    <div class="flex justify-between">
-                      <div class="flex items-center">
-                        <div
-                          class="w-6 h-6 rounded-full bg-gold-light flex items-center justify-center mr-3"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4 text-gold"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                            />
-                          </svg>
+                <% if (retired.otherIncomeSources && retired.otherIncomeSources.length > 0) { %>
+                  <div class="p-4 bg-dark-card rounded-lg">
+                    <div class="font-medium mb-3">Other Income</div>
+                    <div class="space-y-3">
+                      <% retired.otherIncomeSources.forEach((income) => { %>
+                        <div class="flex justify-between">
+                          <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full bg-gold-light flex items-center justify-center mr-3">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                              </svg>
+                            </div>
+                            <span><%= capitalize(income.source) %> Income</span>
+                          </div>
+                          <div class="text-right">
+                            <div class="text-gold">₹<%= income.amount.toLocaleString('en-IN') %></div>
+                            <div class="text-xs text-gray-400"><%= capitalize(income.frequency) %></div>
+                          </div>
                         </div>
-                        <span>Rental Income</span>
-                      </div>
-                      <div class="text-gold">₹15,000</div>
-                    </div>
-                    <div class="flex justify-between">
-                      <div class="flex items-center">
-                        <div
-                          class="w-6 h-6 rounded-full bg-gold-light flex items-center justify-center mr-3"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-4 w-4 text-gold"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"
-                            />
-                          </svg>
-                        </div>
-                        <span>Store Business</span>
-                      </div>
-                      <div class="text-gold">₹18,000</div>
+                      <% }) %>
                     </div>
                   </div>
-                </div>
+                <% } %>
 
                 <!-- Retirement Withdrawals -->
-                <div
-                  class="flex justify-between items-center p-4 bg-dark-card rounded-lg"
-                >
-                  <div class="flex items-center">
-                    <div
-                      class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-4"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="h-6 w-6 text-gold"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                      </svg>
-                    </div>
-                    <div>
-                      <div class="font-medium">NPS Withdrawals</div>
-                      <div class="text-sm text-gray-400">
-                        National Pension System
+                <% if (retired.retirementAccountWithdrawals && retired.retirementAccountWithdrawals.length > 0) { %>
+                  <% retired.retirementAccountWithdrawals.forEach((withdrawal) => { %>
+                    <div class="flex justify-between items-center p-4 bg-dark-card rounded-lg">
+                      <div class="flex items-center">
+                        <div class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center mr-4">
+                          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                          </svg>
+                        </div>
+                        <div>
+                          <div class="font-medium"><%= capitalize(withdrawal.type) %> Withdrawals</div>
+                          <div class="text-sm text-gray-400"><%= withdrawal.type %></div>
+                        </div>
+                      </div>
+                      <div class="text-right">
+                        <div class="text-lg gold-accent">₹<%= withdrawal.monthlyAmount.toLocaleString('en-IN') %></div>
+                        <div class="text-sm text-gray-400">Monthly</div>
                       </div>
                     </div>
-                  </div>
-                  <div class="text-right">
-                    <div class="text-lg gold-accent">₹45,000</div>
-                    <div class="text-sm text-gray-400">Monthly</div>
-                  </div>
-                </div>
+                  <% }) %>
+                <% } %>
               </div>
             </div>
 
