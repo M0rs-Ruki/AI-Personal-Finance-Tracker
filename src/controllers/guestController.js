@@ -68,7 +68,7 @@ const GuestUserDashboard = async (req, res) => {
     // Check if guest already exists
     const existingGuest = await GuestModel.findOne({ userId });
     if (existingGuest) {
-      return res.redirect("/dashboard"); // Already registered
+      return res.render("dashboards/guest", { user, guest: existingGuest });
     }
 
     // Parse financial goals
