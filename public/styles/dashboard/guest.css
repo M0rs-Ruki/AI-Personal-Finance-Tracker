@@ -1,11 +1,16 @@
 
 
 body {
-    background-color: #0F0F0F;
-    color: #fff;
-    font-family: 'Roboto Mono', monospace;
-    overflow-x: hidden;
+  background-color: #0F0F0F;
+  color: #fff;
+  font-family: 'Roboto Mono', monospace;
+  overflow-x: hidden;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 30px 30px;
 }
+
 
 .gold-glow {
     box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
