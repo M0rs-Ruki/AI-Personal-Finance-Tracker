@@ -3,10 +3,511 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>RukiAI | Financial Intelligence</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Orbitron:wght@400;500;600;700&family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        dark: '#0F0F0F',
+                        gold: '#FFD700',
+                        'gold-light': 'rgba(255, 215, 0, 0.2)',
+                        'gold-hover': '#FFE55C',
+                        'dark-card': '#1A1A1A',
+                        'dark-panel': '#121212'
+                    },
+                    fontFamily: {
+                        montserrat: ['Montserrat', 'sans-serif'],
+                        mono: ['Roboto Mono', 'monospace']
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'confetti': 'confetti 5s ease forwards'
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' }
+                        },
+                        confetti: {
+                            '0%': { transform: 'translateY(0) rotate(0)', opacity: '1' },
+                            '100%': { transform: 'translateY(100vh) rotate(720deg)', opacity: '0' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="/styles/dashboard/guest.css">
 </head>
-<body>
-    <h1>Hello <%= user.fullName %> </h1>
-    <h1>my monthly Income is  <%= guest.monthlyIncome %></h1>
+<body class="bg-dark min-h-screen">
+    <!-- Confetti effect container -->
+    <div id="confetti-container" class="fixed top-0 left-0 w-full h-full pointer-events-none z-50"></div>
+    
+    <!-- Header -->
+    <header class="border-b border-gold/20">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="flex items-center space-x-3">
+                <div class="w-10 h-10 rounded-full bg-gold flex items-center justify-center gold-glow">
+                    <i class="fas fa-robot text-dark text-xl"></i>
+                </div>
+                <h1 class="text-2xl font-montserrat font-bold text-gold glow-text">Ruki<span class="text-white">AI</span></h1>
+            </div>
+            
+            <div class="flex items-center space-x-6">
+                <div class="relative group">
+                    <button class="w-10 h-10 rounded-full bg-dark-card flex items-center justify-center gold-border hover:bg-gold-light transition-colors">
+                        <i class="fas fa-bell text-gold"></i>
+                    </button>
+                    <span class="absolute top-0 right-0 w-3 h-3 rounded-full bg-red-500 border border-dark"></span>
+                </div>
+                
+                <div class="relative group">
+                    <button class="flex items-center space-x-2">
+                        <div class="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center gold-border">
+                            <i class="fas fa-user text-gold"></i>
+                        </div>
+                        <span class="text-sm text-white font-montserrat hidden md:block">Guest User</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-8">
+
+        <!-- Financial Overview Banner -->
+        <div class="hologram-container mb-10">
+            <div class="hologram-effect rounded-2xl p-6 gold-border gold-glow flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                    <h2 class="text-2xl font-montserrat font-bold text-gold mb-2">Financial Overview</h2>
+                    <p class="text-gray-400">Your AI-powered financial health analysis</p>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <div class="text-center">
+                        <div class="text-3xl font-orbitron text-gold mb-1">₹25,000</div>
+                        <div class="text-gray-400 text-sm">Monthly Income</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-orbitron text-gold mb-1">18%</div>
+                        <div class="text-gray-400 text-sm">Savings Rate</div>
+                    </div>
+                    <div class="text-center">
+                        <div class="text-3xl font-orbitron text-gold mb-1">22%</div>
+                        <div class="text-gray-400 text-sm">Debt Ratio</div>
+                    </div>
+                </div>
+                
+                <div class="relative w-32 h-32">
+                    <canvas id="financialHealthChart" class="w-full h-full"></canvas>
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <span class="text-xl font-orbitron text-gold">B+</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Left Column - User Summary -->
+            <div class="lg:col-span-1 space-y-8">
+                <!-- User Status Card -->
+                <div class="bg-dark-card rounded-xl p-6 gold-border shadow-lg financial-card slide-in" style="animation-delay: 0.1s">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h2 class="text-xl font-montserrat font-semibold text-gold mb-2">Financial Status</h2>
+                            <div class="flex items-center mb-4">
+                                <div class="w-3 h-3 rounded-full bg-green-500 mr-2"></div>
+                                <span class="text-white">Employed</span>
+                            </div>
+                        </div>
+                        <div class="bg-gold/10 px-3 py-1 rounded-full">
+                            <span class="text-gold text-sm">Active</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="text-gray-400">Monthly Income</span>
+                            <span class="font-montserrat text-gold">₹25,000</span>
+                        </div>
+                        <div class="progress-track w-full">
+                            <div class="progress-bar" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h3 class="font-montserrat text-gold mb-3">Financial Goals</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-white">Vacation</span>
+                                    <span class="text-gold">₹20,000/₹1,00,000</span>
+                                </div>
+                                <div class="progress-track w-full">
+                                    <div class="progress-bar" style="width: 20%"></div>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="flex justify-between mb-1">
+                                    <span class="text-white">Emergency Fund</span>
+                                    <span class="text-gold">₹5,000/₹50,000</span>
+                                </div>
+                                <div class="progress-track w-full">
+                                    <div class="progress-bar" style="width: 10%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button class="w-full mt-6 py-3 rounded-xl bg-gold text-dark font-montserrat font-medium gold-btn">
+                        Add New Goal
+                    </button>
+                </div>
+                
+                <!-- Financial Health Card -->
+                <div class="bg-dark-card rounded-xl p-6 gold-border shadow-lg financial-card slide-in" style="animation-delay: 0.2s">
+                    <h2 class="text-xl font-montserrat font-semibold text-gold mb-6">Financial Health</h2>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-400">Savings Rate</span>
+                                <span class="font-montserrat text-gold">18%</span>
+                            </div>
+                            <div class="progress-track w-full">
+                                <div class="progress-bar" style="width: 18%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Recommended: 20% or higher</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-400">Emergency Fund Progress</span>
+                                <span class="font-montserrat text-gold">10%</span>
+                            </div>
+                            <div class="progress-track w-full">
+                                <div class="progress-bar" style="width: 10%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Target: 6 months of expenses</p>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between mb-2">
+                                <span class="text-gray-400">Debt-to-Income Ratio</span>
+                                <span class="font-montserrat text-gold">22%</span>
+                            </div>
+                            <div class="progress-track w-full">
+                                <div class="progress-bar" style="width: 22%"></div>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">Healthy range: below 35%</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Holographic Data Visualization -->
+                <div class="hologram-container">
+                    <div class="hologram-effect rounded-xl p-6 gold-border shadow-lg slide-in h-64 flex items-center justify-center">
+                        <div class="data-sphere" id="dataSphere"></div>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Center Column - AI Insights -->
+            <div class="lg:col-span-2 space-y-8">
+                <!-- AI Advice Section -->
+                <div class="bg-dark-card rounded-xl p-6 gold-border shadow-lg slide-in" style="animation-delay: 0.3s">
+                    <div class="flex items-center justify-between mb-6">
+                        <h2 class="text-2xl font-montserrat font-bold text-gold glow-text">AI Financial Advisor</h2>
+                        <div class="flex items-center space-x-2 bg-gold/10 px-3 py-1 rounded-full">
+                            <div class="w-2 h-2 rounded-full bg-gold pulse-gold"></div>
+                            <span class="text-gold text-sm">Online</span>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <!-- AI Advice Card 1 -->
+                        <div class="ai-card bg-dark-panel rounded-lg p-5 gold-border hover:gold-glow-hover">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-lightbulb text-gold"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-montserrat font-medium text-gold mb-2">Emergency Fund Priority</h3>
+                                    <p class="text-gray-300">Your emergency fund is only 10% funded. RukiAI recommends prioritizing this goal to reach at least ₹25,000 within 6 months. Consider allocating an additional ₹3,500/month to this goal.</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <button class="text-gold text-sm flex items-center">
+                                    Implement Strategy
+                                    <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- AI Advice Card 2 -->
+                        <div class="ai-card bg-dark-panel rounded-lg p-5 gold-border hover:gold-glow-hover">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-chart-line text-gold"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-montserrat font-medium text-gold mb-2">Savings Optimization</h3>
+                                    <p class="text-gray-300">With your current savings rate of 18%, you can achieve your vacation goal in 16 months. By increasing your savings rate to 22%, you could achieve it in 13 months. Consider reducing discretionary spending by ₹1,500/month.</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <button class="text-gold text-sm flex items-center">
+                                    View Plan
+                                    <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- AI Advice Card 3 -->
+                        <div class="ai-card bg-dark-panel rounded-lg p-5 gold-border hover:gold-glow-hover">
+                            <div class="flex items-start">
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center mr-4">
+                                    <i class="fas fa-hand-holding-usd text-gold"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-montserrat font-medium text-gold mb-2">Income Enhancement</h3>
+                                    <p class="text-gray-300">Analysis shows a 15% potential to increase your income through skill development in your field. RukiAI recommends exploring these high-ROI certifications that could boost your monthly income by ₹3,000-₹5,000.</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-end mt-4">
+                                <button class="text-gold text-sm flex items-center">
+                                    Explore Opportunities
+                                    <i class="fas fa-arrow-right ml-2 text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="font-montserrat font-medium text-gold">Ask RukiAI</h3>
+                            <span class="text-xs text-gray-500">AI-powered financial guidance</span>
+                        </div>
+                        <div class="flex">
+                            <input type="text" placeholder="How can I reach my goals faster?" class="flex-grow bg-dark-panel border border-gold/30 text-white rounded-l-lg px-4 py-3 focus:gold-glow focus:border-gold outline-none">
+                            <button class="bg-gold text-dark font-montserrat font-medium px-6 rounded-r-lg gold-btn">
+                                Ask
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Action Plan -->
+                <div class="bg-dark-card rounded-xl p-6 gold-border shadow-lg slide-in" style="animation-delay: 0.4s">
+                    <h2 class="text-xl font-montserrat font-semibold text-gold mb-6">Personalized Action Plan</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="hologram-effect p-5 rounded-lg border border-gold/20">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-piggy-bank text-gold"></i>
+                                </div>
+                                <h3 class="font-montserrat text-gold">Immediate Actions</h3>
+                            </div>
+                            <ul class="text-gray-300 text-sm space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-gold/80 mt-1 mr-2 text-xs"></i>
+                                    <span>Set up auto-transfer of ₹5,000 to emergency fund</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-gold/80 mt-1 mr-2 text-xs"></i>
+                                    <span>Review monthly subscriptions (save ₹800/month)</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="hologram-effect p-5 rounded-lg border border-gold/20">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-chart-pie text-gold"></i>
+                                </div>
+                                <h3 class="font-montserrat text-gold">Mid-Term Goals</h3>
+                            </div>
+                            <ul class="text-gray-300 text-sm space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-bullseye text-gold/80 mt-1 mr-2 text-xs"></i>
+                                    <span>Reach 50% of emergency fund in 3 months</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-bullseye text-gold/80 mt-1 mr-2 text-xs"></i>
+                                    <span>Complete 1 skill certification in 60 days</span>
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div class="hologram-effect p-5 rounded-lg border border-gold/20">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 rounded-full bg-gold/10 flex items-center justify-center mr-3">
+                                    <i class="fas fa-seedling text-gold"></i>
+                                </div>
+                                <h3 class="font-montserrat text-gold">Long-Term Strategy</h3>
+                            </div>
+                            <ul class="text-gray-300 text-sm space-y-2">
+                                <li class="flex items-start">
+                                    <i class="fas fa-chess-king text-gold/80 mt-1 mr-2 text-xs"></i>
+                                    <span>Establish 6-month emergency fund by Q2 2026</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-chess-king text-gold/80 mt-1 mr-2 text-xs"></i>
+                                    <span>Begin investing 10% of income starting Q1 2026</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="border-t border-gold/20 mt-12 py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center mb-4 md:mb-0">
+                    <div class="w-8 h-8 rounded-full bg-gold flex items-center justify-center mr-3">
+                        <i class="fas fa-robot text-dark"></i>
+                    </div>
+                    <h3 class="text-xl font-montserrat font-bold text-gold">Ruki<span class="text-white">AI</span></h3>
+                </div>
+                
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-gold transition-colors">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gold transition-colors">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gold transition-colors">
+                        <i class="fab fa-linkedin"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-gold transition-colors">
+                        <i class="fab fa-medium"></i>
+                    </a>
+                </div>
+                
+                <div class="mt-4 md:mt-0">
+                    <p class="text-gray-500 text-sm">© 2025 RukiAI Financial Intelligence. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <script>
+        // Function to create confetti effect
+        function createConfetti() {
+            const container = document.getElementById('confetti-container');
+            const colors = ['#FFD700', '#FFA500', '#FF8C00', '#FF6347'];
+            
+            for (let i = 0; i < 150; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                confetti.style.zIndex = '50';
+                container.appendChild(confetti);
+                
+                // Remove confetti after animation
+                setTimeout(() => {
+                    confetti.remove();
+                }, 5000);
+            }
+        }
+        
+        // Add event listeners for gold buttons
+        document.querySelectorAll('.gold-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                createConfetti();
+                
+                // Create success notification
+                const notification = document.createElement('div');
+                notification.className = 'fixed top-4 right-4 bg-dark-card text-gold px-6 py-4 rounded-lg gold-border flex items-center shadow-lg z-50';
+                notification.innerHTML = `
+                    <i class="fas fa-check-circle text-gold mr-3"></i>
+                    <span>Action completed successfully!</span>
+                `;
+                document.body.appendChild(notification);
+                
+                // Remove notification after 3 seconds
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateY(-20px)';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }, 3000);
+            });
+        });
+        
+        // Animation for cards on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.slide-in');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1 + 0.1}s`;
+            });
+        });
+
+        const ctx = document.getElementById("financialHealthChart").getContext("2d");
+
+        new Chart(ctx, {
+            type: "doughnut",
+            data: {
+            labels: ["Score", "Remaining"],
+            datasets: [{
+                data: [70, 30], // e.g., 70% score
+                backgroundColor: ["#FFD700", "#333"],
+                borderWidth: 0
+            }]
+            },
+            options: {
+            cutout: "70%",
+            responsive: true,
+            plugins: {
+                legend: {
+                display: false
+                },
+                tooltip: {
+                enabled: false
+                }
+            }
+            }
+        });
+        const sphere = document.getElementById("dotSphere");
+        const radius = 90;
+        const dots = 100;
+
+        for (let i = 0; i < dots; i++) {
+        const dot = document.createElement("span");
+
+        // Spherical coordinates
+        const phi = Math.acos(-1 + (2 * i) / dots);
+        const theta = Math.sqrt(dots * Math.PI) * phi;
+
+        const x = radius * Math.cos(theta) * Math.sin(phi);
+        const y = radius * Math.sin(theta) * Math.sin(phi);
+        const z = radius * Math.cos(phi);
+
+        dot.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
+        sphere.appendChild(dot);
+        }
+    </script>
 </body>
 </html>
