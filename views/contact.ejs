@@ -171,28 +171,6 @@
     </footer>
 
     <script>
-      document
-        .getElementById("contactForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          // Show a simple success animation
-          const btn = document.querySelector(".btn");
-          btn.innerHTML = '<i class="fas fa-check"></i> Message Sent';
-          btn.style.backgroundColor = "rgba(76, 175, 80, 0.1)";
-          btn.style.borderColor = "#4CAF50";
-          btn.style.color = "#4CAF50";
-
-          // Reset form after submission
-          setTimeout(() => {
-            this.reset();
-            btn.innerHTML = "Send Message";
-            btn.style.backgroundColor = "";
-            btn.style.borderColor = "";
-            btn.style.color = "";
-          }, 3000);
-        });
-
       // Add focus animations to input fields
       const inputs = document.querySelectorAll(".input-field");
       inputs.forEach((input) => {

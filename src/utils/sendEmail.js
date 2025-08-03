@@ -1,7 +1,7 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
-dotenv.config({ path: './.env' });
+dotenv.config({path: './.env'})
 
 export const sendEmail = async ({ from, subject, message, name }) => {
   try {
@@ -14,7 +14,8 @@ export const sendEmail = async ({ from, subject, message, name }) => {
     });
 
     const mailOptions = {
-      from,
+      from: `"${name}" <${process.env.EMAIL_USER}>`,  // ✅ set from as your email
+      replyTo: from,                                   // ✅ let "reply" go to user
       to: process.env.EMAIL_RECEIVER,
       subject: subject || 'New Message from Contact Form',
       html: `
@@ -28,7 +29,7 @@ export const sendEmail = async ({ from, subject, message, name }) => {
     await transporter.sendMail(mailOptions);
     return { success: true };
   } catch (error) {
-    console.error('Email sending error:', error);
+    console.error('❌ Email sending error:', error);
     return { success: false, error };
   }
 };
