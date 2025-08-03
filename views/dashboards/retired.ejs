@@ -9,6 +9,11 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/styles/dashboard/retired.css" />
+    <link rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg=="
+      crossorigin="anonymous" referrerpolicy="no-referrer" 
+    />
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
       tailwind.config = {
@@ -669,14 +674,39 @@
       </main>
 
       <!-- Footer -->
-      <footer class="border-t border-gold-light mt-12 py-6">
-        <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
-          <div class="mb-2">
-            RukiAi Financial Dashboard • Secure Futurism Design System
-          </div>
-          <div>
-            © 2025 RukiAi Technologies. All financial advice is algorithmically
-            generated.
+      <footer class="border-t border-gold-accent/10 mt-12 py-8">
+        <div class="container mx-auto px-4">
+          <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="flex items-center mb-4 md:mb-0">
+              <div
+                class="w-8 h-8 bg-gold-accent rounded-full flex items-center justify-center mr-2"
+              >
+                <i class="fas fa-coins text-dark-bg"></i>
+              </div>
+              <h2 class="text-xl font-montserrat font-bold text-gold-accent">
+                Ruki<span class="text-white">AI</span>
+              </h2>
+            </div>
+
+            <div class="text-center text-sm text-gray-500">
+              <p>Secure Futurism Financial Dashboard</p>
+              <p class="mt-1">
+                © 2025 RukiAI. All rights reserved. Your financial security is our
+                priority.
+              </p>
+            </div>
+
+            <div class="flex space-x-4 mt-4 md:mt-0">
+              <a href="#" class="text-gray-500 hover:text-gold-accent transition">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="text-gray-500 hover:text-gold-accent transition">
+                <i class="fab fa-linkedin"></i>
+              </a>
+              <a href="#" class="text-gray-500 hover:text-gold-accent transition">
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
           </div>
         </div>
       </footer>
