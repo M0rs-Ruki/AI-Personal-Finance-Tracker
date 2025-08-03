@@ -120,3 +120,30 @@ input:focus, textarea:focus, select:focus {
     font-family: 'Orbitron', sans-serif;
 }
 
+
+
+.data-sphere {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    transform-style: preserve-3d;
+    animation: rotate 20s linear infinite;
+}
+
+.data-point {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #FFD700;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+    animation: pulse-gold 2s ease-in-out infinite;
+}
+
+.connection-line {
+    position: absolute;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.5), transparent);
+    transform-origin: left center;
+    pointer-events: none;
+}

@@ -212,6 +212,13 @@
                             <p class="text-xs text-gray-500 mt-1">Healthy range: below 35%</p>
                         </div>
                     </div>
+                    <div class="absolute top-4 right-4">
+                        <div class="w-16 h-16 rounded-full border-2 border-gold/20 flex items-center justify-center">
+                            <div class="w-12 h-12 rounded-full border-2 border-gold flex items-center justify-center">
+                                <span class="text-gold text-xs">B+</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Holographic Data Visualization -->
@@ -408,106 +415,6 @@
         </div>
     </footer>
     
-    <script>
-        // Function to create confetti effect
-        function createConfetti() {
-            const container = document.getElementById('confetti-container');
-            const colors = ['#FFD700', '#FFA500', '#FF8C00', '#FF6347'];
-            
-            for (let i = 0; i < 150; i++) {
-                const confetti = document.createElement('div');
-                confetti.className = 'confetti';
-                confetti.style.left = Math.random() * 100 + 'vw';
-                confetti.style.width = Math.random() * 10 + 5 + 'px';
-                confetti.style.height = Math.random() * 10 + 5 + 'px';
-                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
-                confetti.style.animationDelay = Math.random() * 5 + 's';
-                confetti.style.zIndex = '50';
-                container.appendChild(confetti);
-                
-                // Remove confetti after animation
-                setTimeout(() => {
-                    confetti.remove();
-                }, 5000);
-            }
-        }
-        
-        // Add event listeners for gold buttons
-        document.querySelectorAll('.gold-btn').forEach(button => {
-            button.addEventListener('click', function() {
-                createConfetti();
-                
-                // Create success notification
-                const notification = document.createElement('div');
-                notification.className = 'fixed top-4 right-4 bg-dark-card text-gold px-6 py-4 rounded-lg gold-border flex items-center shadow-lg z-50';
-                notification.innerHTML = `
-                    <i class="fas fa-check-circle text-gold mr-3"></i>
-                    <span>Action completed successfully!</span>
-                `;
-                document.body.appendChild(notification);
-                
-                // Remove notification after 3 seconds
-                setTimeout(() => {
-                    notification.style.opacity = '0';
-                    notification.style.transform = 'translateY(-20px)';
-                    setTimeout(() => {
-                        notification.remove();
-                    }, 300);
-                }, 3000);
-            });
-        });
-        
-        // Animation for cards on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.slide-in');
-            cards.forEach((card, index) => {
-                card.style.animationDelay = `${index * 0.1 + 0.1}s`;
-            });
-        });
-
-        const ctx = document.getElementById("financialHealthChart").getContext("2d");
-
-        new Chart(ctx, {
-            type: "doughnut",
-            data: {
-            labels: ["Score", "Remaining"],
-            datasets: [{
-                data: [70, 30], // e.g., 70% score
-                backgroundColor: ["#FFD700", "#333"],
-                borderWidth: 0
-            }]
-            },
-            options: {
-            cutout: "70%",
-            responsive: true,
-            plugins: {
-                legend: {
-                display: false
-                },
-                tooltip: {
-                enabled: false
-                }
-            }
-            }
-        });
-        const sphere = document.getElementById("dotSphere");
-        const radius = 90;
-        const dots = 100;
-
-        for (let i = 0; i < dots; i++) {
-        const dot = document.createElement("span");
-
-        // Spherical coordinates
-        const phi = Math.acos(-1 + (2 * i) / dots);
-        const theta = Math.sqrt(dots * Math.PI) * phi;
-
-        const x = radius * Math.cos(theta) * Math.sin(phi);
-        const y = radius * Math.sin(theta) * Math.sin(phi);
-        const z = radius * Math.cos(phi);
-
-        dot.style.transform = `translate3d(${x}px, ${y}px, ${z}px)`;
-        sphere.appendChild(dot);
-        }
-    </script>
+    <script src="/scripts/dashboards/guest.js"></script>
 </body>
 </html>
