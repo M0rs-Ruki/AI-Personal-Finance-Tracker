@@ -1,5 +1,6 @@
 
 import express from "express";
+import { sendEmail } from "../utils/sendEmail.js";
 import {log} from 'console';
 
 
@@ -24,6 +25,23 @@ router.get('/features', (req, res) => {
 router.get('/contact', (req, res) => {
     res.render('contact');
 })
+
+router.post('/send-email', async (req, res) => {
+  const { fullName, email, subject, message } = req.body;
+
+  const result = await sendEmail({
+    from: email, 
+    subject,
+    message,
+    name: fullName,
+  });
+
+  if (result.success) {
+    res.send('Email sent successfully!');
+  } else {
+    res.status(500).send('Failed to send email.');
+  }
+});
 
 
 export default router;
