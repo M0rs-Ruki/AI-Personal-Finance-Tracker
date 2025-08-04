@@ -55,10 +55,3 @@
   <li>👤 <strong>Guests</strong> - Demo mode available</li>
 </ul>
 
-<h2>🚀 Future Roadmap</h2>
-<ul>
-  <li>📊 Visual dashboards with graphs & trends</li>
-  <li>🎙️ Voice-based expense logging</li>
-  <li>📱 Progressive Web App (PWA) version</li>
-  <li>☁️ Optional GCP deployment for local AI model</li>
-</ul>
