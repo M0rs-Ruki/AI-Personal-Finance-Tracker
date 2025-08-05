@@ -351,6 +351,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ### ⭐ If you found RukiAI helpful, please give it a star!
 
-![Star History Chart](https://api.star-history.com/svg?repos=M0rs-Ruki/rukiai&type=Date)
+![Star History Chart](https://api.star-history.com/svg?repos=M0rs-Ruki/AI-Personal-Finance-Tracker&type=Date)
 
 </div>
