@@ -148,6 +148,14 @@ const employerSchema = new mongoose.Schema({
       default: 'beginner',
       lowercase: true,
     }
+  },
+  aiAdvice: {
+    type: String,
+    default: null
+  },
+  aiAdviceGeneratedAt: {
+    type: Date,
+    default: null
   }
 }, {
   timestamps: true,

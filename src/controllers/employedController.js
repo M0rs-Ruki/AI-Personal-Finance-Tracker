@@ -2,6 +2,7 @@
 import User from "../models/userModels.js";
 import Employer from "../models/employedModels.js";
 import mongoose from "mongoose";
+import getAIAdvice from "../utils/cohere.js";
 import { log } from "console";
 
 const EmployerPage = async (req, res) => {
@@ -77,7 +78,7 @@ const EmployerPage = async (req, res) => {
     const newEmployer = new Employer(employerData);
     await newEmployer.save();
 
-    res.redirect("/dashboard");
+    res.redirect("dashboards/employed");
   } catch (err) {
     console.error("Error saving employer data:", err);
     res.status(500).json({ message: "Server error", error: err.message });
@@ -89,17 +90,26 @@ const EmployerPage = async (req, res) => {
 const EmployerDashboard = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
+    if (!user) return res.status(404).send("User not found");
+
     const employer = await Employer.findOne({ userId: user._id });
-    if (!employer) {
-      return res.status(404).send("Employer profile not found");
+    if (!employer) return res.status(404).send("Employer profile not found");
+
+    const now = new Date();
+    const isStale =
+      !employer.aiAdviceGeneratedAt ||
+      (now - employer.aiAdviceGeneratedAt) / (1000 * 60 * 60 * 24) > 7;
+
+    if (!employer.aiAdvice || isStale) {
+      const newAdvice = await getAIAdvice(user);
+      employer.aiAdvice = newAdvice;
+      employer.aiAdviceGeneratedAt = now;
+      await employer.save();
     }
 
     res.render("dashboards/employed", { user, employer });
   } catch (err) {
-    console.error("Error In EmployerDashboard:", err);
+    console.error("Error in EmployerDashboard:", err);
     res.status(500).send("Something went wrong.");
   }
 };
