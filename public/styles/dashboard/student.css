@@ -274,3 +274,51 @@ body::before {
     box-shadow: 0 0 20px rgba(212, 175, 55, 0.5);
     transform: translateY(-2px);
 }
+
+
+/* Secure Futurism Gold Theme */
+.text-gold {
+  color: #FFD700; /* Holographic gold */
+}
+
+.bg-gold {
+  background-color: #FFD700;
+}
+
+.text-gold-accent {
+  color: #ffe066; /* Softer gold accent */
+}
+
+.bg-gold-accent {
+  background-color: #ffe066;
+}
+
+/* Border and Shadow Styles */
+.gold-border {
+  border: 1px solid #FFD700;
+}
+
+.shadow-gold {
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+}
+
+.gold-glow {
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.4), 0 0 24px rgba(255, 215, 0, 0.2);
+}
+
+/* Optional custom classes for future use */
+.border-gold {
+  border-color: #FFD700;
+}
+
+.border-gold-accent {
+  border-color: #ffe066;
+}
+
+.bg-dark-card {
+  background-color: #1A1A1A; /* Very dark background card */
+}
+
+.text-dark-bg {
+  color: #0F0F0F; /* Match your main dark canvas */
+}

@@ -84,18 +84,10 @@
 
       <div class="flex items-center space-x-4">
         <div class="relative">
-          <div
-            class="absolute -top-2 -right-2 w-5 h-5 rounded-full bg-red-500 flex items-center justify-center text-xs animate-pulse">
-            1
-          </div>
-          <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='#'">
-            <i class="fas fa-bell"></i>
-          </button>
-        </div>
-        <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='##'">
+        <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='/student/edit'">
           <i class="fas fa-cog"></i>
         </button>
-        <button class="glowing-icon p-2 rounded-full text-xl">
+        <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='/user/profile'">
           <i class="fas fa-user-astronaut"></i>
         </button>
         <button class="glowing-icon p-2 rounded-full text-xl" onclick="window.location.href='/user/logout'">
@@ -486,13 +478,12 @@
           </div>
 
           <div class="space-y-4">
-            <!-- Insight Card -->
             <% if (student.aiAdvice) { 
-              const tips = student.aiAdvice.split('- ').filter(Boolean).slice(1); // skips the first intro line
+              const tips = student.aiAdvice.split('- ').filter(Boolean).slice(1); // skip intro
             %>
 
               <% tips.forEach((tip, index) => { %>
-                <div class="bg-gradient-to-r from-blue-900/30 to-blue-900/10 p-4 rounded-xl border border-blue-500/30 mb-4">
+                <div class="bg-gradient-to-r from-blue-900/30 to-blue-900/10 p-4 rounded-xl border border-blue-500/30 mb-4 <%= index >= 3 ? 'hidden extra-tip' : '' %>">
                   <div class="flex items-start">
                     <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center mr-3 mt-1">
                       <i class="fas fa-lightbulb text-blue-400"></i>
@@ -510,11 +501,20 @@
                 </div>
               <% }) %>
 
+              <% if (tips.length > 3) { %>
+                <div class="text-center">
+                  <button
+                    id="toggleTips"
+                    class="text-xs text-blue-400 underline hover:text-blue-300 transition-all"
+                    onclick="toggleTips()"
+                  >
+                    Read More
+                  </button>
+                </div>
+              <% } %>
+
             <% } %>
-
-
-
-
+          </div>
 
 
           <div class="mt-6">
@@ -532,17 +532,57 @@
         </div>
       </div>
     </div>
-
-    <!-- Footer -->
-    <div class="mt-8 text-center text-gray-500 text-sm">
-      <p>Secure Futurism Dashboard v2.5 • Last updated: July 27, 2025</p>
-      <p class="mt-1">For assistance, contact: support@edufuture.tech</p>
     </div>
   </div>
-  
+  <!-- Footer -->
+  <footer class="bg-dark-card border-t border-gold/10 mt-12 py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col md:flex-row justify-between items-center">
+        
+        <!-- Logo -->
+        <div class="flex items-center mb-4 md:mb-0">
+          <div class="w-8 h-8 bg-gold rounded-full flex items-center justify-center mr-2 shadow-gold">
+            <i class="fas fa-coins text-dark-bg text-sm"></i>
+          </div>
+          <h2 class="text-xl font-montserrat font-bold text-gold">
+            Ruki<span class="text-white">AI</span>
+          </h2>
+        </div>
+
+        <!-- Center Text -->
+        <div class="text-center text-sm text-gray-500">
+          <p>Secure Futurism Financial Dashboard</p>
+          <p class="mt-1">
+            © 2025 <span class="text-gold font-semibold">RukiAI</span>. All rights reserved.<br />
+            Your financial security is our priority.
+          </p>
+        </div>
+
+        <!-- Social Icons -->
+        <div class="flex space-x-4 mt-4 md:mt-0">
+          <a href="#" class="text-gold hover:text-white transition text-lg">
+            <i class="fab fa-twitter"></i>
+          </a>
+          <a href="#" class="text-gold hover:text-white transition text-lg">
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a href="#" class="text-gold hover:text-white transition text-lg">
+            <i class="fab fa-github"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
 </body>
 <script>
+  function toggleTips() {
+    const hiddenCards = document.querySelectorAll('.extra-tip');
+    const button = document.getElementById('toggleTips');
+    const isHidden = hiddenCards[0]?.classList.contains('hidden');
 
+    hiddenCards.forEach(card => card.classList.toggle('hidden'));
+    button.textContent = isHidden ? 'Show Less' : 'Read More';
+  }
 </script>
 
 </html>
