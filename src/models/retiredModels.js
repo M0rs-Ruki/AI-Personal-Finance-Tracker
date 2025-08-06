@@ -128,6 +128,14 @@ const retiredUserSchema = new mongoose.Schema({
       }],
       default: []
     }
+  },
+  aiAdvice: {
+    type: String,
+    default: null
+  },
+  aiAdviceGeneratedAt: {
+    type: Date,
+    default: null
   }
 
 }, {

@@ -1,5 +1,6 @@
 import User from "../models/userModels.js";
 import Retired from "../models/retiredModels.js";
+import getAIAdvice from "../utils/cohere.js";
 import { log } from "console";
 import mongoose from "mongoose";
 
@@ -62,19 +63,31 @@ const RetiredPage = async (req, res) => {
 const RetiredDashboard = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
+    if (!user) return res.status(404).send("User not found");
 
     const retired = await Retired.findOne({ userId: user._id });
-    if (!retired) {
-      return res.status(404).send("Retired profile not found");
+    if (!retired) return res.status(404).send("Retired profile not found");
+
+    const now = new Date();
+    const adviceIsStale =
+      !retired.aiAdviceGeneratedAt ||
+      (now - retired.aiAdviceGeneratedAt) / (1000 * 60 * 60 * 24) > 7;
+
+    let advice = retired.aiAdvice;
+    if (!advice || adviceIsStale) {
+      advice = await getAIAdvice(user);
+      retired.aiAdvice = advice;
+      retired.aiAdviceGeneratedAt = now;
+      await retired.save();
     }
+  
     res.render("dashboards/retired", { user, retired });
+
   } catch (err) {
     console.error("Error in RetiredDashboard:", err);
     res.status(500).send("Something went wrong.");
   }
 };
+
 
 export { RetiredPage, RetiredDashboard };
