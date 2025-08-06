@@ -185,7 +185,14 @@ const unEmployedSchema = new mongoose.Schema(
       wantsJobResources: { type: Boolean, default: false },
       wantsDebtAdvice: { type: Boolean, default: false },
     },
-
+    aiAdvice: {
+      type: String,
+      default: null
+    },
+    aiAdviceGeneratedAt: {
+      type: Date,
+      default: null
+    },
   },
   {
     timestamps: true,

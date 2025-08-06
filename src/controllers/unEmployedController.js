@@ -2,6 +2,7 @@
 import User from "../models/userModels.js";
 import UnEmployed from "../models/unemployedModels.js";
 import mongoose from "mongoose";
+import getAIAdvice from "../utils/cohere.js";
 import { log } from "console";
 
 const UnEmployedPage = async (req, res) => {
@@ -60,7 +61,7 @@ const UnEmployedPage = async (req, res) => {
     });
 
     await newUnEmployed.save();
-    res.redirect("/dashboard");
+    res.redirect("/dashboard/unemployed");
   } catch (err) {
     console.error("Error in UnEmployedPage:", err);
     res.status(500).json({ message: "Server error", error: err.message });
@@ -71,16 +72,28 @@ const UnEmployedPage = async (req, res) => {
 const UnEmployedDashboard = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
-    if (!user) {
-      return res.status(404).send("User not found");
-    }
+    if (!user) return res.status(404).send("User not found");
+
     const unemployed = await UnEmployed.findOne({ userId: user._id });
-    if (!unemployed) {
-      return res.status(404).send("UnEmployed profile not found");
+    if (!unemployed) return res.status(404).send("Unemployed profile not found");
+
+    const now = new Date();
+    const lastGenerated = unemployed.aiAdviceGeneratedAt;
+    const adviceIsStale = !lastGenerated || (now - lastGenerated) > 7 * 24 * 60 * 60 * 1000;
+
+    if (!unemployed.aiAdvice || adviceIsStale) {
+      const freshAdvice = await getAIAdvice(user);
+      unemployed.aiAdvice = freshAdvice;
+      unemployed.aiAdviceGeneratedAt = now;
+      await unemployed.save();
     }
-    res.render("dashboards/unemployed", { user, unemployed });
+
+    res.render("dashboards/unemployed", {
+      user,
+      unemployed,
+    });
   } catch (err) {
-    console.error("Error In UnEmployerDashboard:", err);
+    console.error("Error in UnEmployedDashboard:", err);
     res.status(500).send("Something went wrong.");
   }
 };
