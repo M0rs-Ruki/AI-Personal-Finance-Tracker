@@ -1,11 +1,12 @@
-
-
-import cohere from 'cohere-ai';
+import { CohereClient } from 'cohere-ai';
 import dotenv from 'dotenv';
 import generatePrompt from './promptCohere.js';
 
 dotenv.config({ path: './.env' });
-cohere.init(process.env.COHERE_API_KEY);
+
+const cohere = new CohereClient({
+  token: process.env.COHERE_API_KEY,
+});
 
 const getAIAdvice = async (user) => {
   try {
@@ -15,11 +16,11 @@ const getAIAdvice = async (user) => {
     const response = await cohere.generate({
       model: 'command-r-plus',
       prompt,
-      max_tokens: 300,
+      maxTokens: 300,
       temperature: 0.9,
     });
 
-    const generation = response?.body?.generations?.[0]?.text;
+    const generation = response?.generations?.[0]?.text;
     if (!generation) throw new Error('No AI response received');
 
     return generation.trim();

@@ -73,6 +73,14 @@ const studentSchema = new mongoose.Schema({
     trim: true,
     required: true
   },
+  aiAdvice: {
+    type: String,
+    default: null
+  },
+  aiAdviceGeneratedAt: {
+    type: Date,
+    default: null
+  },
   createdAt: {
     type: Date,
     default: Date.now

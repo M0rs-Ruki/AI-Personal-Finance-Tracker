@@ -487,63 +487,35 @@
 
           <div class="space-y-4">
             <!-- Insight Card -->
-            <div class="bg-gradient-to-r from-blue-900/30 to-blue-900/10 p-4 rounded-xl border border-blue-500/30">
-              <div class="flex items-start">
-                <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center mr-3 mt-1">
-                  <i class="fas fa-lightbulb text-blue-400"></i>
-                </div>
-                <div>
-                  <p>
-                    "You can reach your Goa trip goal 2 weeks early if you
-                    save ₹500 more weekly."
-                  </p>
-                  <div class="flex items-center mt-2">
-                    <span class="text-xs bg-blue-500/20 px-2 py-1 rounded text-blue-400">Savings Tip</span>
-                    <span class="text-xs text-gray-500 ml-2">Just now</span>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <% if (student.aiAdvice) { 
+              const tips = student.aiAdvice.split('- ').filter(Boolean).slice(1); // skips the first intro line
+            %>
 
-            <!-- Insight Card -->
-            <div
-              class="bg-gradient-to-r from-purple-900/30 to-purple-900/10 p-4 rounded-xl border border-purple-500/30">
-              <div class="flex items-start">
-                <div class="w-8 h-8 rounded-full bg-purple-500/10 flex items-center justify-center mr-3 mt-1">
-                  <i class="fas fa-chart-pie text-purple-400"></i>
-                </div>
-                <div>
-                  <p>
-                    "Your food expenses are 25% higher than campus average.
-                    Consider meal planning."
-                  </p>
-                  <div class="flex items-center mt-2">
-                    <span class="text-xs bg-purple-500/20 px-2 py-1 rounded text-purple-400">Spending Alert</span>
-                    <span class="text-xs text-gray-500 ml-2">3 hrs ago</span>
+              <% tips.forEach((tip, index) => { %>
+                <div class="bg-gradient-to-r from-blue-900/30 to-blue-900/10 p-4 rounded-xl border border-blue-500/30 mb-4">
+                  <div class="flex items-start">
+                    <div class="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center mr-3 mt-1">
+                      <i class="fas fa-lightbulb text-blue-400"></i>
+                    </div>
+                    <div>
+                      <p class="text-white text-sm"><%= tip.trim() %></p>
+                      <div class="flex items-center mt-2">
+                        <span class="text-xs bg-blue-500/20 px-2 py-1 rounded text-blue-400">Savings Tip <%= index + 1 %></span>
+                        <span class="text-xs text-gray-400 ml-3">
+                          Generated on <%= new Date(student.aiAdviceGeneratedAt).toDateString() %>
+                        </span>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+              <% }) %>
 
-            <!-- Insight Card -->
-            <div class="bg-gradient-to-r from-amber-900/30 to-amber-900/10 p-4 rounded-xl border border-amber-500/30">
-              <div class="flex items-start">
-                <div class="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center mr-3 mt-1">
-                  <i class="fas fa-coins text-amber-400"></i>
-                </div>
-                <div>
-                  <p>
-                    "Based on your spending patterns, you could save
-                    ₹1,500/month by using public transport."
-                  </p>
-                  <div class="flex items-center mt-2">
-                    <span class="text-xs bg-amber-500/20 px-2 py-1 rounded text-amber-400">Opportunity</span>
-                    <span class="text-xs text-gray-500 ml-2">Yesterday</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+            <% } %>
+
+
+
+
+
 
           <div class="mt-6">
             <h3 class="font-bold mb-3">Quick Actions</h3>

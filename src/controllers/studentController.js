@@ -3,6 +3,7 @@ import User from "../models/userModels.js";
 import Student from "../models/studentModels.js";
 import { log } from "console";
 import mongoose from "mongoose";
+import getAIAdvice from "../utils/cohere.js";
 
 
 const StudentPage = async (req, res) => {
@@ -109,17 +110,46 @@ const UpdateStudentPage = async (req, res) => {
 
 const StudentDashboard = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const userId = req.user?._id;
+
+    if (!userId) {
+      return res.status(400).send("Invalid request: Missing user ID");
+    }
+
+    const [user, student] = await Promise.all([
+      User.findById(userId),
+      Student.findOne({ userId })
+    ]);
+
     if (!user) {
       return res.status(404).send("User not found");
     }
 
-    const student = await Student.findOne({ userId: user._id });
     if (!student) {
       return res.status(404).send("Student profile not found");
     }
 
-    res.render("dashboards/student", { user, student });
+    const now = new Date();
+    const adviceIsStale =
+      !student.aiAdviceGeneratedAt ||
+      (now - student.aiAdviceGeneratedAt) / (1000 * 60 * 60 * 24) > 7;
+
+      
+    let advice = student.aiAdvice;
+
+    if (!advice || adviceIsStale) {
+      advice = await getAIAdvice(user);
+      student.aiAdvice = advice;
+      student.aiAdviceGeneratedAt = now;
+      await student.save();
+    }
+
+    res.render("dashboards/student", {
+      user,
+      student,
+      advice
+    });
+
   } catch (err) {
     console.error("Error in StudentDashboard:", err);
     res.status(500).send("Something went wrong.");

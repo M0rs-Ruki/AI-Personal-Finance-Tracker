@@ -1,9 +1,9 @@
 
-import Student from '../src/models/studentModels.js';
-import Employed from '../src/models/employedModels.js';
-import UnEmployed from '../src/models/unemployedModels.js';
-import Retired from '../src/models/retiredModels.js';
-import GuestUser from '../src/models/guestUserModels.js';
+import Student from '../models/studentModels.js';
+import Employed from '../models/employedModels.js';
+import UnEmployed from '../models/unemployedModels.js';
+import Retired from '../models/retiredModels.js';
+import GuestUser from '../models/guestUserModels.js';
 
 const generatePrompt = async (user) => {
   try {
