@@ -91,27 +91,15 @@ body {
 }
 
 .user-profile {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  padding-right: 1.5rem; /* Add right padding */
 }
 
-.avatar {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 100%);
-    border: 2px solid var(--gold-accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.3s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-.avatar:hover {
-    transform: translateY(-2px);
+.user-profile .actions {
+  display: flex;
+  gap: 1.5rem; /* Increase spacing between icons */
+  font-size: 1.25rem; /* Make icons bigger (20px) */
 }
 
 .mobile-menu-btn {
@@ -145,6 +133,26 @@ body {
     transform: scale(1.1);
     box-shadow: 0 0 25px rgba(255, 215, 0, 0.8);
 }
+
+.user-profile .actions i {
+  color: white;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+}
+
+.user-profile .actions i:hover {
+  color: var(--gold-accent);
+  text-shadow: 0 0 6px rgba(255, 215, 0, 0.7), 0 0 12px rgba(255, 215, 0, 0.5);
+  transform: scale(1.15);
+}
+
+/* Optional: add click/active feedback */
+.user-profile .actions i:active {
+  transform: scale(0.95);
+  filter: brightness(1.2);
+}
+
 
 /* Dashboard Layout */
 .dashboard {
