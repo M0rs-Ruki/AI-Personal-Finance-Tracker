@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="/images/logo.png" type="image/x-icon">
     <title>RukiAI - AI-Powered Personal Finance Tracker</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="/styles/main.css">
 </head>
+
 <body>
     <!-- Header -->
     <header>
@@ -16,21 +19,47 @@
             <nav class="navbar">
                 <div class="logo">
                     Ruki<span>AI</span>
-                    <div
-                        style="display:inline-block; margin-left:1rem; font-size:0.75rem; background-color:#FFD700; color:#0F0F0F; padding:0.25rem 0.5rem; border-radius:0.375rem; font-weight:bold; font-family:'Montserrat',sans-serif; letter-spacing:0.05em;">
-                        BETA
-                    </div>
+                    <div class="beta-tag">BETA</div>
                 </div>
+
+                <!-- Desktop Navigation -->
                 <div class="nav-links">
                     <a href="/">Home</a>
                     <a href="/features">Features</a>
                     <a href="/how-it-works">How It Works</a>
                     <a href="/about">About</a>
                 </div>
+
+                <!-- Desktop Auth Buttons -->
                 <div class="auth-buttons">
                     <a href="/user/login" class="btn btn-outline">Log In</a>
                     <a href="/user/signup" class="btn btn-primary">Sign Up Free</a>
                 </div>
+
+                <!-- Mobile Menu Toggle -->
+                <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle navigation">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
             </nav>
         </div>
+
+        <!-- Mobile Navigation Panel -->
+        <div class="mobile-nav" id="mobileNav">
+            <div class="mobile-nav-links">
+                <a href="/">Home</a>
+                <a href="/features">Features</a>
+                <a href="/how-it-works">How It Works</a>
+                <a href="/about">About</a>
+            </div>
+
+            <div class="mobile-auth-buttons">
+                <a href="/user/login" class="btn btn-outline">Log In</a>
+                <a href="/user/signup" class="btn btn-primary">Sign Up Free</a>
+            </div>
+        </div>
+
+        <!-- Overlay for mobile menu -->
+        <div class="overlay" id="overlay"></div>
     </header>

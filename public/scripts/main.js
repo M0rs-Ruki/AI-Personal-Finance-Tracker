@@ -171,3 +171,25 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }, 500);
 });
+
+
+// Mobile menu functionality
+const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+const mobileNav = document.getElementById('mobileNav');
+const overlay = document.getElementById('overlay');
+
+function toggleMobileMenu() {
+    mobileMenuToggle.classList.toggle('open');
+    mobileNav.classList.toggle('open');
+    overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
+    document.body.style.overflow = document.body.style.overflow === 'hidden' ? '' : 'hidden';
+}
+
+mobileMenuToggle.addEventListener('click', toggleMobileMenu);
+overlay.addEventListener('click', toggleMobileMenu);
+
+// Close mobile menu when clicking on links
+const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
+mobileLinks.forEach(link => {
+    link.addEventListener('click', toggleMobileMenu);
+});
