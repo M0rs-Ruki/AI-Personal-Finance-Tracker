@@ -66,20 +66,30 @@
             </div>
             
             <div class="flex items-center space-x-3 sm:space-x-6">
-                <div class="relative group">
-                    <button class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-dark-card flex items-center justify-center gold-border hover:bg-gold-light transition-colors">
-                        <i class="fas fa-bell text-gold text-sm sm:text-base"></i>
-                    </button>
-                    <span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-500 border border-dark"></span>
-                </div>
-                
-                <div class="relative group">
-                    <button class="flex items-center space-x-2">
-                        <div class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gold-light flex items-center justify-center gold-border">
-                            <i class="fas fa-user text-gold text-sm sm:text-base"></i>
+                <div class="flex items-center space-x-6">
+                    <!-- Nav Icons -->
+                    <div class="nav-icons flex items-center space-x-6 text-[#FFD700]">
+                        <!-- Profile Icon -->
+                        <div class="nav-icon text-3xl p-2 rounded-full hover:shadow-gold-glow transition-all duration-300 ease-in-out cursor-pointer"
+                            title="Profile" onclick="window.location.href='/user/profile'">
+                            <i class="fas fa-user"></i>
                         </div>
-                        <span class="text-xs sm:text-sm text-white font-montserrat hidden sm:block">Guest User</span>
-                    </button>
+                
+                        <!-- Settings Icon with Notification Dot -->
+                        <div class="nav-icon relative text-3xl p-2 rounded-full hover:shadow-gold-glow transition-all duration-300 ease-in-out cursor-pointer"
+                            title="Settings" onclick="window.location.href='/student/edit'">
+                            <i class="fas fa-cog"></i>
+                            <div class="notification-dot absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-[#FFD700] animate-ping">
+                            </div>
+                        </div>
+                
+                        <!-- Logout Icon -->
+                        <div class="nav-icon text-3xl p-2 rounded-full hover:shadow-gold-glow transition-all duration-300 ease-in-out cursor-pointer"
+                            title="Logout" onclick="window.location.href='/user/logout'">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </div>
+                    </div>
+                
                 </div>
             </div>
         </div>
@@ -718,6 +728,17 @@
                                     </li>
                                 </ul>
                             </div>
+                        </div>
+                        <div class="mt-8"></div>
+                        <div class="bg-dark-card rounded-xl p-6 gold-border shadow-lg slide-in" style="animation-delay: 0.4s">
+                            <p class="text-gray-400">
+                                <span class="font-semibold text-white">Beta Notice Description:</span>
+                                This project is currently in its Beta version. While the core
+                                features are functional, many enhancements, improvements, and
+                                additional modules are still under active development. We
+                                appreciate your patience as we continue to refine the
+                                platform and roll out updates.
+                            </p>
                         </div>
                     </div>
                 </div>
