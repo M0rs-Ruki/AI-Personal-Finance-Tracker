@@ -14,8 +14,8 @@ export const sendEmail = async ({ from, subject, message, name }) => {
     });
 
     const mailOptions = {
-      from: `"${name}" <${process.env.EMAIL_USER}>`,  // ✅ set from as your email
-      replyTo: from,                                   // ✅ let "reply" go to user
+      from: `"${name}" <${process.env.EMAIL_USER}>`,
+      replyTo: from, 
       to: process.env.EMAIL_RECEIVER,
       subject: subject || 'New Message from Contact Form',
       html: `

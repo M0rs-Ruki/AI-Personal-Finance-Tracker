@@ -1,4 +1,3 @@
-
 import Student from '../models/studentModels.js';
 import Employed from '../models/employedModels.js';
 import UnEmployed from '../models/unemployedModels.js';
@@ -9,45 +8,102 @@ const generatePrompt = async (user) => {
   try {
     if (!user) throw new Error('User not found');
 
-    const userId = user._id;
-    const userType = user.userType;
+    const { _id: userId, userType } = user;
     let profile;
 
-    // Only fetch the correct profile based on userType
-    if (userType === 'student') {
-      profile = await Student.findOne({ userId });
-    } else if (userType === 'employed') {
-      profile = await Employed.findOne({ userId });
-    } else if (userType === 'unemployed') {
-      profile = await UnEmployed.findOne({ userId });
-    } else if (userType === 'retired') {
-      profile = await Retired.findOne({ userId });
-    } else if (userType === 'guest') {
-      profile = await GuestUser.findOne({ userId });
-    }
+    // Fetch profile based on userType
+    const modelMap = {
+      student: Student,
+      employed: Employed,
+      unemployed: UnEmployed,
+      retired: Retired,
+      guest: GuestUser
+    };
 
-    if (!profile) throw new Error('Profile not found for this user');
+    const Model = modelMap[userType];
+    if (!Model) throw new Error('Invalid user type');
 
-    // Serialize the profile to JSON
-    const profileJson = JSON.stringify(profile.toObject(), null, 2);
+    profile = await Model.findOne({ userId });
+    if (!profile) throw new Error('Profile not found');
 
-    // Construct the prompt
-    return `
-The following is a "${userType}" financial profile. Based on the information, generate personalized, practical, and goal-focused financial advice.
+    // Extract only essential fields to minimize tokens
+    const essentialData = extractEssentialFields(profile, userType);
 
-Profile:
-${profileJson}
-
-Advice:
-- Provide practical, helpful financial tips
-- Prioritize goal achievement and budgeting
-- Use bullet points where helpful
-- Keep tone professional but motivational
-    `;
+    return buildOptimizedPrompt(userType, essentialData);
   } catch (error) {
     console.error('Error generating prompt:', error.message);
-    return 'Error generating prompt.';
+    return 'Error: Unable to generate financial advice prompt.';
   }
+};
+
+const extractEssentialFields = (profile, userType) => {
+  const common = {
+    age: profile.age,
+    income: profile.monthlyIncome || profile.income,
+    expenses: profile.monthlyExpenses || profile.expenses,
+    savings: profile.currentSavings,
+    debt: profile.totalDebt || profile.debt,
+    goals: profile.financialGoals
+  };
+
+  // Type-specific fields
+  const typeSpecific = {
+    student: {
+      education: profile.educationLevel,
+      loans: profile.studentLoans,
+      graduation: profile.expectedGraduation
+    },
+    employed: {
+      job: profile.jobTitle,
+      experience: profile.workExperience,
+      retirement: profile.retirementContributions
+    },
+    unemployed: {
+      lastEmployed: profile.lastEmployed,
+      benefits: profile.unemploymentBenefits,
+      jobSeeking: profile.jobSeekingStatus
+    },
+    retired: {
+      pension: profile.pensionIncome,
+      socialSecurity: profile.socialSecurityIncome,
+      healthcare: profile.healthcareCosts
+    },
+    guest: {
+      interests: profile.financialInterests
+    }
+  };
+
+  return { ...common, ...typeSpecific[userType] };
+};
+
+const buildOptimizedPrompt = (userType, data) => {
+  // Remove null/undefined values to save tokens
+  const cleanData = Object.fromEntries(
+    Object.entries(data).filter(([_, value]) => value != null && value !== '')
+  );
+
+  return `Generate personalized financial advice for a ${userType}.
+
+DATA:
+${Object.entries(cleanData).map(([key, value]) => `• ${key}: ${value}`).join('\n')}
+
+REQUIREMENTS:
+• Provide 5-7 specific, actionable recommendations
+• Focus on goal achievement and budget optimization
+• Include priority ranking (High/Medium/Low)
+• Use bullet points for clarity
+• Keep advice practical and measurable
+
+FORMAT:
+## Priority Recommendations
+• [High] Specific action with timeline
+• [Medium] Specific action with timeline
+• [Low] Specific action with timeline
+
+## Quick Tips
+• Brief practical tips (3-4 items)
+
+Keep response concise and professional.`;
 };
 
 export default generatePrompt;

@@ -385,13 +385,24 @@
 
           <div class="bg-black/30 rounded-xl p-4 border border-gold-primary/20">
             <div class="flex justify-between mb-3">
-              <div class="text-gray-400">Next Allowance:</div>
-              <div class="font-semibold">July 31, 2025</div>
+              <div class="text-gray-400">Next Ai Update:</div>
+              <div class="font-semibold"><%= new Date(new Date(student.aiAdviceGeneratedAt).getTime() + 7 * 24 * 60 * 60 * 1000).toDateString() %> </div>
             </div>
             <div class="flex justify-between">
               <div class="text-gray-400">Funding Status:</div>
               <div class="text-green-400 font-semibold">Confirmed</div>
             </div>
+          </div>
+          <div style="margin-top: 24px;"></div>
+          <div class="bg-black/30 rounded-xl p-4 border border-gold-primary/20">
+            <p class="text-gray-400">
+              <span class="font-semibold text-white">Beta Notice Description:</span>
+              This project is currently in its Beta version. While the core 
+              features are functional, many enhancements, improvements, and 
+              additional modules are still under active development. We 
+              appreciate your patience as we continue to refine the 
+              platform and roll out updates.
+            </p>
           </div>
         </div>
       </div>
@@ -560,13 +571,13 @@
 
         <!-- Social Icons -->
         <div class="flex space-x-4 mt-4 md:mt-0">
-          <a href="#" class="text-gold hover:text-white transition text-lg">
+          <a href="https://x.com/AnupPradhan0" target="_blank" class="text-gold hover:text-white transition text-lg">
             <i class="fab fa-twitter"></i>
           </a>
-          <a href="#" class="text-gold hover:text-white transition text-lg">
+          <a href="https://www.linkedin.com/in/anup-pradhan77" target="_blank" class="text-gold hover:text-white transition text-lg">
             <i class="fab fa-linkedin"></i>
           </a>
-          <a href="#" class="text-gold hover:text-white transition text-lg">
+          <a href="https://github.com/M0rs-Ruki" target="_blank" class="text-gold hover:text-white transition text-lg">
             <i class="fab fa-github"></i>
           </a>
         </div>

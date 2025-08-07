@@ -19,7 +19,7 @@ const studentSchema = new mongoose.Schema({
   },
   livingSituation: {
     type: String,
-    enum: ['hostel', 'family', 'rental', 'PG', 'other'],
+    enum: ['hostel', 'family', 'rental', 'pg', 'other'],
     required: true
   },
   monthlyAllowance: {
