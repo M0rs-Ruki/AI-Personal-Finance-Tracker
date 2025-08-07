@@ -322,3 +322,21 @@ body::before {
 .text-dark-bg {
   color: #0F0F0F; /* Match your main dark canvas */
 }
+
+.dashboard-header .nav-icon {
+  transition: transform 0.2s ease;
+}
+.dashboard-header .nav-icon:hover {
+  transform: scale(1.1);
+  color: #FFD700;
+}
+.notification-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: #FFD700;
+  border-radius: 9999px;
+}
+.app-logo span {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 1px;
+}
