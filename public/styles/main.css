@@ -1787,3 +1787,85 @@ feBlend */
         padding: 0.2rem 0.4rem;
     }
 }
+
+.mobile-chart-stack {
+    flex-wrap: wrap; /* make bars go to next line if needed */
+}
+
+.mobile-chart {
+    display: flex;
+    gap: 6px;            /* spacing between bars */
+    justify-content: center;
+    align-items: flex-end;
+    overflow-x: auto;    /* let bars scroll if too many */
+    padding: 0 10px;     /* breathing room */
+}
+
+/* Show desktop, hide mobile by default */
+.desktop-footer { display: flex; justify-content: space-between; flex-wrap: wrap; }
+.mobile-footer { display: none; }
+
+/* Mobile settings */
+@media (max-width: 768px) {
+    .desktop-footer { display: none; }
+    .mobile-footer {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    .footer-links-wrapper {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+    }
+    .footer-links-wrapper .footer-links {
+        flex: 1;
+    }
+    .footer-links-wrapper ul {
+        padding-left: 0;
+        list-style: none;
+    }
+}
+
+
+
+/* Mobile fixes */
+@media (max-width: 768px) {
+    /* Skill icons (About the Developer section) */
+    .mobile-skills-visual {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        padding: 20px 0;
+    }
+    .mobile-skill-node {
+        position: static !important; /* Remove absolute positioning */
+        flex: 0 1 30%; /* Three per row */
+        text-align: center;
+    }
+    .mobile-skill-text {
+        display: block;
+        font-size: 0.8rem;
+        margin-top: 4px;
+    }
+
+    /* Tech stack carousel (About the Project section) */
+    .mobile-tech-carousel {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        padding: 15px 0;
+    }
+    .mobile-tech-item {
+        flex: 0 1 30%; /* Three per row */
+        text-align: center;
+    }
+    .mobile-tech-text {
+        display: block;
+        font-size: 0.8rem;
+        margin-top: 4px;
+    }
+}
