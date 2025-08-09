@@ -22,7 +22,7 @@ const userSchema = mongoose.Schema({
     },
     userType: { 
         type: String,
-        enum: ['student', 'employed', 'unemployed', 'retired', 'other'],
+        enum: ['student', 'employed', 'unemployed', 'retired'],
     },
     createdAt: {type: Date, default: Date.now,},
     updatedAt: {type: Date, default: Date.now,},
