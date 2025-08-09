@@ -195,25 +195,4 @@ mobileLinks.forEach(link => {
 });
 
 
-document.addEventListener("DOMContentLoaded", function() {
-    const signupBtn = document.getElementById("signupBtn");
-    const betaModal = document.getElementById("betaModal");
-    const closeBtn = document.getElementById("closeBetaModal");
-
-    signupBtn.addEventListener("click", function(e) {
-        e.preventDefault(); // stop direct navigation
-        betaModal.style.display = "block";
-    });
-
-    closeBtn.addEventListener("click", function() {
-        betaModal.style.display = "none";
-        window.location.href = "/user/signup"; // proceed to signup after closing
-    });
-
-    window.addEventListener("click", function(e) {
-        if (e.target === betaModal) {
-            betaModal.style.display = "none";
-        }
-    });
-});
 

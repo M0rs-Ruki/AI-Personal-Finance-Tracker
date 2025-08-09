@@ -1903,16 +1903,6 @@ feBlend */
     line-height: 1.4;
 }
 
-.beta-modal-content button {
-    margin-top: 15px;
-    padding: 8px 15px;
-    background-color: gold;
-    color: #000;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
 /* Mobile adjustments */
 @media (max-width: 600px) {
     .beta-modal-content {
