@@ -5,7 +5,7 @@ import { RetiredPage } from "../controllers/retiredController.js";
 import isLoggedIn from "../middlewares/isLoggedInMiddleware.js";
 import { StudentPage, UpdateStudentPage } from "../controllers/studentController.js";
 import { EmployerPage } from "../controllers/employedController.js";
-import { UnEmployedPage } from "../controllers/unemployedController.js";
+import { UnEmployedPage } from "../controllers/unEmployedController.js";
 
 
 const router = express.Router();
