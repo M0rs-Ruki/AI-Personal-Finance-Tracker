@@ -110,14 +110,16 @@ This version is built to be **lightweight, scalable, and affordable** for deploy
 
 ```javascript
 // Example AI Integration
-const generateInsight = async (expenseData) => {
-  const response = await openai.createCompletion({
-    model: "gpt-3.5-turbo",
-    prompt: `Analyze spending: ${expenseData}`,
-    max_tokens: 100
-  });
-  return response.data.choices[0].text;
+const getAIAdvice = async u => {
+  try {
+    const p = await generatePrompt(u);
+    const r = p && await cohere.generate({ model: 'command-r-plus', prompt: p, maxTokens: 300, temperature: 0.9 });
+    return r?.generations?.[0]?.text?.trim() || 'Unable to generate advice.';
+  } catch {
+    return 'Unable to generate financial advice. Try again later.';
+  }
 };
+
 ```
 
 </td>
