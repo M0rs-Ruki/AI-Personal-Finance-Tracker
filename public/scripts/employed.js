@@ -1,5 +1,4 @@
-// Employed User Setup - Complete JavaScript Functionality
-// Secure Futurism Design System
+
 
 class EmployedSetup {
     constructor() {
