@@ -1,6 +1,7 @@
 
 import express from "express";
 import { sendEmail } from "../utils/sendEmail.js";
+import { submitFeedback, getFeedback } from "../controllers/feedbackController.js";
 import {log} from 'console';
 
 
@@ -25,6 +26,11 @@ router.get('/features', (req, res) => {
 router.get('/contact', (req, res) => {
     res.render('contact');
 })
+
+router.post('/submit-feedback', submitFeedback );
+
+router.get('/api/feedback', getFeedback )
+
 
 router.post('/send-email', async (req, res) => {
   const { fullName, email, subject, message } = req.body;
