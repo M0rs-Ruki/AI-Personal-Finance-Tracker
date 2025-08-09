@@ -173,25 +173,110 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
-// Mobile menu functionality
+// Fixed mobile menu functionality
 const mobileMenuToggle = document.getElementById('mobileMenuToggle');
 const mobileNav = document.getElementById('mobileNav');
 const overlay = document.getElementById('overlay');
 
 function toggleMobileMenu() {
+    const isOpen = mobileNav.classList.contains('open');
+    
     mobileMenuToggle.classList.toggle('open');
     mobileNav.classList.toggle('open');
-    overlay.style.display = overlay.style.display === 'block' ? 'none' : 'block';
-    document.body.style.overflow = document.body.style.overflow === 'hidden' ? '' : 'hidden';
+    
+    if (isOpen) {
+        // Closing menu
+        overlay.style.display = 'none';
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    } else {
+        // Opening menu
+        overlay.style.display = 'block';
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 }
 
-mobileMenuToggle.addEventListener('click', toggleMobileMenu);
-overlay.addEventListener('click', toggleMobileMenu);
+function closeMenu() {
+    mobileMenuToggle.classList.remove('open');
+    mobileNav.classList.remove('open');
+    overlay.style.display = 'none';
+    overlay.classList.remove('active');
+    document.body.style.overflow = '';
+}
 
-// Close mobile menu when clicking on links
+// Prevent all swipe gestures from opening menu
+let touchStartX = 0;
+let touchStartY = 0;
+let isSwiping = false;
+
+document.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+    isSwiping = false;
+}, { passive: true });
+
+document.addEventListener('touchmove', (e) => {
+    if (!mobileNav.classList.contains('open')) {
+        const touchX = e.touches[0].clientX;
+        const touchY = e.touches[0].clientY;
+        const deltaX = touchX - touchStartX;
+        const deltaY = Math.abs(touchY - touchStartY);
+        
+        // Detect any horizontal swipe attempt
+        if (Math.abs(deltaX) > 10 && deltaY < 50) {
+            isSwiping = true;
+        }
+        
+        // Prevent horizontal swipes entirely
+        if (Math.abs(deltaX) > 30 && deltaY < 100) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    }
+}, { passive: false });
+
+document.addEventListener('touchend', (e) => {
+    if (isSwiping) {
+        e.preventDefault();
+        e.stopPropagation();
+    }
+    isSwiping = false;
+}, { passive: false });
+
+// Button click handler
+mobileMenuToggle.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    toggleMobileMenu();
+});
+
+// Overlay click handler
+overlay.addEventListener('click', closeMenu);
+
+// Menu links handler
 const mobileLinks = document.querySelectorAll('.mobile-nav-links a');
 mobileLinks.forEach(link => {
-    link.addEventListener('click', toggleMobileMenu);
+    link.addEventListener('click', closeMenu);
+});
+
+// Ensure menu starts closed
+window.addEventListener('load', () => {
+    closeMenu();
+});
+
+// Disable browser's default swipe gestures
+document.addEventListener('gesturestart', (e) => {
+    e.preventDefault();
+});
+
+document.addEventListener('gesturechange', (e) => {
+    e.preventDefault();
+});
+
+document.addEventListener('gestureend', (e) => {
+    e.preventDefault();
 });
 
 
