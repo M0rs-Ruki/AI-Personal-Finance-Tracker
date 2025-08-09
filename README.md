@@ -68,7 +68,7 @@ RukiAI is a full-stack, AI-enhanced personal finance tracker designed to help us
 
 | **Backend** | **Database** | **Frontend** | **AI Integration** | **Templating** |
 |-------------|--------------|--------------|-------------------|----------------|
-| ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) | ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white) | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) | ![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white) | ![EJS](https://img.shields.io/badge/EJS-B4CA65?style=for-the-badge&logo=ejs&logoColor=black) |
+| ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white) | ![MongoDB](https://img.shields.io/badge/MongoDB-4EA94B?style=for-the-badge&logo=mongodb&logoColor=white) | ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white) | !![Cohere](https://img.shields.io/badge/Cohere-333333?style=for-the-badge&logo=cohere&logoColor=white) | ![EJS](https://img.shields.io/badge/EJS-B4CA65?style=for-the-badge&logo=ejs&logoColor=black) |
 | Express Framework | Document Storage | CSS3 + EJS Templates | API Integration | Server-Side Rendering |
 
 </div>
@@ -86,12 +86,12 @@ graph LR
     A[User Input] --> B[Express Server]
     B --> C[MongoDB]
     B --> D[AI API]
-    D --> E[OpenAI/Cohere]
+    D --> E[Cohere]
     E --> F[Insights Generated]
     F --> G[User Dashboard]
 ```
 
-This version is built to be **lightweight, scalable, and affordable** for deployment. Instead of hosting a custom model — which would require expensive compute resources — this version leverages external AI APIs (like OpenAI or Cohere) to process user expense data and generate personalized insights.
+This version is built to be **lightweight, scalable, and affordable** for deployment. Instead of hosting a custom model — which would require expensive compute resources — this version leverages external AI APIs (like Cohere) to process user expense data and generate personalized insights.
 
 #### 💼 Why AI API?
 
@@ -267,7 +267,7 @@ The second part of this project includes a **custom-built AI model** designed to
 ### Prerequisites
 - Node.js (v18 or higher)
 - MongoDB (local or cloud instance)
-- OpenAI API key (for AI features)
+- Cohere API key (for AI features)
 
 ### Installation Steps
 
