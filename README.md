@@ -113,13 +113,21 @@ This version is built to be **lightweight, scalable, and affordable** for deploy
 const getAIAdvice = async u => {
   try {
     const p = await generatePrompt(u);
-    const r = p && await cohere.generate({ model: 'command-r-plus', prompt: p, maxTokens: 300, temperature: 0.9 });
-    return r?.generations?.[0]?.text?.trim() || 'Unable to generate advice.';
+    const r = p && await cohere.generate(
+    { 
+      model: 'command-r-plus', 
+      prompt: p, maxTokens: 300, 
+      temperature: 0.9 
+    });
+    return r?
+    .generations?
+    .[0]?.text?
+    .trim() || 'Unable to generate advice.';
   } catch {
-    return 'Unable to generate financial advice. Try again later.';
+    return 
+    'Unable to generate financial advice. Try again later.';
   }
 };
-
 ```
 
 </td>
