@@ -11,9 +11,7 @@ const registerUser = async (req, res) => {
       password,
       phoneNumber,
       currency,
-      monthlyIncome,
       userType,
-      notificationPreferences,
     } = req.body;
 
     // Basic validation
@@ -39,9 +37,7 @@ const registerUser = async (req, res) => {
       password: passwordHash,
       phoneNumber,
       currency,
-      monthlyIncome,
       userType,
-      notificationPreferences,
     });
 
     await newUser.save();

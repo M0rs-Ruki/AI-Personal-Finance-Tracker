@@ -12,14 +12,6 @@ const userSchema = mongoose.Schema({
         enum: ['INR', 'USD', 'EUR'],
         default: 'INR'
     },
-    monthlyIncome: {
-        type: String,
-    },
-    notificationPreferences:{
-        type: String,
-        enum: ['email', 'sms', 'both'],
-        default: 'email'
-    },
     userType: { 
         type: String,
         enum: ['student', 'employed', 'unemployed', 'retired'],
